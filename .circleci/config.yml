@@ -27,7 +27,7 @@ jobs:
 
       - run: cd ~/knapsack-pro-core-js && npm install
       - run: cd ~/knapsack-pro-core-js && npm run build
-      - run: cd ~/knapsack-pro-core-js && sudo npm link
+      - run: cd ~/knapsack-pro-core-js && npm link
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/core
@@ -49,7 +49,7 @@ jobs:
       - run: cd ~/knapsack-pro-jest && npm install
       - run: cd ~/knapsack-pro-jest && npm link @knapsack-pro/core
       - run: cd ~/knapsack-pro-jest && npm run build
-      - run: cd ~/knapsack-pro-jest && sudo npm link
+      - run: cd ~/knapsack-pro-jest && npm link
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/jest
