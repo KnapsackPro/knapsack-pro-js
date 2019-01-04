@@ -3,8 +3,7 @@ jobs:
   build:
     parallelism: 2
     docker:
-      # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.15
 
     working_directory: ~/repo
 
