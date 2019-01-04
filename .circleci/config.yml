@@ -4,6 +4,11 @@ jobs:
     parallelism: 2
     docker:
       - image: circleci/node:8.15
+        environment:
+          # In production you should use endpoint https://api.knapsackpro.com
+          # which is default so it means you don't need to set KNAPSACK_PRO_ENDPOINT
+          # Below endpoint is just for internal tests by KnapsackPro developers.
+          KNAPSACK_PRO_ENDPOINT: https://api-staging.knapsackpro.com
 
     working_directory: ~/repo
 
