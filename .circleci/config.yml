@@ -3,8 +3,7 @@ jobs:
   build:
     parallelism: 2
     docker:
-      - image: circleci/node:8.15
-        user: root
+      - image: cypress/base:8
         environment:
           # In production you should use endpoint https://api.knapsackpro.com
           # which is default so it means you don't need to set KNAPSACK_PRO_ENDPOINT
