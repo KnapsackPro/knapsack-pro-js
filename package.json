@@ -5,7 +5,6 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "@knapsack-pro/jest": "file:../knapsack-pro-jest",
     "jest": "^23.6.0"
   },
   "scripts": {
