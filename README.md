@@ -28,9 +28,21 @@
 
 ## Testing
 
-### Test `@knapsack-pro/jest` from npm registry
+### When `@knapsack-pro/jest` was not yet published to npm registry
 
-Ensure you have in `package.json` the latest version of `@knapsack-pro/jest` and you run `npm install`:
+Ensure you have in `package.json` local version of `knapsack-pro/jest` and run `npm install`:
+
+```
+{
+  "devDependencies": {
+    "@knapsack-pro/jest": "file:../knapsack-pro-jest",
+  }
+}
+```
+
+### When `@knapsack-pro/jest` was already published in npm registry
+
+Ensure you have in `package.json` the latest version of `@knapsack-pro/jest` and run `npm install`:
 
 ```
 {
