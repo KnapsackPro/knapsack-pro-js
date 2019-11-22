@@ -11,6 +11,9 @@ ENDPOINT=https://api-staging.knapsackpro.com
 # run only tests with suffix test.js
 TEST_FILE_PATTERN="{**/__tests__/**/*.test.js?(x),**/?(*.)(test).js?(x)}"
 
+# invalid pattern - should show error explaining what to do to fix the pattern
+# TEST_FILE_PATTERN="**/__tests__/invalid-pattern/**/*.test.js"
+
 LOG_LEVEL=info
 # LOG_LEVEL=debug
 
