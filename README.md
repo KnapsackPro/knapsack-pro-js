@@ -1,6 +1,7 @@
 # Jest example test suite and KnapsackPro.com
 
 [![CircleCI](https://circleci.com/gh/KnapsackPro/jest-example-test-suite/tree/master.svg?style=svg)](https://circleci.com/gh/KnapsackPro/jest-example-test-suite/tree/master)
+[![Knapsack Pro Parallel CI builds for Jest - GitHub Actions](https://img.shields.io/badge/Knapsack%20Pro-Parallel%20/%20Jest%20--%20GitHub%20Actions-%230074ff)](https://knapsackpro.com/dashboard/organizations/54/projects/509/test_suites/818/builds)
 
 ## Dependencies
 
