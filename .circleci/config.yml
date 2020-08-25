@@ -3,7 +3,7 @@ jobs:
   build:
     parallelism: 2
     docker:
-      - image: circleci/node:8.15
+      - image: circleci/node:12.18
         user: root
         environment:
           # In production you should use endpoint https://api.knapsackpro.com
