@@ -20,7 +20,6 @@ steps:
       image_name: "${{CF_ACCOUNT}}/${{CF_REPO_NAME}}-test"
       tag: "${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
       dockerfile: Test.Dockerfile
-      registry: my-external-registry
     stage: "build"
 
   run_tests:
