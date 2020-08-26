@@ -14,6 +14,8 @@
 
 2. Setup [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-jest) project.
 
+**Follow below steps or use `bin/setup_development` script.**
+
 3. Install dependencies.
 
    ```
