@@ -70,13 +70,17 @@ jobs:
 
       - run: npm install
 
-      # use local version of @knapsack-pro/jest to test it
-      - run: npm link @knapsack-pro/jest
-
       - save_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
             - node_modules
 
-      # run tests!
+      # run tests using @knapsack-pro/jest installed from the npm registry
       - run: $(npm bin)/knapsack-pro-jest
+
+      # use local version of @knapsack-pro/jest in the project
+      - run: npm link @knapsack-pro/jest
+
+      # run tests using the local version of @knapsack-pro/jest instead of the version installed from the npm registry
+      # use a different CI build ID to run tests based on a new Knapsack Pro Queue
+      - run: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 $(npm bin)/knapsack-pro-jest
