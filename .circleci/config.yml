@@ -70,6 +70,9 @@ jobs:
 
       - run: npm install
 
+      # use local version of @knapsack-pro/jest to test it
+      - run: npm link @knapsack-pro/jest
+
       - save_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
