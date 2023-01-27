@@ -1,0 +1,2 @@
+__tests__/directory/c.test.js
+__tests__/a.test.js
