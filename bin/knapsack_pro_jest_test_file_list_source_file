@@ -5,8 +5,8 @@ CI_BUILD_ID=$(openssl rand -base64 32)
 ENDPOINT=https://api-staging.knapsackpro.com
 # ENDPOINT=http://api.knapsackpro.test:3000
 
-LOG_LEVEL=info
-# LOG_LEVEL=debug
+# LOG_LEVEL=info
+LOG_LEVEL=debug
 
 KNAPSACK_PRO_ENDPOINT=$ENDPOINT \
   KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST=cd67ffc01ce2b3d56f3a223b547f466e \
