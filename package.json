@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "@knapsack-pro/jest": "5.4.1",
-    "jest": "^28.1.1"
+    "jest": "^29.4.3"
   },
   "scripts": {
     "test": "jest"
