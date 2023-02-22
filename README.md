@@ -1,5 +1,7 @@
 # Cypress example test suite with `@knapsack-pro/cypress` - KnapsackPro.com
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/KnapsackPro/cypress-example-test-suite/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/KnapsackPro/cypress-example-test-suite/tree/master)
+
 ## Dependencies
 
 - [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-core-js)
