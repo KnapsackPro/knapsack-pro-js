@@ -19,7 +19,7 @@
 1. Install dependencies.
 
    ```bash
-   $ npm install --legacy-peer-deps
+   $ npm install
    ```
 
    ```bash
@@ -29,11 +29,11 @@
 1. Use your local version of `@knapsack-pro/cypress` and `@knapsack-pro/core` registered with node.
 
    ```bash
-   npm link @knapsack-pro/cypress --legacy-peer-deps
+   npm link @knapsack-pro/cypress
    ```
 
    ```bash
-   npm link @knapsack-pro/core --legacy-peer-deps
+   npm link @knapsack-pro/core
    ```
 
 ## Testing
@@ -52,7 +52,7 @@ Ensure you have a local version of `knapsack-pro/cypress` in `package.json` and 
 
 ### When `@knapsack-pro/cypress` was already published in NPM registry
 
-Ensure you have the latest version of `@knapsack-pro/cypress` in `package.json` and run `npm install --legacy-peer-deps`:
+Ensure you have the latest version of `@knapsack-pro/cypress` in `package.json` and run `npm install`:
 
 ```
 {
