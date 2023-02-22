@@ -5,8 +5,8 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "@knapsack-pro/cypress": "5.3.1",
-    "cypress": "^10.11.0"
+    "@knapsack-pro/cypress": "5.4.0",
+    "cypress": "^12.6.0"
   },
   "scripts": {
     "test": "cypress run",
@@ -21,6 +21,7 @@
   ],
   "author": {
     "name": "Knapsack Sp. z o.o.",
+    "email": "support@knapsackpro.com",
     "url": "https://knapsackpro.com"
   },
   "license": "MIT",
