@@ -1,6 +1,7 @@
 # Cypress example test suite with `@knapsack-pro/cypress` - KnapsackPro.com
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/KnapsackPro/cypress-example-test-suite/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/KnapsackPro/cypress-example-test-suite/tree/master)
+[![Knapsack Pro Parallel CI builds for Cypress Example Test Suite - CircleCI](https://img.shields.io/badge/Knapsack%20Pro-Parallel%20%2F%20Cypress%20Example%20Test%20Suite%20--%20CircleCI-%230074ff)](https://knapsackpro.com/dashboard/organizations/54/projects/2208/test_suites/3312/builds?utm_campaign=organization-id-54&utm_content=test-suite-id-3312&utm_medium=readme&utm_source=knapsack-pro-badge&utm_term=project-id-2208)
 
 ## Dependencies
 
