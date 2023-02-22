@@ -70,12 +70,14 @@ jobs:
             - ~/.npm
             - ~/.cache
 
-      # run tests using @knapsack-pro/cypress installed from the npm registry
-      - run: $(npm bin)/knapsack-pro-cypress
+      - run:
+          name: Run tests using @knapsack-pro/cypress installed from the NPM registry
+          command: $(npm bin)/knapsack-pro-cypress
 
       # use a local version of @knapsack-pro/cypress
       - run: npm link @knapsack-pro/cypress
 
-      # run tests using the local version of @knapsack-pro/cypress instead of the version installed from the npm registry
-      # use a different CI build ID to run tests based on a new Knapsack Pro Queue
-      - run: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 $(npm bin)/knapsack-pro-cypress
+      - run:
+          name: Run tests using the local version of @knapsack-pro/cypress
+          # use a different CI build ID to run tests based on a new Knapsack Pro Queue
+          command: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 $(npm bin)/knapsack-pro-cypress
