@@ -8,7 +8,6 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.15]
         # Set N number of parallel jobs you want to run tests on.
         # Use higher number if you have slow tests to split them on more parallel jobs.
         # Remember to update ci_node_index below to 0..N-1
@@ -18,19 +17,21 @@ jobs:
         ci_node_index: [0, 1]
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
+
       - name: npm install and build
         run: |
           npm install
           npm run build --if-present
+
       - name: Run tests with Knapsack Pro
         env:
           KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST }}
           KNAPSACK_PRO_CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
           KNAPSACK_PRO_CI_NODE_INDEX: ${{ matrix.ci_node_index }}
         run: |
-          $(npm bin)/knapsack-pro-jest
+          npx knapsack-pro-jest
