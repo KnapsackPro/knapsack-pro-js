@@ -1,0 +1,7 @@
+#!/bin/bash
+
+KNAPSACK_PRO_ENDPOINT=https://api-staging.knapsackpro.com \
+  KNAPSACK_PRO_TEST_SUITE_TOKEN_CYPRESS=e608b84c923a3f4676c608aad0f00b54 \
+  KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
+  KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
+  $(npm bin)/knapsack-pro-cypress

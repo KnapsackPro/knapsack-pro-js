@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# use --legacy-peer-deps because the project has conflicts in peer dependencies
+npm install --legacy-peer-deps
+
+$(npm bin)/cypress install
+
+# link deps
+npm link @knapsack-pro/core --legacy-peer-deps
+npm link @knapsack-pro/cypress --legacy-peer-deps

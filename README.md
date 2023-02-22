@@ -61,7 +61,7 @@ Ensure you have the latest version of `@knapsack-pro/cypress` in `package.json` 
 
 ### Run tests with `@knapsack-pro/cypress`
 
-This is useful if you want to run tests in development to test `@knapsack-pro/cypress`.
+You can run tests in development to test `@knapsack-pro/cypress`.
 
 ```bash
 bin/knapsack_pro_cypress
@@ -72,3 +72,5 @@ Run only a small subset of test suite. Useful for a quick testing:
 ```bash
 bin/knapsack_pro_cypress_test_file_pattern
 ```
+
+You can find more example scripts in the [bin](bin) directory.
