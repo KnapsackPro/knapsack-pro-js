@@ -6,6 +6,7 @@
 CI_BUILD_ID=$(openssl rand -base64 32)
 COMMIT_HASH=$(openssl rand -hex 20)
 BRANCH=fake-branch/initialize-new-queue
+TEST_FILE_PATTERN="{**/__tests_big_suite__/**/*.js?(x),**/?(*.)(spec|test).js?(x)}"
 
 ENDPOINT=https://api-staging.knapsackpro.com
 # ENDPOINT=http://api.knapsackpro.test:3000
@@ -15,6 +16,7 @@ LOG_LEVEL=info
 
 export KNAPSACK_PRO_ENDPOINT=$ENDPOINT
 export KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST=cd67ffc01ce2b3d56f3a223b547f466e
+export KNAPSACK_PRO_TEST_FILE_PATTERN=$TEST_FILE_PATTERN
 export KNAPSACK_PRO_LOG_LEVEL=$LOG_LEVEL
 export KNAPSACK_PRO_CI_NODE_BUILD_ID=$CI_BUILD_ID
 export KNAPSACK_PRO_CI_NODE_TOTAL=2
