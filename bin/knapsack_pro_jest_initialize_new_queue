@@ -6,6 +6,8 @@
 CI_BUILD_ID=$(openssl rand -base64 32)
 COMMIT_HASH=$(openssl rand -hex 20)
 BRANCH=fake-branch/initialize-new-queue
+
+# use if you want to run a big set of tests
 TEST_FILE_PATTERN="{**/__tests_big_suite__/**/*.js?(x),**/?(*.)(spec|test).js?(x)}"
 
 ENDPOINT=https://api-staging.knapsackpro.com
