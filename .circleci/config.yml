@@ -25,9 +25,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+            - v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
             # fallback to the latest cache if no exact match is found
-            - v1-knapsack-pro-core-
+            - v2-knapsack-pro-core-
 
       - run: cd ~/knapsack-pro-core-js && npm install
       - run: cd ~/knapsack-pro-core-js && npm run build
@@ -35,7 +35,7 @@ jobs:
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/core
-          key: v1-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+          key: v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
           paths:
             - ~/knapsack-pro-core-js/node_modules
 
@@ -46,9 +46,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+            - v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
             # fallback to the latest cache if no exact match is found
-            - v1-knapsack-pro-cypress-
+            - v2-knapsack-pro-cypress-
 
       - run: cd ~/knapsack-pro-cypress && npm install
       - run: cd ~/knapsack-pro-cypress && npm link @knapsack-pro/core
@@ -57,7 +57,7 @@ jobs:
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/cypress
-          key: v1-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+          key: v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
           paths:
             - ~/knapsack-pro-cypress/node_modules
 
@@ -65,14 +65,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ .Branch }}
+            - v2-deps
       - run:
           name: Install Dependencies
           command: npm ci
       - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
           # cache NPM modules and the folder with the Cypress binary
           paths:
             - ~/.npm
