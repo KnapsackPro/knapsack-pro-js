@@ -9,6 +9,14 @@ jobs:
     working_directory: ~/app
     parallelism: 2
     steps:
+      # fix: server certificate verification failed. CAfile: none CRLfile: none
+      # https://stackoverflow.com/a/72000636/905697
+      - run:
+          command: |
+            sudo apt-get update
+            sudo apt-get install apt-transport-https ca-certificates -y 
+            sudo update-ca-certificates
+
       # dependencies
       # clone @knapsack-pro/core project
       - run:
