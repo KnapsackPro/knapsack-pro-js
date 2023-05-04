@@ -2,13 +2,21 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cypress/base:14.16.0
+      - image: cypress/base:18.16.0
         environment:
           ## this enables colors in the output
           TERM: xterm
     working_directory: ~/app
     parallelism: 2
     steps:
+      # fix: server certificate verification failed. CAfile: none CRLfile: none
+      # https://stackoverflow.com/a/72000636/905697
+      - run:
+          command: |
+            apt-get update
+            apt-get install apt-transport-https ca-certificates -y 
+            update-ca-certificates
+
       # dependencies
       # clone @knapsack-pro/core project
       - run:
@@ -17,9 +25,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+            - v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
             # fallback to the latest cache if no exact match is found
-            - v1-knapsack-pro-core-
+            - v2-knapsack-pro-core-
 
       - run: cd ~/knapsack-pro-core-js && npm install
       - run: cd ~/knapsack-pro-core-js && npm run build
@@ -27,7 +35,7 @@ jobs:
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/core
-          key: v1-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+          key: v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
           paths:
             - ~/knapsack-pro-core-js/node_modules
 
@@ -38,9 +46,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+            - v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
             # fallback to the latest cache if no exact match is found
-            - v1-knapsack-pro-cypress-
+            - v2-knapsack-pro-cypress-
 
       - run: cd ~/knapsack-pro-cypress && npm install
       - run: cd ~/knapsack-pro-cypress && npm link @knapsack-pro/core
@@ -49,7 +57,7 @@ jobs:
 
       - save_cache:
           name: Saving Cache of @knapsack-pro/cypress
-          key: v1-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+          key: v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
           paths:
             - ~/knapsack-pro-cypress/node_modules
 
@@ -57,14 +65,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ .Branch }}
+            - v2-deps
       - run:
           name: Install Dependencies
           command: npm ci
       - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
           # cache NPM modules and the folder with the Cypress binary
           paths:
             - ~/.npm
@@ -72,7 +80,7 @@ jobs:
 
       - run:
           name: Run tests using @knapsack-pro/cypress installed from the NPM registry
-          command: $(npm bin)/knapsack-pro-cypress
+          command: npx knapsack-pro-cypress
 
       # use a local version of @knapsack-pro/cypress
       - run: npm link @knapsack-pro/cypress
@@ -80,4 +88,4 @@ jobs:
       - run:
           name: Run tests using the local version of @knapsack-pro/cypress
           # use a different CI build ID to run tests based on a new Knapsack Pro Queue
-          command: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 $(npm bin)/knapsack-pro-cypress
+          command: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 npx knapsack-pro-cypress
