@@ -23,10 +23,10 @@ export KNAPSACK_PRO_COMMIT_HASH=$COMMIT_HASH
 export KNAPSACK_PRO_BRANCH=$BRANCH
 
 KNAPSACK_PRO_CI_NODE_INDEX=0 \
-  $(npm bin)/knapsack-pro-jest --runInBand &
+  npx knapsack-pro-jest --runInBand &
 
 KNAPSACK_PRO_CI_NODE_INDEX=1 \
-  $(npm bin)/knapsack-pro-jest --runInBand
+  npx knapsack-pro-jest --runInBand
 
 echo 'CI build for a commit:'
 echo $COMMIT_HASH

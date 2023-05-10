@@ -38,4 +38,4 @@ steps:
         - KNAPSACK_PRO_CI_NODE_INDEX=0
         - KNAPSACK_PRO_CI_NODE_INDEX=1
     commands:
-      - $(npm bin)/knapsack-pro-jest
+      - npx knapsack-pro-jest
