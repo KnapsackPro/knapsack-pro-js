@@ -2,7 +2,7 @@
 
 npm install
 
-$(npm bin)/cypress install
+npx cypress install
 
 # link deps
 npm link @knapsack-pro/core
