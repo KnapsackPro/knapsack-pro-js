@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "Example of Cypress test suite with @knapsack-pro/cypress https://github.com/KnapsackPro/knapsack-pro-cypress",
   "main": "index.js",
-  "dependencies": {},
   "devDependencies": {
-    "@knapsack-pro/cypress": "5.6.0",
+    "@knapsack-pro/cypress": "^6.0.0",
     "cypress": "^12.6.0"
   },
   "scripts": {
