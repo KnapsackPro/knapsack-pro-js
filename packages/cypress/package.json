@@ -1,0 +1,93 @@
+{
+  "name": "@knapsack-pro/cypress",
+  "version": "6.1.0",
+  "description": "Knapsack Pro Cypress splits Cypress.io tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
+  "keywords": [
+    "knapsack",
+    "knapsack pro",
+    "cypress",
+    "cypress.io",
+    "test suite parallelisation",
+    "parallelisation",
+    "testing",
+    "test",
+    "automation",
+    "end-to-end",
+    "e2e",
+    "integration",
+    "runner",
+    "CI"
+  ],
+  "author": {
+    "name": "Knapsack Sp. z o.o.",
+    "email": "support@knapsackpro.com",
+    "url": "https://knapsackpro.com"
+  },
+  "contributors": [
+    {
+      "name": "Artur Trzop",
+      "email": "arturtrzop@gmail.com"
+    },
+    {
+      "name": "Rafał Trzop",
+      "email": "rafaltrzop@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build",
+    "lint": "npm run eslint:check && npm run prettier:check",
+    "eslint:check": "eslint . --ext .ts",
+    "eslint:format": "eslint . --ext .ts --fix",
+    "prettier:check": "prettier --check .",
+    "prettier:format": "prettier --config .prettierrc.json 'src/**/*.ts' --write"
+  },
+  "files": [
+    "/lib"
+  ],
+  "homepage": "https://knapsackpro.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KnapsackPro/knapsack-pro-cypress.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KnapsackPro/knapsack-pro-cypress/issues"
+  },
+  "bin": {
+    "knapsack-pro-cypress": "lib/knapsack-pro-cypress.js"
+  },
+  "dependencies": {
+    "@knapsack-pro/core": "^5.1.0",
+    "glob": "^8.1.0",
+    "minimatch": "^5.1.4",
+    "minimist": "^1.2.6",
+    "uuid": "^8.3.2"
+  },
+  "peerDependencies": {
+    "cypress": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/register": "^7.17.7",
+    "@types/glob": "^8.0.0",
+    "@types/jquery": "^3.5.14",
+    "@types/node": "^17.0.41",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "cypress": "12.6.0",
+    "del": "^6.1.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-chmod": "^3.0.0",
+    "gulp-filter": "^7.0.0",
+    "gulp-typescript": "^5.0.1",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.3"
+  }
+}
