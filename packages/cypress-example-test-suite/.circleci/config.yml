@@ -1,0 +1,91 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cypress/base:18.16.0
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
+    working_directory: ~/app
+    parallelism: 2
+    steps:
+      # fix: server certificate verification failed. CAfile: none CRLfile: none
+      # https://stackoverflow.com/a/72000636/905697
+      - run:
+          command: |
+            apt-get update
+            apt-get install apt-transport-https ca-certificates -y 
+            update-ca-certificates
+
+      # dependencies
+      # clone @knapsack-pro/core project
+      - run:
+          name: Checkout code of @knapsack-pro/core
+          command: cd ~ && (git clone -b $CIRCLE_BRANCH --single-branch https://github.com/KnapsackPro/knapsack-pro-core-js.git || git clone --single-branch https://github.com/KnapsackPro/knapsack-pro-core-js.git)
+
+      - restore_cache:
+          keys:
+            - v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+            # fallback to the latest cache if no exact match is found
+            - v2-knapsack-pro-core-
+
+      - run: cd ~/knapsack-pro-core-js && npm install
+      - run: cd ~/knapsack-pro-core-js && npm run build
+      - run: cd ~/knapsack-pro-core-js && npm link
+
+      - save_cache:
+          name: Saving Cache of @knapsack-pro/core
+          key: v2-knapsack-pro-core-{{ checksum "~/knapsack-pro-core-js/package.json" }}
+          paths:
+            - ~/knapsack-pro-core-js/node_modules
+
+      # clone @knapsack-pro/cypress project
+      - run:
+          name: Checkout code of @knapsack-pro/cypress
+          command: cd ~ && (git clone -b $CIRCLE_BRANCH --single-branch https://github.com/KnapsackPro/knapsack-pro-cypress.git || git clone --single-branch https://github.com/KnapsackPro/knapsack-pro-cypress.git)
+
+      - restore_cache:
+          keys:
+            - v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+            # fallback to the latest cache if no exact match is found
+            - v2-knapsack-pro-cypress-
+
+      - run: cd ~/knapsack-pro-cypress && npm install
+      - run: cd ~/knapsack-pro-cypress && npm link @knapsack-pro/core
+      - run: cd ~/knapsack-pro-cypress && npm run build
+      - run: cd ~/knapsack-pro-cypress && npm link
+
+      - save_cache:
+          name: Saving Cache of @knapsack-pro/cypress
+          key: v2-knapsack-pro-cypress-{{ checksum "~/knapsack-pro-cypress/package.json" }}
+          paths:
+            - ~/knapsack-pro-cypress/node_modules
+
+      # cypress-example-test-suite
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v2-deps-{{ .Branch }}
+            - v2-deps
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          # cache NPM modules and the folder with the Cypress binary
+          paths:
+            - ~/.npm
+            - ~/.cache
+
+      - run:
+          name: Run tests using @knapsack-pro/cypress installed from the NPM registry
+          command: npx knapsack-pro-cypress
+
+      # use a local version of @knapsack-pro/cypress
+      - run: npm link @knapsack-pro/cypress
+
+      - run:
+          name: Run tests using the local version of @knapsack-pro/cypress
+          # use a different CI build ID to run tests based on a new Knapsack Pro Queue
+          command: KNAPSACK_PRO_CI_NODE_BUILD_ID=$CIRCLE_BUILD_NUM-v2 npx knapsack-pro-cypress
