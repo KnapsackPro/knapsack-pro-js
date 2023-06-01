@@ -1,0 +1,5 @@
+node_modules
+/.env
+
+# compiled ts files to js
+/lib
