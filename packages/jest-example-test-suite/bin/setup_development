@@ -1,7 +1,0 @@
-#!/bin/bash
-
-npm install
-
-# link deps
-npm link @knapsack-pro/core
-npm link @knapsack-pro/jest

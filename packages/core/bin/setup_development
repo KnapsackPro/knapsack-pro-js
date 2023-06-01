@@ -1,9 +1,0 @@
-#!/bin/bash
-
-npm install
-
-# build project
-npm run build
-
-# register @knapsack-pro/core package globally in your local system
-npm link

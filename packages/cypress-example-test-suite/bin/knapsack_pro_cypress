@@ -5,4 +5,4 @@ KNAPSACK_PRO_ENDPOINT=https://api-staging.knapsackpro.com \
   KNAPSACK_PRO_CI_NODE_BUILD_ID=$(openssl rand -base64 32) \
   KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
   KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
-  npx knapsack-pro-cypress
+  npx @knapsack-pro/cypress

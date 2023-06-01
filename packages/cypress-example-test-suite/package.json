@@ -1,7 +1,7 @@
 {
-  "name": "cypress-example-test-suite",
+  "name": "@knapsack-pro/cypress-example-test-suite",
   "version": "1.0.0",
-  "description": "Example of Cypress test suite with @knapsack-pro/cypress https://github.com/KnapsackPro/knapsack-pro-cypress",
+  "description": "Cypress example test suite with @knapsack-pro/cypress",
   "main": "index.js",
   "devDependencies": {
     "@knapsack-pro/cypress": "^6.1.0",
@@ -9,11 +9,12 @@
   },
   "scripts": {
     "test": "cypress run",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test:ks": "bin/knapsack_pro_cypress"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KnapsackPro/cypress-example-test-suite.git"
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git"
   },
   "keywords": [
     "cypress"
@@ -25,7 +26,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KnapsackPro/cypress-example-test-suite/issues"
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js/issues"
   },
-  "homepage": "https://github.com/KnapsackPro/cypress-example-test-suite#readme"
+  "homepage": "https://github.com/KnapsackPro/knapsack-pro-js"
 }

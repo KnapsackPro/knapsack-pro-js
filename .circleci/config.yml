@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cypress/base:18.16.0
+        environment:
+          TERM: xterm # Enable colors in the output
+    working_directory: ~/repo
+    parallelism: 2
+    steps:
+      # Fix: server certificate verification failed. CAfile: none CRLfile: none
+      # https://stackoverflow.com/a/72000636/905697
+      - run: |
+          apt-get update
+          apt-get install apt-transport-https ca-certificates -y 
+          update-ca-certificates
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-deps-{{ checksum "package-lock.json" }}
+            - v2-deps-{{ .Branch }}
+            - v2-deps
+      - run: npm install
+      - run: npm run build
+      # Need a second install to run:
+      #   - npx @knapsack-pro/jest
+      #   - npx @knapsack-pro/cypress
+      # See https://github.com/npm/cli/issues/4591#issuecomment-1111557730
+      - run: npm install
+      - save_cache:
+          key: v2-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - packages/core/node_modules
+            - packages/jest/node_modules
+            - packages/jest-example-test-suite/node_modules
+            - packages/cypress/node_modules
+            - packages/cypress-example-test-suite/node_modules
+            - ~/.npm
+            - ~/.cache
+
+      - run: npm run lint
+
+      - run: npm run test:core:coverage
+      - store_artifacts:
+          path: packages/core/coverage
+
+      - run: cd packages/jest-example-test-suite && KNAPSACK_PRO_ENDPOINT=https://api-staging.knapsackpro.com npx @knapsack-pro/jest
+
+      - run: cd packages/cypress-example-test-suite && npx @knapsack-pro/cypress

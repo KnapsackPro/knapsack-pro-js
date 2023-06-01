@@ -1,0 +1,18 @@
+{
+  "name": "knapsack-pro",
+  "private": true,
+  "workspaces": [
+    "packages/core",
+    "packages/jest",
+    "packages/jest-example-test-suite",
+    "packages/cypress",
+    "packages/cypress-example-test-suite"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test:core:coverage": "npm run test:coverage -w packages/core",
+    "test:jest": "npm run build && npm run test:ks -w packages/jest-example-test-suite",
+    "test:cypress": "npm run build && npm run test:ks -w packages/cypress-example-test-suite"
+  }
+}

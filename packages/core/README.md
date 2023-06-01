@@ -1,136 +1,124 @@
 # @knapsack-pro/core
 
-[![CircleCI](https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js.svg?style=svg)](https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js)
+<p align="center">
+  <a href="https://knapsackpro.com?utm_source=github&utm_medium=readme&utm_campaign=knapsack-pro-core&utm_content=hero_logo">
+    <img alt="Knapsack Pro" src="./.github/assets/knapsack.png" width="300" height="300" style="max-width: 100%;" />
+  </a>
+</p>
 
-`@knapsack-pro/core` is JS npm package with core features for [Knapsack Pro API](https://docs.knapsackpro.com/api/).
-Learn how to run your tests faster with optimal test suite parallelisation using [Knapsack Pro](https://knapsackpro.com).
+<h3 align="center">Speed up your tests</h3>
+<p align="center">Run your 1-hour test suite in 2 minutes with optimal parallelisation on your existing CI infrastructure</p>
 
-This package is the dependency of [Knapsack Pro clients in JavaScript](https://docs.knapsackpro.com/integration/).
+---
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<div align="center">
+  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js">
+    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js.svg?style=svg" />
+  </a>
+</div>
 
-## Table of Contents
+<br />
+<br />
 
-- [FAQ](#faq)
-- [Development](#development)
-  - [Requirements](#requirements)
-  - [Setup](#setup)
-  - [Publishing](#publishing)
+Knapsack Pro wraps your [current test runner(s)](https://docs.knapsackpro.com/) and works with your existing CI infrastructure to parallelize tests optimally:
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+- Dynamically splits your tests based on up-to-date test execution data
+- Is designed from the ground up for CI and supports all of them
+- Tracks your CI builds to detect bottlenecks
+- Does not have access to your source code and collects minimal test data
+- Enables you to export historical metrics about your CI builds
+- Replaces local dependencies like Redis with an API and runs your tests regardless of network problems
 
-## FAQ
+## Installation
 
-[FAQ for Knapsack Pro JavaScript clients can be found here](https://knapsackpro.com/faq).
+See the [docs](https://docs.knapsackpro.com/) to get started:
 
-## Development
+<div align="center">
+  <a href="https://docs.knapsackpro.com/">
+    <img alt="Install button" src="./.github/assets/install-button.png" width="116" height="50" />
+  </a>
+</div>
 
-### Requirements
+## Dependents
 
-You can use [NVM](https://github.com/nvm-sh/nvm) to manage Node version in development.
+- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
+- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)
 
-- `>= Node 18.13.0 LTS`
+## Contributing
 
-### Setup
+Follow the steps in the [root README.md](https://github.com/KnapsackPro/knapsack-pro-js#contributing) to set up the project.
 
-**Follow below steps or use `bin/setup_development` script to take care of steps 1-3.**
+You can compile TypeScript in watch mode from the root folder with:
 
-1. Install dependencies:
-
-   ```
-   $ npm install
-   ```
-
-2. Compile TypeScript code to `lib` directory by running:
-
-   ```
-   $ npm start
-   ```
-
-3. Register `@knapsack-pro/core` package globally in your local system. This way we will be able to develop other npm packages dependent on it:
-
-   ```
-   $ npm link
-   ```
-
-4. Set up your IDE:
-
-   - Visual Studio Code
-
-     - Install the following plugins:
-
-       - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-       - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-       - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-
-     - Go to `File > Preferences > Settings > Text Editor > Formatting`
-
-       Turn on `Format On Save` checkbox.
-
-   From now on, every change in code base will be automatically formatted by [Prettier](https://prettier.io/). [ESLint](https://eslint.org/) shows errors and warnings in VSCode.
-
-5. Write some code.
+```bash
+npm start -w packages/core
+```
 
 ### Publishing
 
-1. Sign in to npm registry with command:
+1. `cd packages/core`
 
-   ```
-   $ npm adduser
+1. Sign in to the npm registry with:
+
+   ```bash
+   npm adduser
    ```
 
-2. Before releasing a new version of package please update `CHANGELOG.md` with [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator):
+1. Before releasing a new version of the package, please update `CHANGELOG.md` with [`github_changelog_generator`](https://github.com/github-changelog-generator/github-changelog-generator):
 
-   ```
-   $ gem install github_changelog_generator
+   ```bash
+   gem install github_changelog_generator
 
    # generate CHANGELOG.md
-   $ github_changelog_generator --user KnapsackPro --project knapsack-pro-core-js
-   $ git commit -am "Update CHANGELOG.md"
-   $ git push origin master
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0
+   git commit -am "Update CHANGELOG.md"
+   git push origin master
    ```
 
-3. If you have added new files to the repository and they should be part of the released npm package then please ensure they are included in `files` array in `package.json`.
+1. If you have added new files to the repository, and they should be part of the released npm package, please ensure they are included in the `files` array in `package.json`.
 
-4. If you have changed any headers in `README.md` please refresh table of contents with:
+1. Compile the project:
 
-   ```
-   $ npm run doctoc
-   ```
-
-5. Compile project:
-
-   ```
-   $ npm run build
+   ```bash
+   npm run build
    ```
 
-6. In order to [bump version of the package](https://docs.npmjs.com/cli/version) run below command. It will also create a version commit and tag for the release:
+1. In order to [bump the version of the package](https://docs.npmjs.com/cli/version) run the command below. It will also create a version commit and tag for the release:
 
-   ```
-   # bump patch version 0.0.x
-   $ npm version patch
+   ```bash
+   # Bump patch version 0.0.x
+   npm version patch --no-commit-hooks --tag-version-prefix=@knapsack-pro/core@
 
-   # bump minor version 0.x.0
-   $ npm version minor
-   ```
-
-7. Push to git repository created commit and tag:
-
-   ```
-   $ git push origin master --tags
+   # Bump minor version 0.x.0
+   npm version minor --no-commit-hooks --tag-version-prefix=@knapsack-pro/core@
    ```
 
-8. Now when git tag is on Github you can update `CHANGELOG.md` again.
-
-   ```
-   $ github_changelog_generator --user KnapsackPro --project knapsack-pro-core-js
-   $ git commit -am "Update CHANGELOG.md"
-   $ git push origin master
+   ```bash
+   git commit -am x.x.x
+   git tag @knapsack-pro/core@x.x.x
    ```
 
-9. Now you can publish package to npm registry:
+1. Push the commit and tag:
 
+   ```bash
+   git push origin master --tags
    ```
-   $ npm publish
+
+1. When the git tag is on Github, you can update `CHANGELOG.md`:
+
+   ```bash
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0
+   git commit -am "Update CHANGELOG.md"
+   git push origin master
    ```
+
+1. Publish the package to the npm registry:
+
+   ```bash
+   npm publish
+   ```
+
+1. Update:
+
+- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
+- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)

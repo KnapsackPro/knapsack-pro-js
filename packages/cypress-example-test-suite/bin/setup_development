@@ -1,9 +1,0 @@
-#!/bin/bash
-
-npm install
-
-npx cypress install
-
-# link deps
-npm link @knapsack-pro/core
-npm link @knapsack-pro/cypress

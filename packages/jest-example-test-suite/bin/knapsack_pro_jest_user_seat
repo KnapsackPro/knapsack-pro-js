@@ -15,4 +15,4 @@ KNAPSACK_PRO_ENDPOINT=$ENDPOINT \
   KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
   KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
   KNAPSACK_PRO_USER_SEAT="John Doe" \
-  npx knapsack-pro-jest #--runInBand
+  npx @knapsack-pro/jest #--runInBand

@@ -1,18 +1,19 @@
 {
-  "name": "jest-example-test-suite",
+  "name": "@knapsack-pro/jest-example-test-suite",
   "version": "1.0.0",
-  "description": "Example of Jest test suite with @knapsack-pro/jest https://github.com/KnapsackPro/knapsack-pro-jest",
+  "description": "Jest example test suite with @knapsack-pro/jest",
   "main": "index.js",
   "devDependencies": {
     "@knapsack-pro/jest": "^6.1.0",
     "jest": "^29.4.3"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:ks": "bin/knapsack_pro_jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KnapsackPro/jest-example-test-suite.git"
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git"
   },
   "keywords": [
     "jest"
@@ -20,7 +21,7 @@
   "author": "KnapsackPro.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KnapsackPro/jest-example-test-suite/issues"
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js/issues"
   },
-  "homepage": "https://github.com/KnapsackPro/jest-example-test-suite#readme"
+  "homepage": "https://github.com/KnapsackPro/knapsack-pro-js"
 }

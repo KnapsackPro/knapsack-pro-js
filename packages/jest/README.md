@@ -12,8 +12,8 @@
 ---
 
 <div align="center">
-  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-jest">
-    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-jest.svg?style=svg" />
+  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js">
+    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js.svg?style=svg" />
   </a>
 </div>
 
@@ -39,82 +39,30 @@ See the [docs](https://docs.knapsackpro.com/jest/guide/) to get started:
   </a>
 </div>
 
+## Dependencies
+
+- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
+
 ## Contributing
 
-### Requirements
+Follow the steps in the [root README.md](https://github.com/KnapsackPro/knapsack-pro-js#contributing) to set up the project.
 
+You can compile TypeScript in watch mode from the root folder with:
+
+```bash
+npm start -w packages/jest
 ```
->= Node 18.13.0 LTS
-```
-
-You can use [NVM](https://github.com/nvm-sh/nvm) to manage Node versions in development.
-
-### Dependencies
-
-- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-core-js)
-
-### Setup
-
-1. Setup the [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-core-js) project.
-
-   **Follow the steps below or use the `bin/setup_development` script to take care of steps 2-5.**
-
-1. Install the dependencies:
-
-   ```bash
-   npm install
-   ```
-
-1. In order to use the local version of `@knapsack-pro/core` run:
-
-   ```bash
-   npm link @knapsack-pro/core
-   ```
-
-1. Compile the TypeScript code to the `lib` directory by running:
-
-   ```bash
-   npm start
-   ```
-
-1. Register the `@knapsack-pro/jest` package globally in your local system. This way we will be able to develop other npm packages dependent on it:
-
-   ```bash
-   npm link
-   ```
-
-1. Set up your IDE:
-
-   - Visual Studio Code
-
-     - Install the following plugins:
-
-       - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-       - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-       - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-
-     - Go to `File > Preferences > Settings > Text Editor > Formatting`
-
-       Turn on `Format On Save` checkbox.
-
-   From now on, every change in the codebase will be automatically formatted by [Prettier](https://prettier.io/). [ESLint](https://eslint.org/) shows errors and warnings in VSCode.
-
-1. Write some code.
 
 ### Testing
 
-#### CI
-
-If your feature requires code changes in [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-core-js), please push the `@knapsack-pro/core` to GitHub first. Then you can push changes for `@knapsack-pro/jest` to ensure the CI will use the latest `@knapsack-pro/core`.
-
-#### Example Jest test suite
-
 To test `@knapsack-pro/jest` against a real test suite we use:
 
-- [jest-example-test-suite](https://github.com/KnapsackPro/jest-example-test-suite)
+- [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest-example-test-suite)
 - (deprecated) [react](https://github.com/KnapsackPro/react)
 
 ### Publishing
+
+1. `cd packages/jest`
 
 1. Sign in to the npm registry with:
 
@@ -132,7 +80,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
    }
    ```
 
-   Run `npm install`. This way you will be able to test `@knapsack-pro/core` installed from npm registry instead of the local one that was linked with `npm link @knapsack-pro/core`.
+   and run `npm install`.
 
    Commit the updated `package.json` and `package-lock.json`:
 
@@ -146,7 +94,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
    gem install github_changelog_generator
 
    # generate CHANGELOG.md
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-jest
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/jest --since-tag @knapsack-pro/jest@6.1.0
    git commit -am "Update CHANGELOG.md"
    git push origin master
    ```
@@ -156,9 +104,6 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 1. Compile the project:
 
    ```bash
-   # Ensure you use local version of @knapsack-pro/core
-   npm link @knapsack-pro/core
-
    npm run build
    ```
 
@@ -166,10 +111,15 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 
    ```bash
    # Bump patch version 0.0.x
-   npm version patch
+   npm version patch --no-commit-hooks --tag-version-prefix=@knapsack-pro/jest@
 
    # Bump minor version 0.x.0
-   npm version minor
+   npm version minor --no-commit-hooks --tag-version-prefix=@knapsack-pro/jest@
+   ```
+
+   ```bash
+   git commit -am x.x.x
+   git tag @knapsack-pro/jest@x.x.x
    ```
 
 1. Push the commit and tag:
@@ -181,7 +131,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 1. When the git tag is on Github, you can update `CHANGELOG.md`:
 
    ```bash
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-jest
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/jest --since-tag @knapsack-pro/jest@6.1.0
    git commit -am "Update CHANGELOG.md"
    git push origin master
    ```
@@ -195,4 +145,4 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 1. Update the latest available library version in:
 
    - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
-   - [jest-example-test-suite](https://github.com/KnapsackPro/jest-example-test-suite)
+   - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest-example-test-suite)
