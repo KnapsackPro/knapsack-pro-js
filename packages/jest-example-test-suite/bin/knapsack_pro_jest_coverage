@@ -1,0 +1,19 @@
+#!/bin/bash
+
+CI_BUILD_ID=$(openssl rand -base64 32)
+
+ENDPOINT=https://api-staging.knapsackpro.com
+# ENDPOINT=http://api.knapsackpro.test:3000
+
+LOG_LEVEL=info
+# LOG_LEVEL=debug
+
+export KNAPSACK_PRO_COVERAGE_DIRECTORY=coverage
+
+KNAPSACK_PRO_ENDPOINT=$ENDPOINT \
+  KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST=cd67ffc01ce2b3d56f3a223b547f466e \
+  KNAPSACK_PRO_LOG_LEVEL=$LOG_LEVEL \
+  KNAPSACK_PRO_CI_NODE_BUILD_ID=$CI_BUILD_ID \
+  KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
+  KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
+  npx knapsack-pro-jest --coverage
