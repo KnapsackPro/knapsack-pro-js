@@ -7,6 +7,7 @@
 **Merged pull requests:**
 
 - Exclude jest|cypress tags in changelogs [\#2](https://github.com/KnapsackPro/knapsack-pro-js/pull/2) ([3v0k4](https://github.com/3v0k4))
+- Monorepo ([3v0k4](https://github.com/3v0k4))
 
 ## [v5.1.0](https://github.com/KnapsackPro/knapsack-pro-core-js/tree/v5.1.0) (2023-05-23)
 

@@ -5,6 +5,7 @@
 [Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/jest@6.1.0...@knapsack-pro/jest@6.2.0)
 
 - Update @knapsack-pro/core to 5.2.0 ([3v0k4](https://github.com/3v0k4))
+- Monorepo ([3v0k4](https://github.com/3v0k4))
 
 ## [v6.1.0](https://github.com/KnapsackPro/knapsack-pro-jest/tree/v6.1.0) (2023-05-23)
 
