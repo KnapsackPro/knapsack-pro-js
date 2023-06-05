@@ -70,7 +70,7 @@ npm start -w packages/core
    gem install github_changelog_generator
 
    # generate CHANGELOG.md
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
    git commit -am "Update CHANGELOG.md"
    git push origin master
    ```
@@ -107,7 +107,7 @@ npm start -w packages/core
 1. When the git tag is on Github, you can update `CHANGELOG.md`:
 
    ```bash
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
    git commit -am "Update CHANGELOG.md"
    git push origin master
    ```
