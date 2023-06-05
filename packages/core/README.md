@@ -71,7 +71,7 @@ npm start -w packages/core
 
    # generate CHANGELOG.md
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
-   git commit -am "Update CHANGELOG.md"
+   git commit -am "docs(core): update CHANGELOG.md"
    git push origin main
    ```
 
@@ -94,7 +94,7 @@ npm start -w packages/core
    ```
 
    ```bash
-   git commit -am x.x.x
+   git commit -am @knapsack-pro/core@x.x.x
    git tag @knapsack-pro/core@x.x.x
    ```
 
@@ -108,7 +108,7 @@ npm start -w packages/core
 
    ```bash
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
-   git commit -am "Update CHANGELOG.md"
+   git commit -am "docs(core): update CHANGELOG.md"
    git push origin main
    ```
 

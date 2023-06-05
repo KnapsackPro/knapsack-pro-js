@@ -85,7 +85,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
    Commit the updated `package.json` and `package-lock.json`:
 
    ```bash
-   git commit -am "Update @knapsack-pro/core"
+   git commit -am "deps(jest): update @knapsack-pro/core"
    ```
 
 1. Before releasing a new version of the package, please update `CHANGELOG.md` with [`github_changelog_generator`](https://github.com/github-changelog-generator/github-changelog-generator):
@@ -95,7 +95,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 
    # generate CHANGELOG.md
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/jest --since-tag @knapsack-pro/jest@6.1.0 --exclude-tags-regex "@knapsack-pro\/(core|cypress)@.*"
-   git commit -am "Update CHANGELOG.md"
+   git commit -am "docs(jest): update CHANGELOG.md"
    git push origin main
    ```
 
@@ -118,7 +118,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
    ```
 
    ```bash
-   git commit -am x.x.x
+   git commit -am @knapsack-pro/jest@x.x.x
    git tag @knapsack-pro/jest@x.x.x
    ```
 
@@ -132,7 +132,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 
    ```bash
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/jest --since-tag @knapsack-pro/jest@6.1.0 --exclude-tags-regex "@knapsack-pro\/(core|cypress)@.*"
-   git commit -am "Update CHANGELOG.md"
+   git commit -am "docs(jest): update CHANGELOG.md"
    git push origin main
    ```
 
