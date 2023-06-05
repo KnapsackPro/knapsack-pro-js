@@ -81,3 +81,13 @@ Read the READMEs inside the nested `packages/`:
 - [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
 - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
 - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
+
+## Legacy Repositories
+
+Before merging the Knapsack Pro packages into this monorepo, each one was hosted in a separate repository:
+
+- [core](https://github.com/KnapsackPro/knapsack-pro-core-js)
+- [jest](https://github.com/KnapsackPro/knapsack-pro-jest)
+- [cypress](https://github.com/KnapsackPro/knapsack-pro-cypress)
+- [jest-example-test-suite](https://github.com/KnapsackPro/jest-example-test-suite)
+- [cypress-example-test-suite](https://github.com/KnapsackPro/cypress-example-test-suite)
