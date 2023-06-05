@@ -45,8 +45,8 @@ See the [docs](https://docs.knapsackpro.com/cypress/guide/) to get started:
 
 ## Dependencies
 
-- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
-- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)
+- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
+- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
 
 ## Development
 

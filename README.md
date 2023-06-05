@@ -76,8 +76,8 @@ In `File > Preferences > Settings > Text Editor > Formatting`, enable the `Forma
 
 Read the READMEs inside the nested `packages/`:
 
-- [core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
-- [jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
-- [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)
-- [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest-example-test-suite)
-- [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress-example-test-suite)
+- [core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
+- [jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
+- [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
+- [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
+- [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)

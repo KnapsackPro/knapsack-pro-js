@@ -45,8 +45,8 @@ See the [docs](https://docs.knapsackpro.com/jest/guide/) to get started:
 
 ## Dependencies
 
-- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
-- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
+- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
+- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
 
 ## Development
 

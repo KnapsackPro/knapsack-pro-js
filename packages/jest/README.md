@@ -41,7 +41,7 @@ See the [docs](https://docs.knapsackpro.com/jest/guide/) to get started:
 
 ## Dependencies
 
-- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
+- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
 
 ## Contributing
 
@@ -57,7 +57,7 @@ npm start -w packages/jest
 
 To test `@knapsack-pro/jest` against a real test suite we use:
 
-- [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest-example-test-suite)
+- [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
 - (deprecated) [react](https://github.com/KnapsackPro/react)
 
 ### Publishing
@@ -145,4 +145,4 @@ To test `@knapsack-pro/jest` against a real test suite we use:
 1. Update the latest available library version in:
 
    - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
-   - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest-example-test-suite)
+   - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)

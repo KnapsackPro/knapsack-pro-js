@@ -41,7 +41,7 @@ See the [docs](https://docs.knapsackpro.com/cypress/guide/) to get started:
 
 ## Dependencies
 
-- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/core)
+- [@knapsack-pro/core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
 
 ## Contributing
 
@@ -55,7 +55,7 @@ npm start -w packages/cypress
 
 ### Testing
 
-To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress-example-test-suite) project.
+To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite) project.
 
 ### Publishing
 
@@ -142,4 +142,4 @@ To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-ex
 1. Update the latest available library version in:
 
    - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
-   - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress-example-test-suite)
+   - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)

@@ -41,8 +41,8 @@ See the [docs](https://docs.knapsackpro.com/) to get started:
 
 ## Dependents
 
-- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
-- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)
+- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
+- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
 
 ## Contributing
 
@@ -120,5 +120,5 @@ npm start -w packages/core
 
 1. Update:
 
-- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/jest)
-- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/setup/packages/cypress)
+- [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
+- [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
