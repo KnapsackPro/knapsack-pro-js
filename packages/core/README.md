@@ -72,7 +72,7 @@ npm start -w packages/core
    # generate CHANGELOG.md
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
    git commit -am "Update CHANGELOG.md"
-   git push origin master
+   git push origin main
    ```
 
 1. If you have added new files to the repository, and they should be part of the released npm package, please ensure they are included in the `files` array in `package.json`.
@@ -101,7 +101,7 @@ npm start -w packages/core
 1. Push the commit and tag:
 
    ```bash
-   git push origin master --tags
+   git push origin main --tags
    ```
 
 1. When the git tag is on Github, you can update `CHANGELOG.md`:
@@ -109,7 +109,7 @@ npm start -w packages/core
    ```bash
    github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/core --since-tag @knapsack-pro/core@5.1.0 --exclude-tags-regex "@knapsack-pro\/(jest|cypress)@.*"
    git commit -am "Update CHANGELOG.md"
-   git push origin master
+   git push origin main
    ```
 
 1. Publish the package to the npm registry:
