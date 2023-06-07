@@ -1,12 +1,12 @@
 import { CIProviderBase } from '.';
 
 export class SemaphoreCI2 extends CIProviderBase {
-  public static get ciNodeTotal(): string | void {
+  public static get ciNodeTotal(): string | undefined {
     return process.env.SEMAPHORE_JOB_COUNT;
   }
 
   // eslint-disable-next-line getter-return, consistent-return
-  public static get ciNodeIndex(): string | void {
+  public static get ciNodeIndex(): string | undefined {
     const jobIndex = process.env.SEMAPHORE_JOB_INDEX;
 
     if (jobIndex) {
@@ -14,23 +14,33 @@ export class SemaphoreCI2 extends CIProviderBase {
     }
   }
 
-  public static get ciNodeBuildId(): string | void {
+  public static get ciNodeBuildId(): string | undefined {
     return process.env.SEMAPHORE_WORKFLOW_ID;
   }
 
-  public static get ciNodeRetryCount(): void {
+  public static get ciNodeRetryCount(): undefined {
     return undefined;
   }
 
-  public static get commitHash(): string | void {
+  public static get commitHash(): string | undefined {
     return process.env.SEMAPHORE_GIT_SHA;
   }
 
-  public static get branch(): string | void {
+  public static get branch(): string | undefined {
     return process.env.SEMAPHORE_GIT_BRANCH;
   }
 
-  public static get userSeat(): void {
+  public static get userSeat(): undefined {
     return undefined;
+  }
+
+  public static get detect(): typeof CIProviderBase | null {
+    return 'SEMAPHORE' in process.env && 'SEMAPHORE_WORKFLOW_ID' in process.env
+      ? this
+      : null;
+  }
+
+  public static get fixedQueueSplit(): boolean {
+    return false;
   }
 }

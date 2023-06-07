@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { FallbackTestDistributor } from '../src/fallback-test-distributor';
 import { TestFile } from '../src/models';
 

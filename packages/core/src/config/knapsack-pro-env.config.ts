@@ -17,6 +17,10 @@ function logLevel(): string {
 const knapsackProLogger = new KnapsackProLogger(logLevel());
 
 export class KnapsackProEnvConfig {
+  private static $fixedQueueSplit: boolean | undefined;
+
+  private static $knapsackProLogger: KnapsackProLogger = knapsackProLogger;
+
   public static get endpoint(): string {
     if (process.env.KNAPSACK_PRO_ENDPOINT) {
       return process.env.KNAPSACK_PRO_ENDPOINT;
@@ -37,13 +41,32 @@ export class KnapsackProEnvConfig {
   }
 
   public static get fixedQueueSplit(): boolean {
-    if (process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT) {
-      return (
-        process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT.toLowerCase() === 'true'
+    if (this.$fixedQueueSplit !== undefined) {
+      return this.$fixedQueueSplit;
+    }
+
+    this.$fixedQueueSplit =
+      this.parseBoolean(process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT) ??
+      CIEnvConfig.fixedQueueSplit;
+
+    if (!('KNAPSACK_PRO_FIXED_QUEUE_SPLIT' in process.env)) {
+      this.$knapsackProLogger.info(
+        `KNAPSACK_PRO_FIXED_QUEUE_SPLIT is not set. Using default value: ${this.$fixedQueueSplit}. Learn more at ${Urls.FIXED_QUEUE_SPLIT}`,
       );
     }
 
-    return false;
+    return this.$fixedQueueSplit;
+  }
+
+  private static parseBoolean(value: string | undefined): boolean | null {
+    switch (value?.toLowerCase()) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return null;
+    }
   }
 
   public static get ciNodeTotal(): number | never {

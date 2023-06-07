@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { TestFilesFinder } from '../src/test-files-finder';
 import { TestFile } from '../src/models';
 

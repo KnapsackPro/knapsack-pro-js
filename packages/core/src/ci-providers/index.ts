@@ -1,4 +1,5 @@
 export * from './ci-provider.base';
+
 export * from './appveyor';
 export * from './buildkite';
 export * from './circle-ci';
@@ -11,3 +12,4 @@ export * from './heroku-ci';
 export * from './semaphore-ci';
 export * from './semaphore-ci-2';
 export * from './travis-ci';
+export * from './unsupported-ci';
