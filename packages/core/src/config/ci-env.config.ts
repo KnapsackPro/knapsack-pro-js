@@ -1,6 +1,7 @@
 import {
   AppVeyor,
   Buildkite,
+  CIProviderBase,
   CircleCI,
   CirrusCI,
   CodefreshCI,
@@ -12,6 +13,15 @@ import {
   SemaphoreCI2,
   TravisCI,
 } from '../ci-providers';
+
+type CIProviderMethod =
+  | 'ciNodeTotal'
+  | 'ciNodeIndex'
+  | 'ciNodeBuildId'
+  | 'ciNodeRetryCount'
+  | 'commitHash'
+  | 'branch'
+  | 'userSeat';
 
 export class CIEnvConfig {
   public static get ciNodeTotal(): string | void {
@@ -43,9 +53,8 @@ export class CIEnvConfig {
   }
 
   // eslint-disable-next-line consistent-return
-  private static ciEnvFor(functionName: string): string | void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const supportedCIProviders: any[] = [
+  private static ciEnvFor(functionName: CIProviderMethod): string | void {
+    const supportedCIProviders: (typeof CIProviderBase)[] = [
       // load GitLab CI first to avoid edge case with order of loading envs for CI_NODE_INDEX
       GitlabCI,
       AppVeyor,
