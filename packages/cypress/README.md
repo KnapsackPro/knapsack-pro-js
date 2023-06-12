@@ -91,7 +91,7 @@ To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-ex
    gem install github_changelog_generator
 
    # generate CHANGELOG.md
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/cypress --since-tag @knapsack-pro/cypress@6.1.0 --exclude-tags-regex "@knapsack-pro\/(core|jest)@.*"
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/cypress --since-tag @knapsack-pro/cypress@6.2.0 --exclude-tags-regex "@knapsack-pro\/(core|jest)@.*"
    git commit -am "docs(cypress): update CHANGELOG.md"
    git push origin main
    ```
@@ -128,7 +128,7 @@ To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-ex
 1. When the git tag is on Github, you can update `CHANGELOG.md`:
 
    ```bash
-   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/cypress --since-tag @knapsack-pro/cypress@6.1.0 --exclude-tags-regex "@knapsack-pro\/(core|jest)@.*"
+   github_changelog_generator --user KnapsackPro --project knapsack-pro-js --pr-wo-labels --issues-wo-labels --include-labels @knapsack-pro/cypress --since-tag @knapsack-pro/cypress@6.2.0 --exclude-tags-regex "@knapsack-pro\/(core|jest)@.*"
    git commit -am "docs(cypress): update CHANGELOG.md"
    git push origin main
    ```
