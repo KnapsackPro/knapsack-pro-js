@@ -12,8 +12,8 @@
 ---
 
 <div align="center">
-  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js">
-    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js.svg?style=svg" />
+  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-js">
+    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-js.svg?style=svg" />
   </a>
 </div>
 

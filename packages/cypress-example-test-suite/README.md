@@ -12,8 +12,8 @@
 ---
 
 <div align="center">
-  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js">
-    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-core-js.svg?style=svg" />
+  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-js">
+    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-js.svg?style=svg" />
   </a>
 
   <a href="https://knapsackpro.com/dashboard/organizations/54/projects/2208/test_suites/3312/builds?utm_campaign=organization-id-54&utm_content=test-suite-id-3312&utm_medium=readme&utm_source=knapsack-pro-badge&utm_term=project-id-2208">
