@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/KnapsackPro/knapsack-pro-js/tree/HEAD)
+## [@knapsack-pro/cypress@7.1.0](https://github.com/KnapsackPro/knapsack-pro-js/tree/@knapsack-pro/cypress@7.1.0) (2023-06-12)
 
-[Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/cypress@7.0.0...HEAD)
+[Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/cypress@7.0.0...@knapsack-pro/cypress@7.1.0)
 
 **Merged pull requests:**
 
