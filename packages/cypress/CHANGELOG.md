@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/KnapsackPro/knapsack-pro-js/tree/HEAD)
+
+[Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/cypress@6.2.0...HEAD)
+
+**Merged pull requests:**
+
+- \[breaking change\] Update @knapsack-pro/core to 6.0.0 [\#5](https://github.com/KnapsackPro/knapsack-pro-js/pull/5) ([3v0k4](https://github.com/3v0k4))
+
 ## [@knapsack-pro/cypress@6.2.0](https://github.com/KnapsackPro/knapsack-pro-js/tree/@knapsack-pro/cypress@6.2.0) (2023-06-05)
 
 [Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/cypress@6.1.0...@knapsack-pro/cypress@6.2.0)
