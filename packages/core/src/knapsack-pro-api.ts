@@ -40,7 +40,7 @@ export class KnapsackProAPI {
       node_total: KnapsackProEnvConfig.ciNodeTotal,
       node_index: KnapsackProEnvConfig.ciNodeIndex,
       node_build_id: KnapsackProEnvConfig.ciNodeBuildId,
-      user_seat: KnapsackProEnvConfig.userSeatHash,
+      user_seat: KnapsackProEnvConfig.maskedUserSeat,
       ...(shouldSendTestFilesInPayload && { test_files: allTestFiles }),
     };
 
