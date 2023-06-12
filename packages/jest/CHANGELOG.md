@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/KnapsackPro/knapsack-pro-js/tree/HEAD)
+
+[Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/jest@7.0.0...HEAD)
+
+**Merged pull requests:**
+
+- deps\(jest\): update @knapsack-pro/core to 6.1.0 [\#7](https://github.com/KnapsackPro/knapsack-pro-js/pull/7) ([shadre](https://github.com/shadre))
+
 ## [@knapsack-pro/jest@7.0.0](https://github.com/KnapsackPro/knapsack-pro-js/tree/@knapsack-pro/jest@7.0.0) (2023-06-12)
 
 [Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/jest@6.2.0...@knapsack-pro/jest@7.0.0)
