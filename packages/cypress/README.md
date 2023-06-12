@@ -67,7 +67,7 @@ To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-ex
    npm adduser
    ```
 
-1. Ensure you have the latest version of `@knapsack-pro/core` in `package.json`:
+1. Ensure you have the latest version of `@knapsack-pro/core` in `package.json` (do the change in a separate PR to have it appear in the CHANGELOG):
 
    ```bash
    {

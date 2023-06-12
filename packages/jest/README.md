@@ -70,7 +70,7 @@ To test `@knapsack-pro/jest` against a real test suite we use:
    npm adduser
    ```
 
-1. Ensure you have the latest version of `@knapsack-pro/core` in `package.json`:
+1. Ensure you have the latest version of `@knapsack-pro/core` in `package.json` (do the change in a separate PR to have it appear in the CHANGELOG):
 
    ```bash
    {
