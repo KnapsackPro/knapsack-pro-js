@@ -82,7 +82,7 @@ To test `@knapsack-pro/cypress` against a real test suite we use the [cypress-ex
    Commit the updated `package.json` and `package-lock.json`:
 
    ```bash
-   git commit -am "docs(cypress): update @knapsack-pro/core"
+   git commit -am "deps(cypress): update @knapsack-pro/core"
    ```
 
 1. Before releasing a new version of the package, please update `CHANGELOG.md` with [`github_changelog_generator`](https://github.com/github-changelog-generator/github-changelog-generator):
