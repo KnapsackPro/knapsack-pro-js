@@ -6,7 +6,7 @@
 
 **Merged pull requests:**
 
-- Use `KNAPSACK_PRO_FIXED_QUEUE_SPLIT=true` as default value in Queue Mode and use `false` for proper CI providers [\#3](https://github.com/KnapsackPro/knapsack-pro-js/pull/3) ([3v0k4](https://github.com/3v0k4))
+- \[breaking change\] Use `KNAPSACK_PRO_FIXED_QUEUE_SPLIT=true` as default value in Queue Mode and use `false` for proper CI providers [\#3](https://github.com/KnapsackPro/knapsack-pro-js/pull/3) ([3v0k4](https://github.com/3v0k4))
 
 ## [@knapsack-pro/core@5.2.0](https://github.com/KnapsackPro/knapsack-pro-js/tree/@knapsack-pro/core@5.2.0) (2023-06-05)
 
