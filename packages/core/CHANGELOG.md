@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/KnapsackPro/knapsack-pro-js/tree/HEAD)
+
+[Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/core@6.0.0...HEAD)
+
+**Merged pull requests:**
+
+- Mask user seats instead of hashing [\#6](https://github.com/KnapsackPro/knapsack-pro-js/pull/6) ([shadre](https://github.com/shadre))
+
 ## [@knapsack-pro/core@6.0.0](https://github.com/KnapsackPro/knapsack-pro-js/tree/@knapsack-pro/core@6.0.0) (2023-06-12)
 
 [Full Changelog](https://github.com/KnapsackPro/knapsack-pro-js/compare/@knapsack-pro/core@5.2.0...@knapsack-pro/core@6.0.0)
