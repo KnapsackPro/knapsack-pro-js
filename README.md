@@ -11,6 +11,15 @@
 
 ---
 
+<div align="center">
+  <a href="https://circleci.com/gh/KnapsackPro/knapsack-pro-js">
+    <img alt="Circle CI" src="https://circleci.com/gh/KnapsackPro/knapsack-pro-js.svg?style=svg" />
+  </a>
+</div>
+
+<br />
+<br />
+
 Knapsack Pro wraps your [current test runner(s)](https://docs.knapsackpro.com/) and works with your existing CI infrastructure to parallelize tests optimally:
 
 - Dynamically splits your tests based on up-to-date test execution data
