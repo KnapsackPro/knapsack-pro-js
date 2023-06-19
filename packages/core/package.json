@@ -1,6 +1,6 @@
 {
   "name": "@knapsack-pro/core",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "Knapsack Pro Core library splits tests across CI nodes and makes sure that tests will run in optimal time on each CI node. This library gives core features like communication with KnapsackPro.com API. This library is a dependency for other projects specific for particular test runner.",
   "keywords": [
     "knapsack",
