@@ -271,7 +271,7 @@ describe('KnapsackProEnvConfig', () => {
         ['Codefresh', { CF_BUILD_ID: 'whatever' }, false],
         ['Codeship', { CI_NAME: 'codeship' }, true],
         ['GitHub Actions', { GITHUB_ACTIONS: 'whatever' }, true],
-        ['GitLab CI', { GITLAB_CI: 'whatever' }, false],
+        ['GitLab CI', { GITLAB_CI: 'whatever' }, true],
         ['Heroku CI', { HEROKU_TEST_RUN_ID: 'whatever' }, false],
         ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: 'whatever' }, false],
         [
