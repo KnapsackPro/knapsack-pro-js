@@ -46,6 +46,6 @@ export class GitlabCI extends CIProviderBase {
   }
 
   public static get fixedQueueSplit(): boolean {
-    return false;
+    return true;
   }
 }
