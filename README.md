@@ -138,7 +138,7 @@ Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repos
    git pull
 
    npm install # update @knapsack-pro/jest version in package-lock.json (bug in npm?)
-   git commit -am "chore: update package.lock"
+   git commit -am "chore: update package-lock.json"
 
    git tag @knapsack-pro/core@x.x.x
    git push origin main --tags
