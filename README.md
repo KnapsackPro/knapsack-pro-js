@@ -81,6 +81,82 @@ Install the following plugins:
 
 In `File > Preferences > Settings > Text Editor > Formatting`, enable the `Format On Save` checkbox.
 
+### Publishing
+
+We use [`changesets`](https://github.com/changesets/changesets), which means:
+
+- you need to add a changeset (`npx changeset`) to any changes that should bump a version (and appear in the CHANGELOG.md)
+- a [bot](https://github.com/apps/changeset-bot) checks that PRs contain a changeset
+- the [changesets GitHub Action](https://github.com/changesets/action) creates a pull request that applies all the changesets
+
+In the future, we should look into [`npx changeset publish`](https://github.com/changesets/changesets/blob/main/packages/cli/README.md#publish) to automate further.
+
+#### 1. Update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` locally
+
+If `@knapsack-pro/core` is already published to npm, you can follow these steps to update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` locally.
+
+However, next time, try to update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` in the same PR that introduces the changes to `@knapsack-pro/core`, so that you can follow the easier [Publish via Changesets PR](#2-publish-via-changesets-pr).
+
+From the root folder of the repository (replace `jest` with `cypress` if needed):
+
+```bash
+npm install @knapsack-pro/core -w packages/jest
+npx changeset
+# Update @knapsack-pro/core to x.x.x
+
+git add --all
+git commit -m "deps(jest): update @knapsack-pro/core"
+
+npx changeset version
+npm install # update @knapsack-pro/jest version in package-lock.json (bug in npm?)
+git commit -am @knapsack-pro/jest@x.x.x
+git tag @knapsack-pro/jest@x.x.x
+
+npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
+npm run test:jest
+git commit -am "deps(jest-example): update @knapsack-pro/jest"
+
+git push origin main --tags
+
+cd packages/jest
+npm run build
+npm adduser # sign in to npm
+npm publish
+```
+
+Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repository.
+
+#### 2. Publish via Changesets PR
+
+1. Merge the PR created by the `changesets` GitHub Action
+
+1. If you have added new files to the repository, and they should be part of the released npm package, please ensure they are included in the `files` array in `package.json`
+
+1. From the root folder of the repository (replace `core` with `jest` or `cypress` if needed):
+
+   ```bash
+   git pull
+
+   npm install # update @knapsack-pro/jest version in package-lock.json (bug in npm?)
+   git commit -am "chore: update package.lock"
+
+   git tag @knapsack-pro/core@x.x.x
+   git push origin main --tags
+
+   cd packages/core
+   npm run build
+   npm adduser # sign in to npm
+   npm publish
+   ```
+
+1. Remember to update:
+
+   - [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
+   - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
+   - [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
+   - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
+   - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
+
 ## Packages
 
 Read the READMEs inside the nested `packages/`:
