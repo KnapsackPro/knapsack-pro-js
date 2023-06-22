@@ -156,6 +156,7 @@ Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repos
    - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
    - [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
    - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
+   - [create-react-app-example](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/create-react-app-example)
    - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
 
 ## Packages
@@ -167,6 +168,7 @@ Read the READMEs inside the nested `packages/`:
 - [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
 - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
 - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
+- [create-react-app-example](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/create-react-app-example)
 
 ## Legacy Repositories
 
