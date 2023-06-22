@@ -67,6 +67,7 @@ npm install
 npm run test:core:coverage
 npm run test:jest
 npm run test:cypress
+npm run test:cra
 ```
 
 You can find more example scripts in the nested `packages/`.
