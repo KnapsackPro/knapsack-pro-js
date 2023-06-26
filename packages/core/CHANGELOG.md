@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Minor
+
+- 05e7276: bump @babel/core from 7.22.1 to 7.22.5
+- 5734c9f: bump @babel/register from 7.21.0 to 7.22.5
+
 ## 6.1.1
 
 ### Patch Changes
