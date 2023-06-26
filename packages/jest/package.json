@@ -54,7 +54,7 @@
   "dependencies": {
     "@knapsack-pro/core": "^6.1.1",
     "glob": "^8.0.3",
-    "minimatch": "^5.1.0",
+    "minimatch": "^9.0.2",
     "minimist": "^1.2.6",
     "uuid": "^9.0.0"
   },
