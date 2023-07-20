@@ -1,9 +1,9 @@
 import childProcess = require('child_process');
-import { CIEnvConfig } from '.';
+import { CIEnvConfig, isCI } from '.';
 import { KnapsackProLogger } from '../knapsack-pro-logger';
 import * as Urls from '../urls';
 
-const { spawnSync } = childProcess;
+const { spawnSync, execSync } = childProcess;
 
 function logLevel(): string {
   if (process.env.KNAPSACK_PRO_LOG_LEVEL) {
@@ -14,6 +14,12 @@ function logLevel(): string {
 }
 
 const knapsackProLogger = new KnapsackProLogger(logLevel());
+
+const mask = (string: string): string => {
+  const regexp = /(?<=\w{2})[a-zA-Z]/g;
+  const maskingChar = '*';
+  return string.replace(regexp, maskingChar);
+};
 
 export class KnapsackProEnvConfig {
   private static $fixedQueueSplit: boolean | undefined;
@@ -211,18 +217,63 @@ export class KnapsackProEnvConfig {
   }
 
   public static get maskedUserSeat(): string | void {
-    const regexp = /(?<=\w{2})[a-zA-Z]/g;
-    const maskingChar = '*';
-
     if (process.env.KNAPSACK_PRO_USER_SEAT) {
-      return process.env.KNAPSACK_PRO_USER_SEAT.replace(regexp, maskingChar);
+      return mask(process.env.KNAPSACK_PRO_USER_SEAT);
     }
 
     const { userSeat } = CIEnvConfig;
     if (userSeat) {
-      userSeat.replace(regexp, maskingChar);
+      return mask(userSeat);
     }
 
     return undefined;
   }
 }
+
+const $buildAuthor = (command: () => Buffer): string => {
+  try {
+    const author = command().toString().trim();
+    return mask(author);
+  } catch (error) {
+    return 'no git <no.git@example.com>';
+  }
+};
+
+const gitBuildAuthor = () =>
+  execSync('git log --format="%aN <%aE>" -1 2>/dev/null');
+
+export const buildAuthor = (command = gitBuildAuthor): string =>
+  $buildAuthor(command);
+
+const $commitAuthors = (
+  command: () => Buffer,
+): { commits: number; author: string }[] => {
+  try {
+    return command()
+      .toString()
+      .split('\n')
+      .filter((line) => line !== '')
+      .map((line) => line.trim())
+      .map((line) => line.split('\t'))
+      .map(([commits, author]) => ({
+        commits: parseInt(commits, 10),
+        author: mask(author),
+      }));
+  } catch (error) {
+    return [];
+  }
+};
+
+const gitCommitAuthors = () => {
+  if (isCI) {
+    execSync(`git fetch --shallow-since "one month ago" --quiet 2>/dev/null`);
+  }
+
+  return execSync(
+    `git log --since "one month ago" 2>/dev/null | git shortlog --summary --email 2>/dev/null`,
+  );
+};
+
+export const commitAuthors = (
+  command = gitCommitAuthors,
+): { commits: number; author: string }[] => $commitAuthors(command);

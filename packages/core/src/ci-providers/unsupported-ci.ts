@@ -1,4 +1,6 @@
-export abstract class UnsupportedCI {
+import { CIProviderBase } from '.';
+
+export class UnsupportedCI extends CIProviderBase {
   public static get ciNodeTotal(): string | undefined {
     return undefined;
   }

@@ -14,18 +14,19 @@ import {
   TravisCI,
   UnsupportedCI,
 } from '../src/ci-providers';
-import { CIEnvConfig } from '../src/config/ci-env.config';
+import { isCI, detectCI } from '../src/config/ci-env.config';
 
 describe('KnapsackProEnvConfig', () => {
   // Since we use CircleCI for testing, we prevent it from interfering with the tests.
   delete process.env.CIRCLECI;
+  delete process.env.CI;
   const ENV = { ...process.env };
 
   afterEach(() => {
     process.env = { ...ENV };
   });
 
-  describe('.detectCi', () => {
+  describe('detectCI', () => {
     const TESTS: [string, object, typeof CIProviderBase][] = [
       ['AppVeyor', { APPVEYOR: 'whatever' }, AppVeyor],
       ['Buildkite', { BUILDKITE: 'whatever' }, Buildkite],
@@ -50,7 +51,22 @@ describe('KnapsackProEnvConfig', () => {
       it(`detects ${ci}`, () => {
         process.env = { ...process.env, ...env };
 
-        expect(CIEnvConfig.detectCi()).toEqual(expected);
+        expect(detectCI()).toEqual(expected);
+      });
+    });
+  });
+
+  describe('isCI', () => {
+    const TESTS: [string, object, boolean][] = [
+      ['CI from env', { CI: 'True' }, true],
+      ['AppVeyor', { APPVEYOR: 'whatever' }, true],
+      ['Unsupported CI', {}, false],
+    ];
+    TESTS.forEach(([ci, env, expected]) => {
+      it(`detects ${ci}`, () => {
+        process.env = { ...process.env, ...env };
+
+        expect(isCI()).toEqual(expected);
       });
     });
   });

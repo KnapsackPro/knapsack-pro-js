@@ -15,6 +15,31 @@ import {
   UnsupportedCI,
 } from '../ci-providers';
 
+export const detectCI = (): typeof CIProviderBase => {
+  const detected = [
+    AppVeyor,
+    Buildkite,
+    CircleCI,
+    CirrusCI,
+    CodefreshCI,
+    Codeship,
+    GithubActions,
+    GitlabCI,
+    HerokuCI,
+    SemaphoreCI,
+    SemaphoreCI2,
+    TravisCI,
+  ]
+    .map((provider) => provider.detect)
+    .filter(Boolean)[0];
+
+  return detected || UnsupportedCI;
+};
+
+export const isCI = (): boolean =>
+  (process.env.CI || 'false').toLowerCase() === 'true' ||
+  detectCI() !== UnsupportedCI;
+
 type CIProviderMethod =
   | 'ciNodeTotal'
   | 'ciNodeIndex'
@@ -61,27 +86,6 @@ export class CIEnvConfig {
   private static ciEnvFor<T extends CIProviderMethod>(
     functionName: T,
   ): (typeof CIProviderBase)[T] {
-    return this.detectCi()[functionName];
-  }
-
-  public static detectCi() {
-    const detected = [
-      AppVeyor,
-      Buildkite,
-      CircleCI,
-      CirrusCI,
-      CodefreshCI,
-      Codeship,
-      GithubActions,
-      GitlabCI,
-      HerokuCI,
-      SemaphoreCI,
-      SemaphoreCI2,
-      TravisCI,
-    ]
-      .map((provider) => provider.detect)
-      .filter(Boolean)[0];
-
-    return detected || UnsupportedCI;
+    return detectCI()[functionName];
   }
 }
