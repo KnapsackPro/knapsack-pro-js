@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.2.0
+
+### Minor Changes
+
+- 69e1e00: Send authors to the API
+
 ## Unreleased
 
 ### Minor
