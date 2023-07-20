@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
 
-import { KnapsackProEnvConfig } from './config';
+import { KnapsackProEnvConfig, buildAuthor, commitAuthors } from './config';
 import { KnapsackProLogger } from './knapsack-pro-logger';
 import { TestFile } from './models';
 
@@ -28,8 +28,6 @@ export class KnapsackProAPI {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): AxiosPromise<any> {
     const url = '/v1/queues/queue';
-    const shouldSendTestFilesInPayload =
-      initializeQueue && !attemptConnectToQueue;
     const data = {
       test_suite_token: KnapsackProEnvConfig.testSuiteToken,
       can_initialize_queue: initializeQueue,
@@ -41,7 +39,12 @@ export class KnapsackProAPI {
       node_index: KnapsackProEnvConfig.ciNodeIndex,
       node_build_id: KnapsackProEnvConfig.ciNodeBuildId,
       user_seat: KnapsackProEnvConfig.maskedUserSeat,
-      ...(shouldSendTestFilesInPayload && { test_files: allTestFiles }),
+      ...(initializeQueue &&
+        !attemptConnectToQueue && {
+          test_files: allTestFiles,
+          build_author: buildAuthor(),
+          commit_authors: commitAuthors(),
+        }),
     };
 
     return this.api.post(url, data);

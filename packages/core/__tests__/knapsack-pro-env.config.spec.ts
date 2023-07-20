@@ -1,10 +1,15 @@
-import { KnapsackProEnvConfig } from '../src/config/knapsack-pro-env.config';
+import {
+  KnapsackProEnvConfig,
+  buildAuthor,
+  commitAuthors,
+} from '../src/config/knapsack-pro-env.config';
 import { KnapsackProLogger } from '../src/knapsack-pro-logger';
 import * as Urls from '../src/urls';
 
 describe('KnapsackProEnvConfig', () => {
   // Since we use CircleCI for testing, we prevent it from interfering with the tests.
   delete process.env.CIRCLECI;
+  delete process.env.CI;
   const ENV = { ...process.env };
 
   afterEach(() => {
@@ -293,6 +298,87 @@ describe('KnapsackProEnvConfig', () => {
             `KNAPSACK_PRO_FIXED_QUEUE_SPLIT is not set. Using default value: ${expected}. Learn more at ${Urls.FIXED_QUEUE_SPLIT}`,
           ]);
         });
+      });
+    });
+  });
+
+  describe('.maskedUserSeat', () => {
+    describe('when KNAPSACK_PRO_USER_SEAT is set', () => {
+      it('it returns the masked KNAPSACK_PRO_USER_SEAT', () => {
+        process.env.KNAPSACK_PRO_USER_SEAT = 'riccardo';
+
+        expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ri******');
+      });
+    });
+
+    describe('when CI is CircleCI', () => {
+      it('it returns the masked CIRCLE_USERNAME', () => {
+        process.env.CIRCLECI = 'whatever';
+        process.env.CIRCLE_USERNAME = 'riccardo';
+
+        expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ri******');
+      });
+    });
+
+    describe('when both KNAPSACK_PRO_USER_SEAT is set and CI is CircleCI', () => {
+      it('it returns the masked KNAPSACK_PRO_USER_SEAT', () => {
+        process.env.KNAPSACK_PRO_USER_SEAT = 'jane';
+        process.env.CIRCLECI = 'whatever';
+        process.env.CIRCLE_USERNAME = 'riccardo';
+
+        expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ja**');
+      });
+    });
+  });
+
+  describe('buildAuthor', () => {
+    it('returns the masked build author', () => {
+      const actual = buildAuthor(() =>
+        Buffer.from('John Doe <john.doe@example.com>\n'),
+      );
+
+      expect(actual).toEqual('Jo** Do* <jo**.do*@ex*****.co*>');
+    });
+
+    describe('when the command raises an exception', () => {
+      it('returns the no-git author', () => {
+        const actual = buildAuthor(() => {
+          throw new Error();
+        });
+
+        expect(actual).toEqual('no git <no.git@example.com>');
+      });
+    });
+  });
+
+  describe('commitAuthors', () => {
+    it('returns the masked commit authors', () => {
+      const actual = commitAuthors(() =>
+        Buffer.from(
+          [
+            '     5\t3v0k4 <riccardo@example.com>\n',
+            '    10\tArtur Nowak <artur@example.com>\n',
+            '     2\tRiccardo <riccardo@example.com>\n',
+            '     3 \tshadre <shadi@example.com>\n',
+          ].join(''),
+        ),
+      );
+
+      expect(actual).toEqual([
+        { commits: 5, author: '3v0*4 <ri******@ex*****.co*>' },
+        { commits: 10, author: 'Ar*** No*** <ar***@ex*****.co*>' },
+        { commits: 2, author: 'Ri****** <ri******@ex*****.co*>' },
+        { commits: 3, author: 'sh**** <sh***@ex*****.co*>' },
+      ]);
+    });
+
+    describe('when the command raises an exception', () => {
+      it('returns []', () => {
+        const actual = commitAuthors(() => {
+          throw new Error();
+        });
+
+        expect(actual).toEqual([]);
       });
     });
   });
