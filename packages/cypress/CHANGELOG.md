@@ -1,5 +1,11 @@
 # Changelog
 
+## 7.2.0
+
+### Minor Changes
+
+- a26ca99: Update @knapsack-pro/core to 6.2.0
+
 ## Unreleased
 
 ### Minor
