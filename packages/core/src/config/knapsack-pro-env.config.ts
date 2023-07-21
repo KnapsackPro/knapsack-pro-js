@@ -276,6 +276,7 @@ const $commitAuthors = (
 
 const gitCommitAuthors = () => {
   if (isCI && isShallowRepository()) {
+    execSync(`git fetch --shallow-since "one month ago" --quiet 2>/dev/null`);
   }
 
   return execSync(
