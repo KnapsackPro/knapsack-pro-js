@@ -275,7 +275,7 @@ const $commitAuthors = (
 };
 
 const gitCommitAuthors = () => {
-  if (isCI && isShallowRepository) {
+  if (isCI && isShallowRepository()) {
   }
 
   return execSync(
