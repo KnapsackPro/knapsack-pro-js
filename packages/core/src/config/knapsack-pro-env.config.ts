@@ -275,8 +275,36 @@ const $commitAuthors = (
 };
 
 const gitCommitAuthors = () => {
-  if (isCI && isShallowRepository()) {
-    execSync(`git fetch --shallow-since "one month ago" --quiet 2>/dev/null`);
+  // if (isCI && isShallowRepository()) {
+  if (isCI) {
+    knapsackProLogger.error('2XXXXXXXXXXXX');
+    // execSync(`git fetch --shallow-since "one month ago" --quiet 2>/dev/null`);
+    // const command =
+    //   'git fetch --shallow-since "one month ago" --quiet 2>/dev/null';
+    const command = 'sleep 6';
+    knapsackProLogger.error('start command');
+    const gitFetchShallowProcess = spawnSync(command, { shell: true });
+    knapsackProLogger.error('after started the command');
+
+    const timeout = setTimeout(() => {
+      if (gitFetchShallowProcess && gitFetchShallowProcess.pid) {
+        process.kill(gitFetchShallowProcess.pid);
+        console.log('KILLLLLLL');
+        knapsackProLogger.error(
+          `Skip the \`${command}\` command because it took too long.`,
+        );
+      }
+    }, 2000);
+    knapsackProLogger.error('after timeout set');
+
+    // Wait for the process to complete
+    const result =
+      gitFetchShallowProcess.status === 0
+        ? gitFetchShallowProcess.stdout
+        : gitFetchShallowProcess.stderr;
+
+    // Clear the timeout to prevent the cancellation
+    clearTimeout(timeout);
   }
 
   return execSync(
