@@ -115,7 +115,7 @@ git tag @knapsack-pro/jest@x.x.x
 
 npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
 npm run test:jest
-git commit -am "deps(jest-example): update @knapsack-pro/jest"
+git commit -am "deps(jest-example-test-suite): update @knapsack-pro/jest"
 
 git push origin main --tags
 
