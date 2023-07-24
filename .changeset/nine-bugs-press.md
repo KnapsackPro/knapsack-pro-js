@@ -1,5 +1,5 @@
 ---
-"@knapsack-pro/core": minor
+"@knapsack-pro/core": patch
 ---
 
 Fix hanging CI when `git fetch --shallow-since` takes too long
