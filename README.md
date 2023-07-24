@@ -123,6 +123,11 @@ cd packages/jest
 npm run build
 npm adduser # sign in to npm
 npm publish
+
+# if a project is not a workspace
+cd packages/create-react-app-example
+npm install -D @knapsack-pro/jest
+git commit -am "deps(create-react-app-example): update @knapsack-pro/jest"
 ```
 
 Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repository.
