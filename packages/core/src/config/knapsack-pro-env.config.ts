@@ -245,6 +245,16 @@ const gitBuildAuthor = () =>
 export const buildAuthor = (command = gitBuildAuthor): string =>
   $buildAuthor(command);
 
+const gitIsShallowRepository = () =>
+  execSync(`git rev-parse --is-shallow-repository 2>/dev/null`);
+
+const $isShallowRepository = (command: () => Buffer): boolean =>
+  command().toString().trim() === 'true';
+
+export const isShallowRepository = (
+  command = gitIsShallowRepository,
+): boolean => $isShallowRepository(command);
+
 const $commitAuthors = (
   command: () => Buffer,
 ): { commits: number; author: string }[] => {
@@ -265,8 +275,19 @@ const $commitAuthors = (
 };
 
 const gitCommitAuthors = () => {
-  if (isCI) {
-    execSync(`git fetch --shallow-since "one month ago" --quiet 2>/dev/null`);
+  if (isCI && isShallowRepository()) {
+    const gitFetchShallowSinceCommand =
+      'git fetch --shallow-since "one month ago" --quiet 2>/dev/null';
+
+    try {
+      execSync(gitFetchShallowSinceCommand, {
+        timeout: 5000,
+      });
+    } catch (error) {
+      knapsackProLogger.debug(
+        `Skip the \`${gitFetchShallowSinceCommand}\` command because it took too long. Error: ${error.message}`,
+      );
+    }
   }
 
   return execSync(
