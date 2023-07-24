@@ -13,8 +13,8 @@ echo $COMMIT_HASH
 ENDPOINT=https://api-staging.knapsackpro.com
 # ENDPOINT=http://api.knapsackpro.test:3000
 
-LOG_LEVEL=info
-# LOG_LEVEL=debug
+# LOG_LEVEL=info
+LOG_LEVEL=debug
 
 export KNAPSACK_PRO_ENDPOINT=$ENDPOINT
 export KNAPSACK_PRO_TEST_SUITE_TOKEN_JEST=cd67ffc01ce2b3d56f3a223b547f466e
