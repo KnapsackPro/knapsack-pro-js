@@ -117,6 +117,9 @@ npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
 npm run test:jest
 git commit -am "deps(jest-example-test-suite): update @knapsack-pro/jest"
 
+npm install -D @knapsack-pro/jest -w packages/create-react-app-example
+git commit -am "deps(create-react-app-example): update @knapsack-pro/jest"
+
 git push origin main --tags
 
 cd packages/jest
