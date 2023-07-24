@@ -49,7 +49,7 @@
     "url": "https://github.com/KnapsackPro/knapsack-pro-js/issues"
   },
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.4.0",
     "axios-retry": "^3.2.5",
     "winston": "^3.7.2"
   },
