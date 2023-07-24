@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.2.1
+
+### Patch Changes
+
+- 1ef1863: Fix hanging CI when `git fetch --shallow-since` takes too long
+
+  https://github.com/KnapsackPro/knapsack-pro-js/pull/48
+
 ## 6.2.0
 
 ### Minor Changes
