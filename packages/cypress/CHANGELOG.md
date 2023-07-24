@@ -1,5 +1,11 @@
 # Changelog
 
+## 7.2.1
+
+### Patch Changes
+
+- e8d55ce: Update @knapsack-pro/core to 6.2.1
+
 ## 7.2.0
 
 ### Minor Changes
