@@ -36,4 +36,8 @@ export class CirrusCI extends CIProviderBase {
   public static get fixedQueueSplit(): boolean {
     return false;
   }
+
+  public static get ciProvider(): string {
+    return 'Cirrus CI';
+  }
 }

@@ -30,4 +30,8 @@ export abstract class CIProviderBase {
   public static get fixedQueueSplit(): boolean {
     throw new Error('fixedQueueSplit getter is not implemented!');
   }
+
+  public static get ciProvider(): string | null {
+    throw new Error('ciProvider getter is not implemented!');
+  }
 }

@@ -2,6 +2,7 @@ import {
   KnapsackProEnvConfig,
   buildAuthor,
   commitAuthors,
+  ciProvider,
 } from '../src/config/knapsack-pro-env.config';
 import { KnapsackProLogger } from '../src/knapsack-pro-logger';
 import * as Urls from '../src/urls';
@@ -285,7 +286,7 @@ describe('KnapsackProEnvConfig', () => {
           false,
         ],
         ['Travis CI', { TRAVIS: 'whatever' }, true],
-        ['Unsupported', {}, true],
+        ['Unsupported CI', {}, true],
       ];
       TESTS.forEach(([ci, env, expected]) => {
         it(`on ${ci} it is ${expected} and the default value is logged once`, () => {
@@ -379,6 +380,44 @@ describe('KnapsackProEnvConfig', () => {
         });
 
         expect(actual).toEqual([]);
+      });
+    });
+  });
+
+  describe('ciProvider', () => {
+    const TESTS: [string, object][] = [
+      ['AppVeyor', { APPVEYOR: '123' }],
+      ['Azure Pipelines', { SYSTEM_TEAMFOUNDATIONCOLLECTIONURI: '123' }],
+      ['AWS CodeBuild', { CODEBUILD_BUILD_ARN: '123' }],
+      ['Bamboo', { bamboo_planKey: '123' }],
+      ['Bitbucket Pipelines', { BITBUCKET_COMMIT: '123' }],
+      ['Buddy.works', { BUDDY: 'true' }],
+      ['Buildkite', { BUILDKITE: 'true' }],
+      ['CircleCI', { CIRCLECI: 'true' }],
+      ['Cirrus CI', { CIRRUS_CI: 'true' }],
+      ['Codefresh', { CF_BUILD_ID: '123' }],
+      ['Codeship', { CI_NAME: 'codeship' }],
+      ['Drone.io', { DRONE: 'true' }],
+      ['GitHub Actions', { GITHUB_ACTIONS: 'true' }],
+      ['Gitlab CI', { GITLAB_CI: 'true' }],
+      ['Google Cloud Build', { BUILDER_OUTPUT: '123' }],
+      ['Heroku CI', { HEROKU_TEST_RUN_ID: '123' }],
+      ['Jenkins', { JENKINS_URL: '123' }],
+      ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: '123' }],
+      ['Semaphore CI 2.0', { SEMAPHORE: 'true', SEMAPHORE_WORKFLOW_ID: '123' }],
+      ['TeamCity', { TEAMCITY_VERSION: '123' }],
+      ['Travis CI', { TRAVIS: 'true' }],
+      ['Other', { CI: 'true' }],
+      [null, {}],
+    ];
+
+    TESTS.forEach(([ci, env]) => {
+      it(`detects ${ci ?? 'missing CI from env or development'}`, () => {
+        process.env = { ...process.env, ...env };
+
+        const actual = ciProvider();
+
+        expect(actual).toEqual(ci);
       });
     });
   });

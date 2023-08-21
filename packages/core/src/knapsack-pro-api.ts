@@ -1,11 +1,32 @@
 import axios, { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
 
-import { KnapsackProEnvConfig, buildAuthor, commitAuthors } from './config';
+import {
+  KnapsackProEnvConfig,
+  buildAuthor,
+  commitAuthors,
+  ciProvider,
+} from './config';
 import { KnapsackProLogger } from './knapsack-pro-logger';
 import { TestFile } from './models';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axiosRetry = require('axios-retry');
+
+export const getHeaders = ({
+  clientName,
+  clientVersion,
+}: {
+  clientName: string;
+  clientVersion: string;
+}) => {
+  const ci = ciProvider();
+
+  return {
+    'KNAPSACK-PRO-CLIENT-NAME': clientName,
+    'KNAPSACK-PRO-CLIENT-VERSION': clientVersion,
+    ...(ci !== null ? { 'KNAPSACK-PRO-CI-PROVIDER': ci } : {}),
+  };
+};
 
 export class KnapsackProAPI {
   private readonly api: AxiosInstance;
@@ -87,10 +108,7 @@ export class KnapsackProAPI {
     const apiClient = axios.create({
       baseURL: KnapsackProEnvConfig.endpoint,
       timeout: 15000,
-      headers: {
-        'KNAPSACK-PRO-CLIENT-NAME': clientName,
-        'KNAPSACK-PRO-CLIENT-VERSION': clientVersion,
-      },
+      headers: getHeaders({ clientName, clientVersion }),
     });
 
     axiosRetry(apiClient, {

@@ -1,5 +1,5 @@
 import childProcess = require('child_process');
-import { CIEnvConfig, isCI } from '.';
+import { CIEnvConfig, isCI, detectCI } from '.';
 import { KnapsackProLogger } from '../knapsack-pro-logger';
 import * as Urls from '../urls';
 
@@ -298,3 +298,5 @@ const gitCommitAuthors = () => {
 export const commitAuthors = (
   command = gitCommitAuthors,
 ): { commits: number; author: string }[] => $commitAuthors(command);
+
+export const ciProvider = (): string | null => detectCI().ciProvider;

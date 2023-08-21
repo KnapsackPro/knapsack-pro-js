@@ -36,4 +36,8 @@ export class TravisCI extends CIProviderBase {
   public static get fixedQueueSplit(): boolean {
     return true;
   }
+
+  public static get ciProvider(): string {
+    return 'Travis CI';
+  }
 }

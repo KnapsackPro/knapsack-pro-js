@@ -43,4 +43,8 @@ export class SemaphoreCI extends CIProviderBase {
   public static get fixedQueueSplit(): boolean {
     return false;
   }
+
+  public static get ciProvider(): string {
+    return 'Semaphore CI 1.0';
+  }
 }
