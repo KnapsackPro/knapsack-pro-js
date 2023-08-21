@@ -36,4 +36,8 @@ export class CircleCI extends CIProviderBase {
   public static get fixedQueueSplit(): boolean {
     return false;
   }
+
+  public static get ciProvider(): string {
+    return 'CircleCI';
+  }
 }
