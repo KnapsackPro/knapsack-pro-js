@@ -275,7 +275,7 @@ const $commitAuthors = (
 };
 
 const gitCommitAuthors = () => {
-  if (isCI && isShallowRepository()) {
+  if (isCI() && isShallowRepository()) {
     const gitFetchShallowSinceCommand =
       'git fetch --shallow-since "one month ago" --quiet 2>/dev/null';
 
