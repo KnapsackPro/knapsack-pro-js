@@ -1,5 +1,7 @@
 import { CIProviderBase } from '.';
 
+// Semaphore Classic is deprecated
+// https://semaphoreci.com/blog/semaphore-classic-deprecation
 export class SemaphoreCI extends CIProviderBase {
   public static get ciNodeTotal(): string | undefined {
     return process.env.SEMAPHORE_THREAD_COUNT;
