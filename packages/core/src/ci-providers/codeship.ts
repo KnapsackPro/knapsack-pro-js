@@ -25,8 +25,8 @@ export class Codeship extends CIProviderBase {
     return process.env.CI_BRANCH;
   }
 
-  public static get userSeat(): undefined {
-    return undefined;
+  public static get userSeat(): string | undefined {
+    return process.env.CI_COMMITTER_NAME;
   }
 
   public static get detect(): typeof CIProviderBase | null {

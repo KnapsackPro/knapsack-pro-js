@@ -26,8 +26,8 @@ export class AppVeyor extends CIProviderBase {
     return process.env.APPVEYOR_REPO_BRANCH;
   }
 
-  public static get userSeat(): undefined {
-    return undefined;
+  public static get userSeat(): string | undefined {
+    return process.env.APPVEYOR_REPO_COMMIT_AUTHOR;
   }
 
   public static get detect(): typeof CIProviderBase | null {
