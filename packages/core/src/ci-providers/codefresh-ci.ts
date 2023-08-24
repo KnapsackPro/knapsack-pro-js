@@ -26,8 +26,8 @@ export class CodefreshCI extends CIProviderBase {
     return process.env.CF_BRANCH;
   }
 
-  public static get userSeat(): undefined {
-    return undefined;
+  public static get userSeat(): string | undefined {
+    return process.env.CF_BUILD_INITIATOR;
   }
 
   public static get detect(): typeof CIProviderBase | null {
