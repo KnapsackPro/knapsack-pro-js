@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.3.0
+
+### Minor Changes
+
+- 52e8598: Detect user seats for AppVeyor, Codefresh, Codeship
+
+  https://github.com/KnapsackPro/knapsack-pro-js/pull/52
+
 ## 6.2.1
 
 ### Patch Changes
