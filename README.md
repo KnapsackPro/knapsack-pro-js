@@ -129,6 +129,10 @@ cd packages/create-react-app-example
 npm install -D @knapsack-pro/jest
 npm run test:cra
 git commit -am "deps(create-react-app-example): update @knapsack-pro/jest"
+
+# cd root folder
+npm install
+git commit -am "chore: update package-lock.json"
 ```
 
 Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repository.
