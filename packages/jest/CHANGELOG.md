@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.4.0
+
+- Update @knapsack-pro/core to 6.4.0
+
 ## 7.3.0
 
 ### Minor Changes
