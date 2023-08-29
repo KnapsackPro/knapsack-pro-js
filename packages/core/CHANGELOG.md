@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.4.0
+
+### Minor Changes
+
+- 8139035: Send to the API the CI provider with a header
+
+### Patch Changes
+
+- 2520226: Fix isCi() check when computing commitAuthors
+
 ## 6.3.0
 
 ### Minor Changes
