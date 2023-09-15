@@ -1,5 +1,5 @@
-import glob = require('glob');
-import minimatch = require('minimatch');
+import { glob } from 'glob';
+import { minimatch } from 'minimatch';
 
 import { KnapsackProLogger, TestFile } from '@knapsack-pro/core';
 import { EnvConfig } from './env-config';

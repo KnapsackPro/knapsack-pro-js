@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Replace `gulp` (and `babel`) with `tsc`
+- Update `tsconfig` to target node 18
+- Bump `glob` from `^8.0.3` to `^10.3.4`
+- Bump `minimatch` from `^5.1.0` to `^9.0.3`
+- Bump `typescript` from `^4.7.3` to `^5.2.2`
+
 ## 7.4.0
 
 - Update @knapsack-pro/core to 6.4.0

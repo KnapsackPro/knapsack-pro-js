@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "outDir": "lib",
-    "removeComments": true,
-    "target": "es5",
-    "lib": ["es2015", "es2016.array.include"],
-    "types": []
+    "outDir": "lib"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "extends": "../../tsconfig.base.json"
 }
