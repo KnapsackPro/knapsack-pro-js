@@ -5,7 +5,7 @@
   "main": "index.js",
   "devDependencies": {
     "@knapsack-pro/cypress": "^7.4.0",
-    "cypress": "^12.15.0"
+    "cypress": "^13.2.0"
   },
   "scripts": {
     "test": "cypress run",

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Replace `gulp` (and `babel`) with `tsc`
+- Update `tsconfig` to target node 18
+- Bump `axios` from `^0.27.2` to `^1.5.0`
+- Bump `axios-retry` from `^3.2.5` to `^3.7.0`
+- Bump `winston` from `^3.7.2` to `^3.10.0`
+- Bump `typescript` from `^4.7.3` to `^5.2.2`
+
 ## 6.4.0
 
 ### Minor Changes

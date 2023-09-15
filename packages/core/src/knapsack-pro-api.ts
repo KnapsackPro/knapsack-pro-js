@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
+import axiosRetry from 'axios-retry';
 
 import {
   KnapsackProEnvConfig,
@@ -8,9 +9,6 @@ import {
 } from './config';
 import { KnapsackProLogger } from './knapsack-pro-logger';
 import { TestFile } from './models';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axiosRetry = require('axios-retry');
 
 export const getHeaders = ({
   clientName,
