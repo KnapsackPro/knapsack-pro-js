@@ -14,6 +14,7 @@
     "test:core:coverage": "npm run test:coverage -w packages/core",
     "test:jest": "npm run build && npm run test:ks -w packages/jest-example-test-suite",
     "test:cypress": "npm run build && npm run test:ks -w packages/cypress-example-test-suite",
-    "test:cra": "cd packages/create-react-app-example && npm install && npm run test:ks"
+    "test:cra": "cd packages/create-react-app-example && npm install && npm run test:ks",
+    "test:examples": "npm run test:jest && npm run test:cypress && npm run test:cra"
   }
 }
