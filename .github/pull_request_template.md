@@ -1,1 +1,2 @@
-<!-- Please tag with the correct @knapsack-pro/PACKAGE  label -->
+- [ ] I tagged with the correct `@knapsack-pro/PACKAGE` label
+- [ ] I added my changes to the *Unreleased* section in the CHANGELOG(s)

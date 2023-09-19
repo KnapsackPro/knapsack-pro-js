@@ -84,90 +84,78 @@ In `File > Preferences > Settings > Text Editor > Formatting`, enable the `Forma
 
 ### Publishing
 
-We use [`changesets`](https://github.com/changesets/changesets), which means:
-
-- you need to add a changeset (`npx changeset`) to any changes that should bump a version (and appear in the CHANGELOG.md)
-- a [bot](https://github.com/apps/changeset-bot) checks that PRs contain a changeset
-- the [changesets GitHub Action](https://github.com/changesets/action) creates a pull request that applies all the changesets
-
-In the future, we should look into [`npx changeset publish`](https://github.com/changesets/changesets/blob/main/packages/cli/README.md#publish) to automate further.
-
-#### 1. Update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` locally
-
-If `@knapsack-pro/core` is already published to npm, you can follow these steps to update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` locally.
-
-However, next time, try to update `@knapsack-pro/core` in `@knapsack-pro/jest` or `@knapsack-pro/cypress` in the same PR that introduces the changes to `@knapsack-pro/core`, so that you can follow the easier [Publish via Changesets PR](#2-publish-via-changesets-pr).
-
-From the root folder of the repository (replace `jest` with `cypress` if needed):
+#### Core
 
 ```bash
-npm install @knapsack-pro/core -w packages/jest
-npx changeset
-# Update @knapsack-pro/core to x.x.x
-
+# merge PR and pull or edit code
+# if new files that should be part of the released npm package were added, please ensure they are included in the `files` array in `package.json`
+# update CHANGELOG to move *unreleased* into the proper *version*
+npm version LEVEL -w packages/core
 git add --all
-git commit -m "deps(jest): update @knapsack-pro/core"
+git commit -m "chore: prepare release"
+git tag @knapsack-pro/core@x.x.x
+```
 
-npx changeset version
-npm install # update @knapsack-pro/jest version in package-lock.json (bug in npm?)
-git commit -am @knapsack-pro/jest@x.x.x
-git tag @knapsack-pro/jest@x.x.x
-
-npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
-npm run test:jest
-git commit -am "deps(jest-example-test-suite): update @knapsack-pro/jest"
-
+```bash
 git push origin main --tags
+```
 
-cd packages/jest
+```bash
+cd packages/core
 npm run build
 npm adduser # sign in to npm
 npm publish
-
-# if a project is not a workspace
-cd packages/create-react-app-example
-npm install -D @knapsack-pro/jest
-npm run test:cra
-git commit -am "deps(create-react-app-example): update @knapsack-pro/jest"
-
-# cd root folder
-npm install
-git commit -am "chore: update package-lock.json"
 ```
 
-Remember to update `TestSuiteClientVersionChecker` in the Knapsack Pro API repository.
+#### Jest and/or Cypress
 
-#### 2. Publish via Changesets PR
+Replace PACKAGE with `jest`, or `cypress`. If core changed you'll need to update both.
 
-1. Merge the PR created by the `changesets` GitHub Action
+```bash
+# merge PR and pull or edit code
+# if new files that should be part of the released npm package were added, please ensure they are included in the `files` array in `package.json`
+# update CHANGELOG(s) to move *unreleased* into the proper *version*
+npm version LEVEL -w packages/PACKAGE
+npm install @knapsack-pro/core -w packages/jest
+# make sure @knapsack-pro/core was updated in packages/jest/package.json (you can retry specifying the version package@x.x.x)
+npm install @knapsack-pro/core -w packages/cypress
+# make sure @knapsack-pro/core was updated in packages/cypress/package.json (you can retry specifying the version package@x.x.x)
+git add --all
+git commit -m "chore: prepare release"
+git tag @knapsack-pro/PACKAGE@x.x.x # can be multiple tags
+```
 
-1. If you have added new files to the repository, and they should be part of the released npm package, please ensure they are included in the `files` array in `package.json`
+```bash
+git push origin main --tags
+```
 
-1. From the root folder of the repository (replace `core` with `jest` or `cypress` if needed):
+```bash
+cd packages/PACKAGE
+npm run build
+npm adduser # sign in to npm
+npm publish
+```
 
-   ```bash
-   git pull
+```bash
+npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
+# make sure @knapsack-pro/jest was updated in packages/jest-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
+npm run test:jest
 
-   npm install # update @knapsack-pro/core version in package-lock.json (bug in npm?)
-   git commit -am "chore: update package-lock.json"
+npm install -D @knapsack-pro/cypress -w packages/cypress-example-test-suite
+# make sure @knapsack-pro/cypress was updated in packages/cypress-example-test-suite/package.json
+npm run test:cypress
 
-   git tag @knapsack-pro/core@x.x.x
-   git push origin main --tags
+# since create-react-app-example is not a workspace (for now)
+cd packages/create-react-app-example
+npm install -D @knapsack-pro/jest
+# make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.json
+npm run test:cra
 
-   cd packages/core
-   npm run build
-   npm adduser # sign in to npm
-   npm publish
-   ```
+git add --all
+git commit -m "deps(examples): update @knapsack-pro"
+```
 
-1. Remember to update:
-
-   - [@knapsack-pro/jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
-   - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
-   - [@knapsack-pro/cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
-   - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
-   - [create-react-app-example](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/create-react-app-example)
-   - `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
+Remember to update `TestSuiteClientVersionChecker` for the Knapsack Pro API repository.
 
 ## Packages
 
