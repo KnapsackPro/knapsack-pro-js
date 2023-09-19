@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 8.0.0
+
 - Replace `gulp` (and `babel`) with `tsc`
 - Update `tsconfig` to target node 18
 - Bump `glob` from `^8.0.3` to `^10.3.4`
