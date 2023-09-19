@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 7.0.0
+
 - Replace `gulp` (and `babel`) with `tsc`
 - Update `tsconfig` to target node 18
 - Bump `axios` from `^0.27.2` to `^1.5.0`
