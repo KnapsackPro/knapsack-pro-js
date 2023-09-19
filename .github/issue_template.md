@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-<!-- Please tag with the correct @knapsack-pro/PACKAGE  label -->
+- [ ] I tagged with the correct `@knapsack-pro/PACKAGE` label
