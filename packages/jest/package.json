@@ -1,6 +1,6 @@
 {
   "name": "@knapsack-pro/jest",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "Knapsack Pro Jest splits Jest tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
   "keywords": [
     "knapsack",
@@ -30,7 +30,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
-    "build": "rm -rf lib && tsc && chmod u+w lib/knapsack-pro-jest.js",
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-pro-jest.js",
     "lint": "npm run eslint:check && npm run prettier:check",
     "eslint:check": "eslint . --ext .ts",
     "eslint:format": "eslint . --ext .ts --fix",
@@ -52,7 +52,7 @@
     "knapsack-pro-jest": "lib/knapsack-pro-jest.js"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^6.4.0",
+    "@knapsack-pro/core": "^7.0.0",
     "glob": "^10.3.4",
     "minimatch": "^9.0.3",
     "minimist": "^1.2.6",
