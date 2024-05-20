@@ -1,5 +1,5 @@
 import childProcess = require('child_process');
-import { CIEnvConfig, isCI, detectCI } from '.';
+import { CIProviderMethod, CIEnvConfig, isCI, detectCI } from '.';
 import { KnapsackProLogger } from '../knapsack-pro-logger';
 import * as Urls from '../urls';
 
@@ -50,9 +50,13 @@ export class KnapsackProEnvConfig {
       return this.$fixedQueueSplit;
     }
 
+    const envValue = this.envFor(
+      'KNAPSACK_PRO_FIXED_QUEUE_SPLIT',
+      'fixedQueueSplit',
+    );
+
     this.$fixedQueueSplit =
-      this.parseBoolean(process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT) ??
-      CIEnvConfig.fixedQueueSplit;
+      typeof envValue === 'string' ? this.parseBoolean(envValue) : envValue;
 
     if (!('KNAPSACK_PRO_FIXED_QUEUE_SPLIT' in process.env)) {
       this.$knapsackProLogger.info(
@@ -74,14 +78,42 @@ export class KnapsackProEnvConfig {
     }
   }
 
-  public static get ciNodeTotal(): number | never {
-    if (process.env.KNAPSACK_PRO_CI_NODE_TOTAL) {
-      return parseInt(process.env.KNAPSACK_PRO_CI_NODE_TOTAL, 10);
+  private static logOverwrittenEnv(
+    envName: string,
+    envValue: string,
+    ciEnvValue: string,
+  ): void {
+    this.$knapsackProLogger.info(
+      `You have set the environment variable ${envName} to ${envValue} which could be automatically determined from the CI environment as ${ciEnvValue}.`,
+    );
+  }
+
+  private static envFor<T extends CIProviderMethod>(
+    knapsackEnvName: string,
+    ciEnvFunction: T,
+  ): string | (typeof CIEnvConfig)[T] {
+    const knapsackEnvValue = process.env[knapsackEnvName];
+    const ciEnvValue = CIEnvConfig[ciEnvFunction];
+
+    if (
+      knapsackEnvValue !== undefined &&
+      ciEnvValue !== undefined &&
+      knapsackEnvValue !== ciEnvValue.toString()
+    ) {
+      this.logOverwrittenEnv(
+        knapsackEnvName,
+        knapsackEnvValue,
+        ciEnvValue.toString(),
+      );
     }
 
-    const { ciNodeTotal } = CIEnvConfig;
-    if (ciNodeTotal) {
-      return parseInt(ciNodeTotal, 10);
+    return knapsackEnvValue !== undefined ? knapsackEnvValue : ciEnvValue;
+  }
+
+  public static get ciNodeTotal(): number | never {
+    const envValue = this.envFor('KNAPSACK_PRO_CI_NODE_TOTAL', 'ciNodeTotal');
+    if (envValue) {
+      return parseInt(envValue, 10);
     }
 
     throw new Error(
@@ -90,13 +122,9 @@ export class KnapsackProEnvConfig {
   }
 
   public static get ciNodeIndex(): number | never {
-    if (process.env.KNAPSACK_PRO_CI_NODE_INDEX) {
-      return parseInt(process.env.KNAPSACK_PRO_CI_NODE_INDEX, 10);
-    }
-
-    const { ciNodeIndex } = CIEnvConfig;
-    if (ciNodeIndex) {
-      return parseInt(ciNodeIndex, 10);
+    const envValue = this.envFor('KNAPSACK_PRO_CI_NODE_INDEX', 'ciNodeIndex');
+    if (envValue) {
+      return parseInt(envValue, 10);
     }
 
     throw new Error(
@@ -105,13 +133,12 @@ export class KnapsackProEnvConfig {
   }
 
   public static get ciNodeBuildId(): string | never {
-    if (process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID) {
-      return process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID;
-    }
-
-    const { ciNodeBuildId } = CIEnvConfig;
-    if (ciNodeBuildId) {
-      return ciNodeBuildId;
+    const envValue = this.envFor(
+      'KNAPSACK_PRO_CI_NODE_BUILD_ID',
+      'ciNodeBuildId',
+    );
+    if (envValue) {
+      return envValue;
     }
 
     throw new Error(
@@ -120,26 +147,21 @@ export class KnapsackProEnvConfig {
   }
 
   public static get ciNodeRetryCount(): number {
-    if (process.env.KNAPSACK_PRO_CI_NODE_RETRY_COUNT) {
-      return parseInt(process.env.KNAPSACK_PRO_CI_NODE_RETRY_COUNT, 10);
-    }
-
-    const { ciNodeRetryCount } = CIEnvConfig;
-    if (ciNodeRetryCount) {
-      return parseInt(ciNodeRetryCount, 10);
+    const envValue = this.envFor(
+      'KNAPSACK_PRO_CI_NODE_RETRY_COUNT',
+      'ciNodeRetryCount',
+    );
+    if (envValue) {
+      return parseInt(envValue, 10);
     }
 
     return 0;
   }
 
   public static get commitHash(): string | never {
-    if (process.env.KNAPSACK_PRO_COMMIT_HASH) {
-      return process.env.KNAPSACK_PRO_COMMIT_HASH;
-    }
-
-    const { commitHash } = CIEnvConfig;
-    if (commitHash) {
-      return commitHash;
+    const envValue = this.envFor('KNAPSACK_PRO_COMMIT_HASH', 'commitHash');
+    if (envValue) {
+      return envValue;
     }
 
     const gitProcess = spawnSync('git', ['rev-parse', 'HEAD']);
@@ -171,13 +193,9 @@ export class KnapsackProEnvConfig {
   }
 
   public static get branch(): string | never {
-    if (process.env.KNAPSACK_PRO_BRANCH) {
-      return process.env.KNAPSACK_PRO_BRANCH;
-    }
-
-    const { branch } = CIEnvConfig;
-    if (branch) {
-      return branch;
+    const envValue = this.envFor('KNAPSACK_PRO_BRANCH', 'branch');
+    if (envValue) {
+      return envValue;
     }
 
     const gitProcess = spawnSync('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
@@ -217,13 +235,9 @@ export class KnapsackProEnvConfig {
   }
 
   public static get maskedUserSeat(): string | void {
-    if (process.env.KNAPSACK_PRO_USER_SEAT) {
-      return mask(process.env.KNAPSACK_PRO_USER_SEAT);
-    }
-
-    const { userSeat } = CIEnvConfig;
-    if (userSeat) {
-      return mask(userSeat);
+    const envValue = this.envFor('KNAPSACK_PRO_USER_SEAT', 'userSeat');
+    if (envValue) {
+      return mask(envValue);
     }
 
     return undefined;

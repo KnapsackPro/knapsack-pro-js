@@ -40,7 +40,7 @@ export const isCI = (): boolean =>
   (process.env.CI || 'false').toLowerCase() === 'true' ||
   detectCI() !== UnsupportedCI;
 
-type CIProviderMethod =
+export type CIProviderMethod =
   | 'ciNodeTotal'
   | 'ciNodeIndex'
   | 'ciNodeBuildId'

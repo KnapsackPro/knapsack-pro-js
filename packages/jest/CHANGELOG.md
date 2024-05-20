@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Warn when `KNAPSACK_PRO_*` environment variables are set manually if their values could be automatically determined from supported CI environments.
 
 ## 8.0.1
 
