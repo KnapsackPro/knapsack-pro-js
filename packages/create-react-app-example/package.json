@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@knapsack-pro/jest": "^8.0.1"
+    "@knapsack-pro/jest": "^8.1.0"
   },
   "jest": {
     "roots": [
