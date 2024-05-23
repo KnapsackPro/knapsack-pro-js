@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 7.1.0
+
+- Warn when `KNAPSACK_PRO_*` environment variables are set manually if their values could be automatically determined from supported CI environments.
+
 ## 7.0.0
 
 - Replace `gulp` (and `babel`) with `tsc`
