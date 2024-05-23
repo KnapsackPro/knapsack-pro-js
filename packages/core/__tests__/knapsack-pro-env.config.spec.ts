@@ -12,9 +12,20 @@ describe('KnapsackProEnvConfig', () => {
   delete process.env.CIRCLECI;
   delete process.env.CI;
   const ENV = { ...process.env };
+  let logs: string[] = [];
+
+  beforeEach(() => {
+    // eslint-disable-next-line dot-notation
+    KnapsackProEnvConfig['$knapsackProLogger'] = {
+      info(message) {
+        logs.push(message);
+      },
+    } as KnapsackProLogger;
+  });
 
   afterEach(() => {
     process.env = { ...ENV };
+    logs = [];
   });
 
   describe('.ciNodeBuildId', () => {
@@ -33,17 +44,31 @@ describe('KnapsackProEnvConfig', () => {
         process.env.BUILDKITE_BUILD_NUMBER = ciBuildId;
 
         expect(KnapsackProEnvConfig.ciNodeBuildId).toEqual(ciBuildId);
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when KNAPSACK_PRO_CI_NODE_BUILD_ID is defined on the environment AND the build id is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_CI_NODE_BUILD_ID', () => {
+      it('returns KNAPSACK_PRO_CI_NODE_BUILD_ID and logs info', () => {
         const ciBuildId = 'some-build-id';
         process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID = ciBuildId;
         process.env.BUILDKITE = 'true';
         process.env.BUILDKITE_BUILD_NUMBER = 'some-other-build-id';
 
         expect(KnapsackProEnvConfig.ciNodeBuildId).toEqual(ciBuildId);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_CI_NODE_BUILD_ID to ${ciBuildId} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_BUILD_NUMBER}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_CI_NODE_BUILD_ID is defined on the environment AND the build id is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID = 'some-build-id';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_BUILD_NUMBER = 'some-build-id';
+
+        expect(logs).toEqual([]);
       });
     });
   });
@@ -60,6 +85,7 @@ describe('KnapsackProEnvConfig', () => {
           process.env.BUILDKITE_RETRY_COUNT = '1';
 
           expect(KnapsackProEnvConfig.ciNodeRetryCount).toEqual(1);
+          expect(logs).toEqual([]);
         });
       });
     });
@@ -71,7 +97,31 @@ describe('KnapsackProEnvConfig', () => {
           process.env.GITHUB_RUN_ATTEMPT = '2';
 
           expect(KnapsackProEnvConfig.ciNodeRetryCount).toEqual(1);
+          expect(logs).toEqual([]);
         });
+      });
+    });
+
+    describe('when KNAPSACK_PRO_CI_NODE_RETRY_COUNT is defined on the environment AND the retry count is defined on a supported CI environment', () => {
+      it('returns KNAPSACK_PRO_CI_NODE_RETRY_COUNT and logs info', () => {
+        process.env.KNAPSACK_PRO_CI_NODE_RETRY_COUNT = '2';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_RETRY_COUNT = '1';
+
+        expect(KnapsackProEnvConfig.ciNodeRetryCount).toEqual(2);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_CI_NODE_RETRY_COUNT to ${process.env.KNAPSACK_PRO_CI_NODE_RETRY_COUNT} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_RETRY_COUNT}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_CI_NODE_RETRY_COUNT is defined on the environment AND the retry count is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_CI_NODE_RETRY_COUNT = '2';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_RETRY_COUNT = '2';
+
+        expect(logs).toEqual([]);
       });
     });
   });
@@ -93,11 +143,12 @@ describe('KnapsackProEnvConfig', () => {
 
         const expected = parseInt(ciNodeTotal, 10);
         expect(KnapsackProEnvConfig.ciNodeTotal).toEqual(expected);
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when KNAPSACK_PRO_CI_NODE_TOTAL is defined on the environment AND the ciNodeTotal is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_CI_NODE_TOTAL', () => {
+      it('returns KNAPSACK_PRO_CI_NODE_TOTAL and logs info', () => {
         const ciNodeTotal = '2';
         process.env.KNAPSACK_PRO_CI_NODE_TOTAL = ciNodeTotal;
         process.env.BUILDKITE = 'true';
@@ -105,6 +156,19 @@ describe('KnapsackProEnvConfig', () => {
 
         const expected = parseInt(ciNodeTotal, 10);
         expect(KnapsackProEnvConfig.ciNodeTotal).toEqual(expected);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_CI_NODE_TOTAL to ${ciNodeTotal} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_PARALLEL_JOB_COUNT}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_CI_NODE_TOTAL is defined on the environment AND the ciNodeTotal is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_CI_NODE_TOTAL = '2';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_PARALLEL_JOB_COUNT = '2';
+
+        expect(logs).toEqual([]);
       });
     });
   });
@@ -126,11 +190,12 @@ describe('KnapsackProEnvConfig', () => {
 
         const expected = parseInt(ciNodeIndex, 10);
         expect(KnapsackProEnvConfig.ciNodeIndex).toEqual(expected);
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when KNAPSACK_PRO_CI_NODE_INDEX is defined on the environment AND the ciNodeIndex is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_CI_NODE_INDEX', () => {
+      it('returns KNAPSACK_PRO_CI_NODE_INDEX and logs info', () => {
         const ciNodeIndex = '2';
         process.env.KNAPSACK_PRO_CI_NODE_INDEX = ciNodeIndex;
         process.env.BUILDKITE = 'true';
@@ -138,6 +203,19 @@ describe('KnapsackProEnvConfig', () => {
 
         const expected = parseInt(ciNodeIndex, 10);
         expect(KnapsackProEnvConfig.ciNodeIndex).toEqual(expected);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_CI_NODE_INDEX to ${ciNodeIndex} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_PARALLEL_JOB}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_CI_NODE_INDEX is defined on the environment AND the ciNodeIndex is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_CI_NODE_INDEX = '2';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_PARALLEL_JOB = '2';
+
+        expect(logs).toEqual([]);
       });
     });
   });
@@ -150,17 +228,31 @@ describe('KnapsackProEnvConfig', () => {
         process.env.BUILDKITE_COMMIT = commitHash;
 
         expect(KnapsackProEnvConfig.commitHash).toEqual(commitHash);
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when KNAPSACK_PRO_COMMIT_HASH is defined on the environment AND the commitHash is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_COMMIT_HASH', () => {
+      it('returns KNAPSACK_PRO_COMMIT_HASH and logs info', () => {
         const commitHash = 'aaa111';
         process.env.KNAPSACK_PRO_COMMIT_HASH = commitHash;
         process.env.BUILDKITE = 'true';
         process.env.BUILDKITE_COMMIT = 'bbb222';
 
         expect(KnapsackProEnvConfig.commitHash).toEqual(commitHash);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_COMMIT_HASH to ${commitHash} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_COMMIT}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_COMMIT_HASH is defined on the environment AND the commitHash is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_COMMIT_HASH = 'aaa111';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_COMMIT = 'aaa111';
+
+        expect(logs).toEqual([]);
       });
     });
   });
@@ -173,96 +265,114 @@ describe('KnapsackProEnvConfig', () => {
         process.env.BUILDKITE_BRANCH = branch;
 
         expect(KnapsackProEnvConfig.branch).toEqual(branch);
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when KNAPSACK_PRO_BRANCH is defined on the environment AND the branch is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_BRANCH', () => {
+      it('returns KNAPSACK_PRO_BRANCH and logs info', () => {
         const branch = 'aaa111';
         process.env.KNAPSACK_PRO_BRANCH = branch;
         process.env.BUILDKITE = 'true';
         process.env.BUILDKITE_BRANCH = 'bbb222';
 
         expect(KnapsackProEnvConfig.branch).toEqual(branch);
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_BRANCH to ${branch} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_BRANCH}.`,
+        ]);
+      });
+    });
+
+    describe('when KNAPSACK_PRO_BRANCH is defined on the environment AND the branch is defined on a supported CI environment AND they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_BRANCH = 'aaa111';
+        process.env.BUILDKITE = 'true';
+        process.env.BUILDKITE_BRANCH = 'aaa111';
+
+        expect(logs).toEqual([]);
       });
     });
   });
 
   describe('.fixedQueueSplit', () => {
-    let logs: string[] = [];
-
-    beforeEach(() => {
-      // eslint-disable-next-line dot-notation
-      KnapsackProEnvConfig['$knapsackProLogger'] = {
-        info(message) {
-          logs.push(message);
-        },
-      } as KnapsackProLogger;
-    });
-
     afterEach(() => {
       // eslint-disable-next-line dot-notation
       KnapsackProEnvConfig['$fixedQueueSplit'] = undefined;
-      logs = [];
     });
 
     describe('when ENV exists', () => {
       describe('when KNAPSACK_PRO_FIXED_QUEUE_SPLIT=false', () => {
-        const TESTS: [string, object][] = [
-          ['AppVeyor', { APPVEYOR: 'whatever' }],
-          ['Buildkite', { BUILDKITE: 'whatever' }],
-          ['CircleCI', { CIRCLECI: 'whatever' }],
-          ['Cirrus CI', { CIRRUS_CI: 'whatever' }],
-          ['Codefresh', { CF_BUILD_ID: 'whatever' }],
-          ['Codeship', { CI_NAME: 'codeship' }],
-          ['GitHub Actions', { GITHUB_ACTIONS: 'whatever' }],
-          ['GitLab CI', { GITLAB_CI: 'whatever' }],
-          ['Heroku CI', { HEROKU_TEST_RUN_ID: 'whatever' }],
-          ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: 'whatever' }],
+        const TESTS: [string, object, boolean][] = [
+          ['AppVeyor', { APPVEYOR: 'whatever' }, false],
+          ['Buildkite', { BUILDKITE: 'whatever' }, true],
+          ['CircleCI', { CIRCLECI: 'whatever' }, false],
+          ['Cirrus CI', { CIRRUS_CI: 'whatever' }, false],
+          ['Codefresh', { CF_BUILD_ID: 'whatever' }, false],
+          ['Codeship', { CI_NAME: 'codeship' }, true],
+          ['GitHub Actions', { GITHUB_ACTIONS: 'whatever' }, true],
+          ['GitLab CI', { GITLAB_CI: 'whatever' }, true],
+          ['Heroku CI', { HEROKU_TEST_RUN_ID: 'whatever' }, false],
+          ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: 'whatever' }, false],
           [
             'Semaphore CI 2.0',
             { SEMAPHORE: 'whatever', SEMAPHORE_WORKFLOW_ID: 'whatever' },
+            false,
           ],
-          ['Travis CI', { TRAVIS: 'whatever' }],
-          ['Unsupported CI', {}],
+          ['Travis CI', { TRAVIS: 'whatever' }, true],
+          ['Unsupported CI', {}, true],
         ];
-        TESTS.forEach(([ci, env]) => {
+        TESTS.forEach(([ci, env, ciEnv]) => {
           it(`on ${ci} it is false`, () => {
             process.env = { ...process.env, ...env };
             process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT = 'false';
 
             expect(KnapsackProEnvConfig.fixedQueueSplit).toEqual(false);
-            expect(logs).toEqual([]);
+
+            if (ciEnv === false) {
+              expect(logs).toEqual([]);
+            } else {
+              expect(logs).toEqual([
+                `You have set the environment variable KNAPSACK_PRO_FIXED_QUEUE_SPLIT to false which could be automatically determined from the CI environment as ${ciEnv}.`,
+              ]);
+            }
           });
         });
       });
 
       describe('when KNAPSACK_PRO_FIXED_QUEUE_SPLIT=true', () => {
-        const TESTS: [string, object][] = [
-          ['AppVeyor', { APPVEYOR: 'whatever' }],
-          ['Buildkite', { BUILDKITE: 'whatever' }],
-          ['CircleCI', { CIRCLECI: 'whatever' }],
-          ['Cirrus CI', { CIRRUS_CI: 'whatever' }],
-          ['Codefresh', { CF_BUILD_ID: 'whatever' }],
-          ['Codeship', { CI_NAME: 'codeship' }],
-          ['GitHub Actions', { GITHUB_ACTIONS: 'whatever' }],
-          ['GitLab CI', { GITLAB_CI: 'whatever' }],
-          ['Heroku CI', { HEROKU_TEST_RUN_ID: 'whatever' }],
-          ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: 'whatever' }],
+        const TESTS: [string, object, boolean][] = [
+          ['AppVeyor', { APPVEYOR: 'whatever' }, false],
+          ['Buildkite', { BUILDKITE: 'whatever' }, true],
+          ['CircleCI', { CIRCLECI: 'whatever' }, false],
+          ['Cirrus CI', { CIRRUS_CI: 'whatever' }, false],
+          ['Codefresh', { CF_BUILD_ID: 'whatever' }, false],
+          ['Codeship', { CI_NAME: 'codeship' }, true],
+          ['GitHub Actions', { GITHUB_ACTIONS: 'whatever' }, true],
+          ['GitLab CI', { GITLAB_CI: 'whatever' }, true],
+          ['Heroku CI', { HEROKU_TEST_RUN_ID: 'whatever' }, false],
+          ['Semaphore CI 1.0', { SEMAPHORE_BUILD_NUMBER: 'whatever' }, false],
           [
             'Semaphore CI 2.0',
             { SEMAPHORE: 'whatever', SEMAPHORE_WORKFLOW_ID: 'whatever' },
+            false,
           ],
-          ['Travis CI', { TRAVIS: 'whatever' }],
-          ['Unsupported CI', {}],
+          ['Travis CI', { TRAVIS: 'whatever' }, true],
+          ['Unsupported CI', {}, true],
         ];
-        TESTS.forEach(([ci, env]) => {
+        TESTS.forEach(([ci, env, ciEnv]) => {
           it(`on ${ci} it is true`, () => {
             process.env = { ...process.env, ...env };
             process.env.KNAPSACK_PRO_FIXED_QUEUE_SPLIT = 'true';
 
             expect(KnapsackProEnvConfig.fixedQueueSplit).toEqual(true);
-            expect(logs).toEqual([]);
+
+            if (ciEnv === true) {
+              expect(logs).toEqual([]);
+            } else {
+              expect(logs).toEqual([
+                `You have set the environment variable KNAPSACK_PRO_FIXED_QUEUE_SPLIT to true which could be automatically determined from the CI environment as ${ciEnv}.`,
+              ]);
+            }
           });
         });
       });
@@ -309,6 +419,7 @@ describe('KnapsackProEnvConfig', () => {
         process.env.KNAPSACK_PRO_USER_SEAT = 'riccardo';
 
         expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ri******');
+        expect(logs).toEqual([]);
       });
     });
 
@@ -318,16 +429,30 @@ describe('KnapsackProEnvConfig', () => {
         process.env.CIRCLE_USERNAME = 'riccardo';
 
         expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ri******');
+        expect(logs).toEqual([]);
       });
     });
 
     describe('when both KNAPSACK_PRO_USER_SEAT is set and CI is CircleCI', () => {
-      it('it returns the masked KNAPSACK_PRO_USER_SEAT', () => {
+      it('it returns the masked KNAPSACK_PRO_USER_SEAT and logs info', () => {
         process.env.KNAPSACK_PRO_USER_SEAT = 'jane';
         process.env.CIRCLECI = 'whatever';
         process.env.CIRCLE_USERNAME = 'riccardo';
 
         expect(KnapsackProEnvConfig.maskedUserSeat).toEqual('ja**');
+        expect(logs).toEqual([
+          `You have set the environment variable KNAPSACK_PRO_USER_SEAT to ${process.env.KNAPSACK_PRO_USER_SEAT} which could be automatically determined from the CI environment as ${process.env.CIRCLE_USERNAME}.`,
+        ]);
+      });
+    });
+
+    describe('when both KNAPSACK_PRO_USER_SEAT is set and CI is CircleCI with defined username and they are the same value', () => {
+      it('does not log info', () => {
+        process.env.KNAPSACK_PRO_USER_SEAT = 'jane';
+        process.env.CIRCLECI = 'whatever';
+        process.env.CIRCLE_USERNAME = 'jane';
+
+        expect(logs).toEqual([]);
       });
     });
   });
