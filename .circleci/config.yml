@@ -46,4 +46,6 @@ jobs:
           command: |
             export KNAPSACK_PRO_ENDPOINT=https://api-staging.knapsackpro.com
             npx @knapsack-pro/cypress
+      - run: apt-get update && apt-get install --no-install-recommends -y openssl
       - run: npm run test:cra
+
