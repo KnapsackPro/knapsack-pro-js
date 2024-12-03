@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Emit declaration files so packages can be imported in TS projects without compiler errors
+
 ## 7.1.0
 
 - Warn when `KNAPSACK_PRO_*` environment variables are set manually if their values could be automatically determined from supported CI environments.
