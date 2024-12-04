@@ -3,7 +3,6 @@
     "module": "nodenext",
     "noImplicitAny": true,
     "removeComments": true,
-    "target": "es2022",
-    "declaration": true
+    "target": "es2022"
   }
 }
