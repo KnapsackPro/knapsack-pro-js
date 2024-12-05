@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## Unreleased (Major)
+
+- Update dependencies (including `winston`, `axios`, `axios-retry`)
+- Update TypeScript and switch "strict" on
 
 - Emit declaration files so packages can be imported in TS projects without compiler errors
 
@@ -48,8 +51,6 @@
 ### Minor Changes
 
 - 69e1e00: Send authors to the API
-
-## Unreleased
 
 ### Minor
 
