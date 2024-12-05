@@ -1,13 +1,13 @@
-import util = require('util');
+import { inspect } from 'util';
 import { createLogger, format, Logger, transports } from 'winston';
 import { KnapsackProEnvConfig } from './config';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { name: clientName } = require('../package.json');
 
 export class KnapsackProLogger {
   public static objectInspect(object: object): string {
-    return util.inspect(object, {
+    return inspect(object, {
       showHidden: false,
       depth: null,
       colors: true,

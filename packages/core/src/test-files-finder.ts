@@ -1,9 +1,7 @@
+import { readFileSync } from 'fs';
 import { KnapsackProEnvConfig } from './config';
 import { KnapsackProLogger } from './knapsack-pro-logger';
 import { TestFile } from './models';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require('fs');
 
 export class TestFilesFinder {
   public static testFilesFromSourceFile(): TestFile[] | null {
@@ -16,7 +14,7 @@ export class TestFilesFinder {
       `The KNAPSACK_PRO_TEST_FILE_LIST_SOURCE_FILE environment variable is defined. Knapsack will execute test files based on a list of test files from a file: ${KnapsackProEnvConfig.testFileListSourceFile}.`,
     );
 
-    const allFileContents = fs.readFileSync(
+    const allFileContents = readFileSync(
       KnapsackProEnvConfig.testFileListSourceFile,
       'utf-8',
     );
