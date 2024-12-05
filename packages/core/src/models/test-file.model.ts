@@ -1,6 +1,5 @@
-export class TestFile {
-  public path: string;
-
+export type TestFile = {
+  path: string;
   // eslint-disable-next-line camelcase
-  public time_execution?: number; // in seconds
-}
+  time_execution?: number; // in seconds
+};

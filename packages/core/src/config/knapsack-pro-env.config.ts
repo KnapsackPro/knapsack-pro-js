@@ -1,9 +1,7 @@
-import childProcess = require('child_process');
+import { spawnSync, execSync } from 'child_process';
 import { CIProviderMethod, CIEnvConfig, isCI, detectCI } from '.';
 import { KnapsackProLogger } from '../knapsack-pro-logger';
 import * as Urls from '../urls';
-
-const { spawnSync, execSync } = childProcess;
 
 function logLevel(): string {
   if (process.env.KNAPSACK_PRO_LOG_LEVEL) {
@@ -55,8 +53,10 @@ export class KnapsackProEnvConfig {
       'fixedQueueSplit',
     );
 
-    this.$fixedQueueSplit =
-      typeof envValue === 'string' ? this.parseBoolean(envValue) : envValue;
+    this.$fixedQueueSplit = this.parseBoolean(
+      envValue,
+      'KNAPSACK_PRO_FIXED_QUEUE_SPLIT',
+    );
 
     if (!('KNAPSACK_PRO_FIXED_QUEUE_SPLIT' in process.env)) {
       this.$knapsackProLogger.info(
@@ -67,14 +67,20 @@ export class KnapsackProEnvConfig {
     return this.$fixedQueueSplit;
   }
 
-  private static parseBoolean(value: string | undefined): boolean | null {
-    switch (value?.toLowerCase()) {
+  private static parseBoolean(value: string | boolean, name: string): boolean {
+    if (typeof value === 'boolean') {
+      return value;
+    }
+
+    switch (value.toLowerCase()) {
       case 'true':
         return true;
       case 'false':
         return false;
       default:
-        return null;
+        throw new Error(
+          `'${value}' is not a valid value for ${name}. Use either 'true' or 'false'.`,
+        );
     }
   }
 
@@ -299,7 +305,9 @@ const gitCommitAuthors = () => {
       });
     } catch (error) {
       knapsackProLogger.debug(
-        `Skip the \`${gitFetchShallowSinceCommand}\` command because it took too long. Error: ${error.message}`,
+        `Skip the \`${gitFetchShallowSinceCommand}\` command because it took too long. Error: ${
+          (error as Error).message
+        }`,
       );
     }
   }

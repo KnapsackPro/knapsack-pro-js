@@ -44,7 +44,7 @@ export class FallbackTestDistributor {
   ): TestFile[][] {
     const testFilesPerCiNode: TestFile[][] = Array.from(
       { length: ciNodeTotal },
-      () => [],
+      (): TestFile[] => [],
     );
 
     allTestFiles.forEach((testFile: TestFile, index: number) =>
