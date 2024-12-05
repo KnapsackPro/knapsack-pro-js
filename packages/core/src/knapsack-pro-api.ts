@@ -120,13 +120,13 @@ export class KnapsackProAPI {
       const { method, baseURL, url, headers, data } = config;
 
       // when axios retries request then url includes baseURL so we remove it
-      const apiUrl = baseURL + url.replace(baseURL, '');
+      const apiUrl = baseURL + url!.replace(baseURL ?? '', '');
       const requestHeaders = KnapsackProLogger.objectInspect(headers);
       const requestBody = KnapsackProLogger.objectInspect(data);
 
-      this.knapsackProLogger.info(`${method.toUpperCase()} ${apiUrl}`);
+      this.knapsackProLogger.info(`${method?.toUpperCase()} ${apiUrl}`);
       this.knapsackProLogger.debug(
-        `${method.toUpperCase()} ${apiUrl}\n\n` +
+        `${method?.toUpperCase()} ${apiUrl}\n\n` +
           'Request headers:\n' +
           `${requestHeaders}\n\n` +
           'Request body:\n' +

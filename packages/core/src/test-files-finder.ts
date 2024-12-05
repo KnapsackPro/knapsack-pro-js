@@ -6,7 +6,7 @@ import { TestFile } from './models';
 const fs = require('fs');
 
 export class TestFilesFinder {
-  public static testFilesFromSourceFile(): TestFile[] {
+  public static testFilesFromSourceFile(): TestFile[] | null {
     if (!KnapsackProEnvConfig.testFileListSourceFile) {
       return null;
     }

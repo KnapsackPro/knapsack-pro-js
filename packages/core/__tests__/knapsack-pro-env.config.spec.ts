@@ -510,7 +510,7 @@ describe('KnapsackProEnvConfig', () => {
   });
 
   describe('ciProvider', () => {
-    const TESTS: [string, object][] = [
+    const TESTS: [string | null, object][] = [
       ['AppVeyor', { APPVEYOR: '123' }],
       ['Azure Pipelines', { SYSTEM_TEAMFOUNDATIONCOLLECTIONURI: '123' }],
       ['AWS CodeBuild', { CODEBUILD_BUILD_ARN: '123' }],
