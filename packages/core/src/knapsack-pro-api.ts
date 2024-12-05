@@ -1,5 +1,6 @@
-import axios, { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
-import axiosRetry from 'axios-retry';
+import { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
+import * as axios from 'axios';
+import * as axiosRetry from 'axios-retry';
 
 import {
   KnapsackProEnvConfig,
