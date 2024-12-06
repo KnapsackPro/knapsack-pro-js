@@ -1,11 +1,12 @@
 # Changelog
 
-## Unreleased (Major)
+## Unreleased
+
+## 8.0.0
 
 - Update dependencies (including `winston`, `axios`, `axios-retry`)
 - Update TypeScript and switch "strict" on
-
-- Emit declaration files so packages can be imported in TS projects without compiler errors
+- Emit declaration files (`"declaration": true`) so `@knapsack-pro/core` can be imported/used in TS projects without compiler errors
 
 ## 7.1.0
 
