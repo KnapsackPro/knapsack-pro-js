@@ -1,0 +1,80 @@
+{
+  "name": "@knapsack-pro/vitest",
+  "type": "module",
+  "version": "1.0.3",
+  "description": "Knapsack Pro Vitest splits Vitest tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git",
+    "directory": "packages/vitest"
+  },
+  "keywords": [
+    "knapsack",
+    "knapsack pro",
+    "vitest",
+    "test suite parallelisation",
+    "parallelisation",
+    "testing",
+    "test",
+    "automation",
+    "integration",
+    "runner",
+    "CI"
+  ],
+  "author": "Knapsack Pro <support@knapsackpro.com> (https://knapsackpro.com)",
+  "contributors": [
+    {
+      "name": "Ben Lorantfy",
+      "email": "ben@lorantfy.com"
+    },
+    {
+      "name": "Artur Trzop",
+      "email": "arturtrzop@gmail.com"
+    },
+    {
+      "name": "Rafał Trzop",
+      "email": "rafaltrzop@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-vitest.js",
+    "lint": "npm run eslint:check && npm run prettier:check",
+    "eslint:check": "eslint . --ext .ts",
+    "eslint:format": "eslint . --ext .ts --fix",
+    "prettier:check": "prettier --config .prettierrc.json --check .",
+    "prettier:format": "prettier --config .prettierrc.json --write ."
+  },
+  "files": [
+    "lib"
+  ],
+  "bin": {
+    "knapsack-pro-vitest": "lib/knapsack-vitest.js"
+  },
+  "dependencies": {
+    "glob": "^10.3.4",
+    "minimatch": "^9.0.3",
+    "uuid": "^9.0.1",
+    "@knapsack-pro/core": "^7.1.0"
+  },
+  "peerDependencies": {
+    "vitest": ">=2.1.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.2",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "eslint": "^8.49.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  }
+}
