@@ -1,0 +1,27 @@
+{
+  "name": "@knapsack-pro/vitest-example-test-suite",
+  "version": "1.0.0",
+  "description": "Vitest example test suite with @knapsack-pro/vitest",
+  "main": "index.js",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.6",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git"
+  },
+  "keywords": [
+    "vitest"
+  ],
+  "author": "KnapsackPro.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js/issues"
+  },
+  "homepage": "https://github.com/KnapsackPro/knapsack-pro-js"
+}

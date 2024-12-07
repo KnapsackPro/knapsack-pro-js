@@ -6,7 +6,9 @@
     "packages/jest",
     "packages/jest-example-test-suite",
     "packages/cypress",
-    "packages/cypress-example-test-suite"
+    "packages/cypress-example-test-suite",
+    "packages/vitest",
+    "packages/vitest-example-test-suite"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
