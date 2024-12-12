@@ -36,7 +36,7 @@ npm install @knapsack-pro/vitest
 4. Set the `KNAPSACK_PRO_TEST_SUITE_TOKEN` environment variable to your Knapsack Pro test suite token, and optionally set other environemnt variables as needed.
 
 ## Environment variables
-Below are the primary environment variables you may need to set to use Knapsack Pro with Vitest.  For a full list of environment variables, see [Knapsack Pro Jest](https://docs.knapsackpro.com/jest/reference/environment-variables).
+Below are the primary environment variables you may need to set to use Knapsack Pro with Vitest.  For a full list of environment variables, see [Knapsack Pro Jest](https://docs.knapsackpro.com/jest/reference/#environment-variables).
 
 ### `KNAPSACK_PRO_TEST_SUITE_TOKEN` (Required)
 The API token you receive when creating a new Test Suite in Knapsack Pro. This authenticates your test suite with our API.
