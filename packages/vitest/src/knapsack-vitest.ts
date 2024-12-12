@@ -19,7 +19,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
-  throw new Error("Please use KNAPSACK_PRO_TEST_SUITE_TOKEN instead of KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST");
+  throw new Error("[@knapsack-pro/vitest] Please use KNAPSACK_PRO_TEST_SUITE_TOKEN instead of KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST");
 }
 
 const knapsackProLogger = new KnapsackProLogger();
