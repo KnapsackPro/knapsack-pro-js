@@ -66,6 +66,7 @@ npm install
 ```
 npm run test:core:coverage
 npm run test:jest
+npm run test:vitest
 npm run test:cypress
 npm run test:cra
 ```

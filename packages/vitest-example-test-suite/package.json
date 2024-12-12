@@ -9,7 +9,8 @@
     "vitest": "^2.1.6"
   },
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "test:ks": "bin/knapsack_pro_vitest"
   },
   "repository": {
     "type": "git",

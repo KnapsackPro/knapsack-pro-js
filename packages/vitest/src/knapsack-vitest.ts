@@ -43,6 +43,7 @@ async function main() {
   const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
     const vitest = await startVitest('test', undefined, {
       include: testFiles.map((testFile) => testFile.path),
+      watch: false,
       ...generateCoverageConfig(resolvedConfig),
     });
   
