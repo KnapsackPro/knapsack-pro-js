@@ -109,7 +109,7 @@ async function getResolvedConfig() {
     throw new Error('[@knapsack-pro/vitest] Passing list of files to test from command line is not supported');
   }
 
-  const resolvedConfig = (await createVitest('test', cliArguments.options)).config;
+  const resolvedConfig = (await createVitest('test', { ...cliArguments.options, watch: false })).config;
 
   return resolvedConfig;
 }
