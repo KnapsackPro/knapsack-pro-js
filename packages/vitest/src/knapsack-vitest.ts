@@ -20,7 +20,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
-import * as path from 'path';
+import { join } from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -37,7 +37,7 @@ async function main() {
   const filePath = fileURLToPath(import.meta.url);
   const dirName = dirname(filePath);
   const pkg = JSON.parse(
-    fs.readFileSync(path.join(dirName, '..', 'package.json'), 'utf8'),
+    fs.readFileSync(join(dirName, '..', 'package.json'), 'utf8'),
   );
   knapsackProLogger.debug(`Running ${pkg.name}@${pkg.version}`);
 
@@ -134,7 +134,7 @@ function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
     const testFileIncludePattern =
       process.env.KNAPSACK_PRO_TEST_FILE_PATTERN ||
       resolvedConfig.include ||
-      '**\/*.{test,spec}.?(c|m)[jt]s?(x)';
+      '**/*.{test,spec}.?(c|m)[jt]s?(x)';
 
     const testFileExcludePattern = process.env
       .KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN
@@ -178,7 +178,7 @@ function generateCoverageConfig(resolvedConfig: ResolvedConfig): UserConfig {
   if (resolvedConfig.coverage.enabled) {
     return {
       coverage: {
-        reportsDirectory: path.join(coverageDirectory, uuidv4()),
+        reportsDirectory: join(coverageDirectory, uuidv4()),
       },
     };
   }

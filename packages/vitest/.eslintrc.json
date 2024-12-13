@@ -22,8 +22,8 @@
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "no-use-before-define": ["error", {
-      // Improve reading order by allowing dependent functions to be defined
-      // underneath dependees
+      // Improve reading order by allowing callees to be defined
+      // underneath callers
       "functions": false
     }]
   }
