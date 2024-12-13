@@ -8,7 +8,14 @@ import {
   TestFile,
 } from '@knapsack-pro/core';
 
-import { startVitest, parseCLI, UserConfig, createVitest, ResolvedConfig, Vitest } from 'vitest/node';
+import {
+  startVitest,
+  parseCLI,
+  UserConfig,
+  createVitest,
+  ResolvedConfig,
+  Vitest,
+} from 'vitest/node';
 
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
@@ -19,19 +26,20 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
-  throw new Error("[@knapsack-pro/vitest] Please use KNAPSACK_PRO_TEST_SUITE_TOKEN instead of KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST");
+  process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
+    process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST;
 }
 
 const knapsackProLogger = new KnapsackProLogger();
 const projectPath = process.cwd();
 
 async function main() {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
-  knapsackProLogger.debug(
-    `Running ${pkg.name}@${pkg.version}`,
+  const filePath = fileURLToPath(import.meta.url);
+  const dirName = dirname(filePath);
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(dirName, '..', 'package.json'), 'utf8'),
   );
+  knapsackProLogger.debug(`Running ${pkg.name}@${pkg.version}`);
 
   const resolvedConfig = await getResolvedConfig();
   const knapsackPro = new KnapsackProCore(
@@ -39,25 +47,25 @@ async function main() {
     pkg.version,
     makeGetAllTestFiles(resolvedConfig),
   );
-  
+
   const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
     const vitest = await startVitest('test', undefined, {
       include: testFiles.map((testFile) => testFile.path),
       watch: false,
       ...generateCoverageConfig(resolvedConfig),
     });
-  
+
     if (!vitest) {
       throw new Error('[@knapsack-pro/vitest] Vitest failed to start');
     }
-  
+
     await vitest.close();
 
     return getTestResults(vitest);
   };
-  
+
   const onError: onQueueFailureType = () => {};
-  
+
   knapsackPro.runQueueMode(onSuccess, onError);
 }
 
@@ -66,7 +74,7 @@ main();
 /**
  * Processes the test results and converts them to a format vitest
  * understands
- * @param vitest 
+ * @param vitest
  */
 function getTestResults(vitest: Vitest) {
   const recordedTestFiles = vitest.state.getFiles().map<TestFile>((file) => {
@@ -106,10 +114,14 @@ async function getResolvedConfig() {
   );
 
   if (cliArguments.filter.length > 0) {
-    throw new Error('[@knapsack-pro/vitest] Passing list of files to test from command line is not supported');
+    throw new Error(
+      '[@knapsack-pro/vitest] Passing list of files to test from command line is not supported',
+    );
   }
 
-  const resolvedConfig = (await createVitest('test', { ...cliArguments.options, watch: false })).config;
+  const resolvedConfig = (
+    await createVitest('test', { ...cliArguments.options, watch: false })
+  ).config;
 
   return resolvedConfig;
 }
@@ -120,24 +132,25 @@ async function getResolvedConfig() {
 function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
   return () => {
     const testFileIncludePattern =
-      process.env.KNAPSACK_PRO_TEST_FILE_PATTERN || resolvedConfig.include ||
+      process.env.KNAPSACK_PRO_TEST_FILE_PATTERN ||
+      resolvedConfig.include ||
       '**\/*.{test,spec}.?(c|m)[jt]s?(x)';
 
-    const testFileExcludePattern = process.env.KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN ? [process.env.KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN] : (resolvedConfig.exclude || []);
+    const testFileExcludePattern = process.env
+      .KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN
+      ? [process.env.KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN]
+      : resolvedConfig.exclude || [];
 
     const testFiles = glob
       .sync(testFileIncludePattern)
-      .filter((testFilePath) => {
-        return testFileExcludePattern.every((excludePattern) => {
-          return !minimatch(
-            testFilePath,
-            excludePattern,
-            {
+      .filter((testFilePath) =>
+        testFileExcludePattern.every(
+          (excludePattern) =>
+            !minimatch(testFilePath, excludePattern, {
               matchBase: true,
-            },
-          );
-        });
-      })
+            }),
+        ),
+      )
       .filter((testFilePath) => !testFilePath.match(/node_modules/))
       .map((testFilePath) => ({ path: testFilePath }));
 
@@ -149,23 +162,25 @@ function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
     }
 
     return testFiles;
-  }
+  };
 }
 
 /**
  * Generates the coverage configuration to pass to vitest
- * 
+ *
  * @note The reportsDirectory is set to a unique directory to avoid conflicts
  * between multiple test runs
  */
 function generateCoverageConfig(resolvedConfig: ResolvedConfig): UserConfig {
-  const coverageDirectory = process.env.KNAPSACK_PRO_COVERAGE_DIRECTORY || resolvedConfig.coverage.reportsDirectory;
+  const coverageDirectory =
+    process.env.KNAPSACK_PRO_COVERAGE_DIRECTORY ||
+    resolvedConfig.coverage.reportsDirectory;
   if (resolvedConfig.coverage.enabled) {
     return {
       coverage: {
         reportsDirectory: path.join(coverageDirectory, uuidv4()),
-      }
-    }
+      },
+    };
   }
 
   return {};

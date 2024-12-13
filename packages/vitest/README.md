@@ -31,14 +31,14 @@ Knapsack Pro wraps [Vitest](https://vitest.dev/) and works with your existing CI
 npm install @knapsack-pro/vitest
 ```
 
-2. Update your CI to use a matrix build. See the [example workflow](.github/workflows/vitest-example-test-suite.yaml) for reference.
+2. Update your CI to use a matrix build. See the [example workflow](./.github/workflows/vitest-example-test-suite.yaml) for reference.
 3. Replace `vitest` with `@knapsack-pro/vitest` in your CI config
-4. Set the `KNAPSACK_PRO_TEST_SUITE_TOKEN` environment variable to your Knapsack Pro test suite token, and optionally set other environemnt variables as needed.
+4. Set the `KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST` environment variable to your Knapsack Pro test suite token, and optionally set other environemnt variables as needed.
 
 ## Environment variables
-Below are the primary environment variables you may need to set to use Knapsack Pro with Vitest.  For a full list of environment variables, see [Knapsack Pro Jest](https://docs.knapsackpro.com/jest/reference/#environment-variables).
+Below are the primary environment variables you may need to set to use Knapsack Pro with Vitest.  For a full list of environment variables, see [Knapsack Pro Jest](https://docs.knapsackpro.com/jest/reference/).
 
-### `KNAPSACK_PRO_TEST_SUITE_TOKEN` (Required)
+### `KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST` (Required)
 The API token you receive when creating a new Test Suite in Knapsack Pro. This authenticates your test suite with our API.
 
 ### `KNAPSACK_PRO_TEST_FILE_PATTERN` (Optional)

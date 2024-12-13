@@ -20,6 +20,11 @@
     "comma-dangle": ["error"],
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "no-use-before-define": ["error", {
+      // Improve reading order by allowing dependent functions to be defined
+      // underneath dependees
+      "functions": false
+    }]
   }
 }

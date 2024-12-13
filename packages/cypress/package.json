@@ -58,7 +58,7 @@
     "knapsack-pro-cypress": "lib/knapsack-pro-cypress.js"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^8.0.0",
+    "@knapsack-pro/core": "^7.1.0",
     "glob": "^10.3.4",
     "minimatch": "^9.0.3",
     "minimist": "^1.2.6",
