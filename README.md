@@ -66,6 +66,7 @@ npm install
 ```
 npm run test:core:coverage
 npm run test:jest
+npm run test:vitest
 npm run test:cypress
 npm run test:cra
 ```
@@ -163,8 +164,10 @@ Read the READMEs inside the nested `packages/`:
 
 - [core](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/core)
 - [jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
+- [vitest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/vitest)
 - [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
 - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
+- [vitest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/vitest-example-test-suite)
 - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
 - [create-react-app-example](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/create-react-app-example)
 

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "skipLibCheck": true,
+    "outDir": "lib",
+    "strict": true
+  },
+  "include": ["src/**/*.ts"],
+  "extends": "../../tsconfig.base.json"
+}
