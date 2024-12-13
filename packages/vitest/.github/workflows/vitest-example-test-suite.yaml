@@ -32,5 +32,5 @@ jobs:
           KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST }}
           KNAPSACK_PRO_CI_NODE_TOTAL: 4
           KNAPSACK_PRO_CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-          KNAPSACK_PRO_LOG_LEVEL: "error"
+          KNAPSACK_PRO_LOG_LEVEL: 'error'
         run: npm exec @knapsack-pro/vitest

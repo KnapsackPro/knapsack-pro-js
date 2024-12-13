@@ -21,10 +21,13 @@
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
-    "no-use-before-define": ["error", {
-      // Improve reading order by allowing callees to be defined
-      // underneath callers
-      "functions": false
-    }]
+    "no-use-before-define": [
+      "error",
+      {
+        // Improve reading order by allowing callees to be defined
+        // underneath callers
+        "functions": false
+      }
+    ]
   }
 }
