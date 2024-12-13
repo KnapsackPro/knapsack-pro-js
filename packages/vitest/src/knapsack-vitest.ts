@@ -20,10 +20,9 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
