@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://knapsackpro.com?utm_source=github&utm_medium=readme&utm_campaign=knapsack-pro-vitest&utm_content=hero_logo">
-    <img alt="Knapsack Pro" src="./img/logo.png" width="100%" style="max-width: 100%;" />
+    <img alt="Knapsack Pro" src="./.github/assets/logo.png" width="100%" style="max-width: 100%;" />
   </a>
 </p>
 
