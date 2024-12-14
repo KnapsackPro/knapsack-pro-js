@@ -112,7 +112,7 @@ npm publish
 
 #### Jest, Vitest and/or Cypress
 
-Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need to update both.
+Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need to update all of them.
 
 ```bash
 # merge PR and pull or edit code
