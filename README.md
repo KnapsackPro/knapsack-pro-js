@@ -92,6 +92,7 @@ In `File > Preferences > Settings > Text Editor > Formatting`, enable the `Forma
 # merge PR and pull or edit code
 # if new files that should be part of the released npm package were added, please ensure they are included in the `files` array in `package.json`
 # update CHANGELOG to move *unreleased* into the proper *version*
+# LEVEL specifies the type of version increment: major, minor, patch
 npm version LEVEL -w packages/core
 git add --all
 git commit -m "chore: prepare release"
@@ -117,6 +118,7 @@ Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need 
 # merge PR and pull or edit code
 # if new files that should be part of the released npm package were added, please ensure they are included in the `files` array in `package.json`
 # update CHANGELOG(s) to move *unreleased* into the proper *version*
+# LEVEL specifies the type of version increment: major, minor, patch
 npm version LEVEL -w packages/PACKAGE
 npm install @knapsack-pro/core -w packages/jest
 # make sure @knapsack-pro/core was updated in packages/jest/package.json (you can retry specifying the version package@x.x.x)
