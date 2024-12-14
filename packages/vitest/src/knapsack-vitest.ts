@@ -23,7 +23,7 @@ import { glob } from 'glob';
 import { join, dirname } from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import * as Urls from './urls';
+import * as Urls from './urls.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
