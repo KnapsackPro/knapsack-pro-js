@@ -1,4 +1,10 @@
-# ![@knapsack-pro/vitest](./img/logo.png)
+# @knapsack-pro/vitest
+
+<p align="center">
+  <a href="https://knapsackpro.com?utm_source=github&utm_medium=readme&utm_campaign=knapsack-pro-vitest&utm_content=hero_logo">
+    <img alt="Knapsack Pro" src="./img/logo.png" width="100%" style="max-width: 100%;" />
+  </a>
+</p>
 
 <h3 align="center">Speed up your tests</h3>
 <p align="center">Run your 1-hour test suite in 2 minutes with optimal parallelisation on your existing CI infrastructure</p>
