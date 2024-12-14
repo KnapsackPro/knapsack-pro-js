@@ -120,12 +120,16 @@ Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need 
 # update CHANGELOG(s) to move *unreleased* into the proper *version*
 # LEVEL specifies the type of version increment: major, minor, patch
 npm version LEVEL -w packages/PACKAGE
+
 npm install @knapsack-pro/core -w packages/jest
 # make sure @knapsack-pro/core was updated in packages/jest/package.json (you can retry specifying the version package@x.x.x)
+
 npm install @knapsack-pro/core -w packages/vitest
 # make sure @knapsack-pro/core was updated in packages/vitest/package.json (you can retry specifying the version package@x.x.x)
+
 npm install @knapsack-pro/core -w packages/cypress
 # make sure @knapsack-pro/core was updated in packages/cypress/package.json (you can retry specifying the version package@x.x.x)
+
 git add --all
 git commit -m "chore: prepare release"
 git tag @knapsack-pro/PACKAGE@x.x.x # can be multiple tags
