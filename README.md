@@ -56,6 +56,7 @@ npm install
 npm run build
 # Need a second install to run:
 #   - npx @knapsack-pro/jest
+#   - npx @knapsack-pro/vitest
 #   - npx @knapsack-pro/cypress
 # See https://github.com/npm/cli/issues/4591#issuecomment-1111557730
 npm install
@@ -108,9 +109,9 @@ npm adduser # sign in to npm
 npm publish
 ```
 
-#### Jest and/or Cypress
+#### Jest, Vitest and/or Cypress
 
-Replace PACKAGE with `jest`, or `cypress`. If core changed you'll need to update both.
+Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need to update both.
 
 ```bash
 # merge PR and pull or edit code
@@ -119,6 +120,8 @@ Replace PACKAGE with `jest`, or `cypress`. If core changed you'll need to update
 npm version LEVEL -w packages/PACKAGE
 npm install @knapsack-pro/core -w packages/jest
 # make sure @knapsack-pro/core was updated in packages/jest/package.json (you can retry specifying the version package@x.x.x)
+npm install @knapsack-pro/core -w packages/vitest
+# make sure @knapsack-pro/core was updated in packages/vitest/package.json (you can retry specifying the version package@x.x.x)
 npm install @knapsack-pro/core -w packages/cypress
 # make sure @knapsack-pro/core was updated in packages/cypress/package.json (you can retry specifying the version package@x.x.x)
 git add --all
@@ -141,6 +144,10 @@ npm publish
 npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
 # make sure @knapsack-pro/jest was updated in packages/jest-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:jest
+
+npm install -D @knapsack-pro/vitest -w packages/vitest-example-test-suite
+# make sure @knapsack-pro/vitest was updated in packages/vitest-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
+npm run test:vitest
 
 npm install -D @knapsack-pro/cypress -w packages/cypress-example-test-suite
 # make sure @knapsack-pro/cypress was updated in packages/cypress-example-test-suite/package.json
