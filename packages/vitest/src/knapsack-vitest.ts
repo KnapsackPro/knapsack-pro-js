@@ -23,6 +23,7 @@ import { glob } from 'glob';
 import { join, dirname } from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import * as Urls from './urls';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -154,7 +155,7 @@ function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
       .map((testFilePath) => ({ path: testFilePath }));
 
     if (testFiles.length === 0) {
-      const errorMessage = `[@knapsack-pro/vitest] Test files cannot be found.\nPlease set KNAPSACK_PRO_TEST_FILE_PATTERN matching your test directory structure.\nLearn more: https://knapsackpro.com/perma/jest/no-tests-found`;
+      const errorMessage = `[@knapsack-pro/vitest] Test files cannot be found.\nPlease set KNAPSACK_PRO_TEST_FILE_PATTERN matching your test directory structure.\nLearn more: ${Urls.NO_TESTS_FOUND}`;
 
       knapsackProLogger.error(errorMessage);
       throw new Error(errorMessage);
