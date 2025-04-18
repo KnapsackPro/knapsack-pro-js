@@ -209,7 +209,7 @@ export class KnapsackProAPI {
   }
 
   private retryDelay(retryCount: number): number {
-    const requestRetryTimebox = 8000; // miliseconds
+    const requestRetryTimebox = 8000; // milliseconds
     const delay = retryCount * requestRetryTimebox;
     const randomSum = delay * 0.2 * Math.random(); // 0-20% of the delay
     const finalDelay = delay + randomSum;
