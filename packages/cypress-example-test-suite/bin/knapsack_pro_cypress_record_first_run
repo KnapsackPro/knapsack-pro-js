@@ -1,0 +1,13 @@
+#!/bin/bash
+
+COMMIT_HASH=$(openssl rand -hex 20)
+BRANCH=fake-branch/initialize-new-queue
+
+KNAPSACK_PRO_ENDPOINT=https://api-staging.knapsackpro.com \
+  KNAPSACK_PRO_TEST_SUITE_TOKEN_CYPRESS=e608b84c923a3f4676c608aad0f00b54 \
+  KNAPSACK_PRO_CI_NODE_BUILD_ID=$(openssl rand -base64 32) \
+  KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
+  KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
+  KNAPSACK_PRO_COMMIT_HASH=$COMMIT_HASH \
+  KNAPSACK_PRO_BRANCH=$BRANCH \
+  npx @knapsack-pro/cypress
