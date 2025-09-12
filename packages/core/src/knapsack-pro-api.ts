@@ -1,6 +1,7 @@
 import { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
 import * as axios from 'axios';
 import axiosRetry from 'axios-retry';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   KnapsackProEnvConfig,
@@ -59,6 +60,7 @@ export class KnapsackProAPI {
       node_index: KnapsackProEnvConfig.ciNodeIndex,
       node_build_id: KnapsackProEnvConfig.ciNodeBuildId,
       user_seat: KnapsackProEnvConfig.maskedUserSeat,
+      batch_uuid: uuidv4(),
       ...(initializeQueue &&
         !attemptConnectToQueue && {
           test_files: allTestFiles,
