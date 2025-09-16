@@ -38,8 +38,8 @@
     "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
     "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-pro-cypress.js",
     "lint": "npm run eslint:check && npm run prettier:check",
-    "eslint:check": "eslint . --ext .ts",
-    "eslint:format": "eslint . --ext .ts --fix",
+    "eslint:check": "eslint src/**/*.ts",
+    "eslint:format": "eslint src/**/*.ts --fix",
     "prettier:check": "prettier --config .prettierrc.json --check .",
     "prettier:format": "prettier --config .prettierrc.json --write ."
   },
@@ -68,6 +68,8 @@
     "cypress": ">=10.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.35.0",
     "@types/node": "^24.5.0",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
     "@typescript-eslint/parser": "^8.44.0",

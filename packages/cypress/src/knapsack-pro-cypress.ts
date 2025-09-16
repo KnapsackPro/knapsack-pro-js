@@ -12,10 +12,8 @@ import { EnvConfig } from './env-config';
 import { TestFilesFinder } from './test-files-finder';
 import { CypressCLI } from './cypress-cli';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cypress = require('cypress');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { name: clientName, version: clientVersion } = require('../package.json');
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
@@ -84,7 +82,6 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
 };
 
 // we do nothing when error so pass noop
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-function
-const onError: onQueueFailureType = (error: any) => {};
+const onError: onQueueFailureType = () => {};
 
 knapsackPro.runQueueMode(onSuccess, onError);
