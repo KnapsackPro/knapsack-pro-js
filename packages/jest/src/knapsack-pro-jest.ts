@@ -8,13 +8,14 @@ import {
   onQueueSuccessType,
   TestFile,
 } from '@knapsack-pro/core';
+import jest from 'jest';
+import { v4 as uuidv4 } from 'uuid';
+
 import { EnvConfig } from './env-config';
 import { TestFilesFinder } from './test-files-finder';
 import { JestCLI } from './jest-cli';
 
-const jest = require('jest');
-const { v4: uuidv4 } = require('uuid');
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { name: clientName, version: clientVersion } = require('../package.json');
 
 const jestCLIOptions = JestCLI.argvToOptions();
@@ -51,6 +52,7 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
       ...jestCLICoverage,
       runTestsByPath: true,
       _: testFilePaths,
+      $0: 'jest',
     },
     [projectPath],
   );
