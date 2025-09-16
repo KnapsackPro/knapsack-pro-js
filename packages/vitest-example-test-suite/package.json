@@ -5,7 +5,7 @@
   "main": "index.js",
   "devDependencies": {
     "@vitest/coverage-v8": "^2.1.6",
-    "typescript": "^5.7.2",
+    "typescript": "^5.9.2",
     "vitest": "^2.1.6"
   },
   "scripts": {
