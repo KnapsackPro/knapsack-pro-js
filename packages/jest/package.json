@@ -55,7 +55,7 @@
     "@knapsack-pro/core": "^8.0.0",
     "glob": "^11.0.3",
     "minimatch": "^10.0.3",
-    "minimist": "^1.2.6",
+    "minimist": "^1.2.8",
     "uuid": "^13.0.0"
   },
   "peerDependencies": {
