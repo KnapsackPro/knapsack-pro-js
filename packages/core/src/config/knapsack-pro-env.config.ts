@@ -254,7 +254,7 @@ const $buildAuthor = (command: () => Buffer): string => {
   try {
     const author = command().toString().trim();
     return mask(author);
-  } catch (error) {
+  } catch {
     return 'no git <no.git@example.com>';
   }
 };
@@ -289,7 +289,7 @@ const $commitAuthors = (
         commits: parseInt(commits, 10),
         author: mask(author),
       }));
-  } catch (error) {
+  } catch {
     return [];
   }
 };
