@@ -1,4 +1,4 @@
-const minimist = require('minimist');
+import minimist from 'minimist';
 const { v4: uuidv4 } = require('uuid');
 
 export class CypressCLI {

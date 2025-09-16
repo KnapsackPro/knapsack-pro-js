@@ -1,4 +1,4 @@
-const minimist = require('minimist');
+import minimist from 'minimist';
 
 // https://jestjs.io/docs/en/cli#options
 export class JestCLI {
