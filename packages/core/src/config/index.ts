@@ -1,2 +1,2 @@
-export * from './ci-env.config';
-export * from './knapsack-pro-env.config';
+export * from './ci-env.config.js';
+export * from './knapsack-pro-env.config.js';

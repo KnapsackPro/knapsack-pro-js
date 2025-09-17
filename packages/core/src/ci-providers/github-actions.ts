@@ -1,4 +1,4 @@
-import { CIProviderBase } from '.';
+import { CIProviderBase } from './index.js';
 
 // https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
 export class GithubActions extends CIProviderBase {

@@ -1,5 +1,5 @@
-import { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
-import * as axios from 'axios';
+import type { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
+import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,9 +8,9 @@ import {
   buildAuthor,
   commitAuthors,
   ciProvider,
-} from './config';
-import { KnapsackProLogger } from './knapsack-pro-logger';
-import { TestFile } from './models';
+} from './config/index.js';
+import { KnapsackProLogger } from './knapsack-pro-logger.js';
+import { TestFile } from './models/index.js';
 
 export const getHeaders = ({
   clientName,

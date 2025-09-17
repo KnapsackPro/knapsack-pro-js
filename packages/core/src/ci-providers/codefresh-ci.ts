@@ -1,4 +1,4 @@
-import { CIProviderBase } from '.';
+import { CIProviderBase } from './index.js';
 
 // https://codefresh.io/docs/docs/codefresh-yaml/variables/#system-provided-variables
 export class CodefreshCI extends CIProviderBase {

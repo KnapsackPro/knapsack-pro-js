@@ -1,4 +1,4 @@
-import { CIProviderBase } from '.';
+import { CIProviderBase } from './index.js';
 
 // https://www.appveyor.com/docs/environment-variables/
 export class AppVeyor extends CIProviderBase {

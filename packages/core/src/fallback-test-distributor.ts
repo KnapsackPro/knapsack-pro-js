@@ -1,5 +1,5 @@
-import { KnapsackProEnvConfig } from './config';
-import { TestFile } from './models';
+import { KnapsackProEnvConfig } from './config/index.js';
+import { TestFile } from './models/index.js';
 
 export class FallbackTestDistributor {
   private executedTestFilePaths: string[];

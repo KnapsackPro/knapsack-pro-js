@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { KnapsackProEnvConfig } from './config';
-import { KnapsackProLogger } from './knapsack-pro-logger';
-import { TestFile } from './models';
+import { KnapsackProEnvConfig } from './config/index.js';
+import { KnapsackProLogger } from './knapsack-pro-logger.js';
+import { TestFile } from './models/index.js';
 
 export class TestFilesFinder {
   public static testFilesFromSourceFile(): TestFile[] | null {

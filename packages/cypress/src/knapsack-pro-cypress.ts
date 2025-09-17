@@ -9,12 +9,12 @@ import {
   TestFile,
 } from '@knapsack-pro/core';
 import cypress from 'cypress';
-import { EnvConfig } from './env-config';
-import { TestFilesFinder } from './test-files-finder';
-import { CypressCLI } from './cypress-cli';
+import { EnvConfig } from './env-config.js';
+import { TestFilesFinder } from './test-files-finder.js';
+import { CypressCLI } from './cypress-cli.js';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { name: clientName, version: clientVersion } = require('../package.json');
+const clientName = '@knapsack-pro/cypress';
+const clientVersion = '8.1.0';
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();

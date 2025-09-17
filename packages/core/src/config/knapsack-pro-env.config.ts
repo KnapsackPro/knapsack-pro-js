@@ -1,7 +1,7 @@
 import { spawnSync, execSync } from 'child_process';
-import { CIProviderMethod, CIEnvConfig, isCI, detectCI } from '.';
-import { KnapsackProLogger } from '../knapsack-pro-logger';
-import * as Urls from '../urls';
+import { CIProviderMethod, CIEnvConfig, isCI, detectCI } from './index.js';
+import { KnapsackProLogger } from '../knapsack-pro-logger.js';
+import * as Urls from '../urls.js';
 
 function logLevel(): string {
   if (process.env.KNAPSACK_PRO_LOG_LEVEL) {

@@ -1,4 +1,4 @@
-import { TestFile } from '../models';
+import { TestFile } from '../models/index.js';
 
 // eslint-disable-next-line no-unused-vars
 export type onQueueSuccessType = (queueTestFiles: TestFile[]) => Promise<{
