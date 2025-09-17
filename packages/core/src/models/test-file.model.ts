@@ -1,4 +1,4 @@
 export type TestFile = {
   path: string;
-  time_execution?: number; // in seconds
+  time_execution?: number | null; // in seconds
 };
