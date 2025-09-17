@@ -13,7 +13,7 @@ import {
   SemaphoreCI2,
   TravisCI,
   UnsupportedCI,
-} from '../ci-providers';
+} from '../ci-providers/index.js';
 
 export const detectCI = (): typeof CIProviderBase => {
   const detected = [

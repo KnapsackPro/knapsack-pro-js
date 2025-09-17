@@ -1,16 +1,16 @@
-import { KnapsackProAPI } from './knapsack-pro-api';
-import { QueueApiResponseCodes } from './api-response-codes';
-import { KnapsackProEnvConfig } from './config';
-import { KnapsackProLogger } from './knapsack-pro-logger';
-import { FallbackTestDistributor } from './fallback-test-distributor';
-import { TestFilesFinder } from './test-files-finder';
-import { TestFile } from './models';
+import { KnapsackProAPI } from './knapsack-pro-api.js';
+import { QueueApiResponseCodes } from './api-response-codes.js';
+import { KnapsackProEnvConfig } from './config/index.js';
+import { KnapsackProLogger } from './knapsack-pro-logger.js';
+import { FallbackTestDistributor } from './fallback-test-distributor.js';
+import { TestFilesFinder } from './test-files-finder.js';
+import { TestFile } from './models/index.js';
 import {
   onQueueFailureType,
   onQueueSuccessType,
   testFilesToExecuteType,
-} from './types';
-import * as Urls from './urls';
+} from './types/index.js';
+import * as Urls from './urls.js';
 
 export class KnapsackProCore {
   private knapsackProAPI: KnapsackProAPI;

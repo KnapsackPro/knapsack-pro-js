@@ -1,1 +1,1 @@
-export * from './test-file.model';
+export * from './test-file.model.js';

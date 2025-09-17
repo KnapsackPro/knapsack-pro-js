@@ -1,5 +1,5 @@
-import { CIProviderBase } from '.';
-import { isCI } from '../config';
+import { CIProviderBase } from './index.js';
+import { isCI } from '../config/index.js';
 
 export class UnsupportedCI extends CIProviderBase {
   public static get ciNodeTotal(): string | undefined {

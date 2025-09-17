@@ -2,8 +2,8 @@ import { glob } from 'glob';
 import { minimatch } from 'minimatch';
 
 import { KnapsackProLogger, TestFile } from '@knapsack-pro/core';
-import { EnvConfig } from './env-config';
-import * as Urls from './urls';
+import { EnvConfig } from './env-config.js';
+import * as Urls from './urls.js';
 
 export class TestFilesFinder {
   public static allTestFiles(): TestFile[] {

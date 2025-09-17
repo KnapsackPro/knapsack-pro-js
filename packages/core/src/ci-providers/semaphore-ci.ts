@@ -1,4 +1,4 @@
-import { CIProviderBase } from '.';
+import { CIProviderBase } from './index.js';
 
 // Semaphore Classic is deprecated
 // https://semaphoreci.com/blog/semaphore-classic-deprecation

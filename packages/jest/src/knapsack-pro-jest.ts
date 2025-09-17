@@ -11,12 +11,12 @@ import {
 import jest from 'jest';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EnvConfig } from './env-config';
-import { TestFilesFinder } from './test-files-finder';
-import { JestCLI } from './jest-cli';
+import { EnvConfig } from './env-config.js';
+import { TestFilesFinder } from './test-files-finder.js';
+import { JestCLI } from './jest-cli.js';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { name: clientName, version: clientVersion } = require('../package.json');
+const clientName = '@knapsack-pro/jest';
+const clientVersion = '8.1.0';
 
 const jestCLIOptions = JestCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
