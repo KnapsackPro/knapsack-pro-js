@@ -8,12 +8,12 @@ import {
   onQueueSuccessType,
   TestFile,
 } from '@knapsack-pro/core';
+import cypress from 'cypress';
 import { EnvConfig } from './env-config';
 import { TestFilesFinder } from './test-files-finder';
 import { CypressCLI } from './cypress-cli';
 
-const cypress = require('cypress');
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { name: clientName, version: clientVersion } = require('../package.json');
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
@@ -47,10 +47,10 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
     )}`,
   );
 
-  const { runs: tests, totalFailed } = await cypress
+  const { runs: tests, totalFailed } = (await cypress
     .run({
       ...updatedCypressCLIOptions,
-      spec: testFilePaths,
+      spec: testFilePaths.join(','),
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .catch((e: any) => {
@@ -59,7 +59,8 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
       );
       process.exitCode = 1;
       throw new Error('cypress.run process failed. See the above logs.');
-    });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    })) as { runs: any; totalFailed: number };
 
   // when Cypress crashed
   if (typeof tests === 'undefined') {
