@@ -5,7 +5,7 @@ jobs:
     parallelism: 2
     working_directory: ~/repo
     docker:
-      - image: cypress/base:18.16.0
+      - image: cypress/base:22.19.0
         environment:
           TERM: xterm # Enable colors in the output
     steps:
@@ -53,4 +53,3 @@ jobs:
             npx @knapsack-pro/cypress
       - run: apt-get update && apt-get install --no-install-recommends -y openssl
       - run: npm run test:cra
-
