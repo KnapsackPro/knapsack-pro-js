@@ -1,5 +1,5 @@
 import minimist from 'minimist';
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 export class CypressCLI {
   // Translate Cypress options to Cypress CLI options:
