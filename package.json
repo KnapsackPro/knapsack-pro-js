@@ -13,7 +13,7 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "test:core:coverage": "npm run test:coverage -w packages/core",
+    "test:core": "npm run test -w packages/core",
     "test:jest": "npm run build -w packages/core && npm run build -w packages/jest && npm run test:ks -w packages/jest-example-test-suite",
     "test:vitest": "npm run build -w packages/core && npm run build -w packages/vitest && npm run test:ks -w packages/vitest-example-test-suite",
     "test:cypress": "npm run build -w packages/core && npm run build -w packages/cypress && npm run test:ks -w packages/cypress-example-test-suite",

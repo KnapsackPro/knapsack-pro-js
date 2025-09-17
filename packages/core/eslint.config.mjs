@@ -1,6 +1,6 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import prettier from 'eslint-plugin-prettier';
-import jest from 'eslint-plugin-jest';
+import vitest from '@vitest/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,18 +30,15 @@ export default [
     plugins: {
       '@typescript-eslint': typescriptEslint,
       prettier,
-      jest,
+      vitest,
     },
 
     languageOptions: {
-      globals: {
-        ...jest.environments.globals.globals,
-      },
-
       parser: tsParser,
     },
 
     rules: {
+      ...vitest.configs.recommended.rules,
       'prettier/prettier': 'error',
       'no-unused-vars': 'warn',
       'no-console': 'off',

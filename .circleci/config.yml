@@ -35,9 +35,7 @@ jobs:
             - ~/.cache
           key: v2-deps-{{ checksum "package-lock.json" }}
       - run: npm run lint
-      - run: npm run test:core:coverage
-      - store_artifacts:
-          path: packages/core/coverage
+      - run: npm run test:core
       - run:
           working_directory: ./packages/jest-example-test-suite
           command: |

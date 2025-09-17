@@ -1,3 +1,4 @@
+import { describe, it, expect, afterEach } from 'vitest';
 import { getHeaders } from '../src/knapsack-pro-api';
 
 describe('KnapsackProAPI', () => {
