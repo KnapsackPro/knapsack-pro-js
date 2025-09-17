@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { TestFilesFinder } from '../src/test-files-finder';
 import { TestFile } from '../src/models';
 

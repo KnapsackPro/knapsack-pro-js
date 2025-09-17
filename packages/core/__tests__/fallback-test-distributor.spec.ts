@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { FallbackTestDistributor } from '../src/fallback-test-distributor';
 import { TestFile } from '../src/models';
 
