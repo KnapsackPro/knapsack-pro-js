@@ -68,7 +68,7 @@ export class KnapsackProCore {
           return;
         }
 
-        const queueTestFiles = response.data.test_files;
+        const queueTestFiles = response.data.test_files as TestFile[];
         const isQueueEmpty = queueTestFiles.length === 0;
 
         if (isQueueEmpty) {
@@ -78,7 +78,11 @@ export class KnapsackProCore {
 
         onSuccess(queueTestFiles).then(
           ({ recordedTestFiles, isTestSuiteGreen }) => {
-            this.updateRecordedTestFiles(recordedTestFiles, isTestSuiteGreen);
+            this.updateRecordedTestFiles(
+              recordedTestFiles,
+              isTestSuiteGreen,
+              queueTestFiles,
+            );
             this.fetchTestsFromQueue(false, false, onSuccess, onFailure);
           },
         );
@@ -123,7 +127,11 @@ export class KnapsackProCore {
         );
 
         onSuccess(testFiles).then(({ recordedTestFiles, isTestSuiteGreen }) => {
-          this.updateRecordedTestFiles(recordedTestFiles, isTestSuiteGreen);
+          this.updateRecordedTestFiles(
+            recordedTestFiles,
+            isTestSuiteGreen,
+            testFiles,
+          );
           this.finishQueueMode();
         });
       });
@@ -132,8 +140,13 @@ export class KnapsackProCore {
   private updateRecordedTestFiles(
     recordedTestFiles: TestFile[],
     isTestSuiteGreen: boolean,
+    scheduledTestPaths: TestFile[],
   ) {
-    this.recordedTestFiles = this.recordedTestFiles.concat(recordedTestFiles);
+    this.recordedTestFiles = updateRecordedTestFiles(
+      this.recordedTestFiles,
+      recordedTestFiles,
+      scheduledTestPaths,
+    );
     this.isTestSuiteGreen = this.isTestSuiteGreen && isTestSuiteGreen;
   }
 
@@ -151,4 +164,19 @@ export class KnapsackProCore {
       );
     });
   }
+}
+
+export function updateRecordedTestFiles(
+  recordedTestFiles: TestFile[],
+  newRecordedTestFiles: TestFile[],
+  scheduledTestFiles: TestFile[],
+) {
+  const map = new Map();
+  scheduledTestFiles.forEach((testFile) => {
+    map.set(testFile.path, { path: testFile.path, time_execution: 0 });
+  });
+  newRecordedTestFiles.forEach((testFile) => {
+    map.set(testFile.path, testFile);
+  });
+  return recordedTestFiles.concat(Array.from(map.values()));
 }
