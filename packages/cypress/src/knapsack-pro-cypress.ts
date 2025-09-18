@@ -14,7 +14,7 @@ import { TestFilesFinder } from './test-files-finder.js';
 import { CypressCLI } from './cypress-cli.js';
 
 const clientName = '@knapsack-pro/cypress';
-const clientVersion = '8.1.0';
+const clientVersion = '9.0.0-rc.1';
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
