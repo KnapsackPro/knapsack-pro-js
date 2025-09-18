@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "outDir": "lib",
-    "strict": true
+    "outDir": "lib"
   },
   "include": ["src/**/*.ts"],
   "extends": "../../tsconfig.base.json"
