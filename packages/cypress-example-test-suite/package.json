@@ -4,7 +4,7 @@
   "description": "Cypress example test suite with @knapsack-pro/cypress",
   "main": "index.js",
   "devDependencies": {
-    "@knapsack-pro/cypress": "^8.1.0",
+    "@knapsack-pro/cypress": "^9.0.0-rc.1",
     "cypress": "^15.2.0"
   },
   "scripts": {
