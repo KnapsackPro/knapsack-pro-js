@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Switch to ESM
+- Bump `@knapsack-pro/core` from `^7.1.0` to `^8.0.0`
+- Bump `glob` from `^10.3.4` to `^11.0.3`,
+- Bump `minimatch` from `^9.0.3` to `^10.0.3`
+- Bump `minimist` from `^1.2.6` to `^1.2.8`
+- Bump `uuid` from `^9.0.1` to `^13.0.0`
+- Bump `typescript` from `^5.2.2` to `^5.9.2`
+
 ## 8.1.0
 
 - Warn when `KNAPSACK_PRO_*` environment variables are set manually if their values could be automatically determined from supported CI environments.
