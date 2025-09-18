@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Switch to ESM
+- Update dependencies (including `axios` and `typescript`)
+- Add `batch_uuid` to handle retried requests
+- Use 0 seconds as default time for scheduled tests (fixes #22)
+
 ## 8.0.0
 
 - Update dependencies (including `winston`, `axios`, `axios-retry`)
