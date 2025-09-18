@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - Bump `glob` from `^10.3.4` to `^11.0.3`,
 - Bump `minimatch` from `^9.0.3` to `^10.0.3`
