@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 9.0.0-rc.1
 
 - Switch to ESM
 - Require `jest` version `>=23.0.0`

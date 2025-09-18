@@ -18,7 +18,7 @@ const jestImport = await import('jest');
 const jest = jestImport.default ?? jestImport;
 
 const clientName = '@knapsack-pro/jest';
-const clientVersion = '8.1.0';
+const clientVersion = '9.0.0-rc.1';
 
 const jestCLIOptions = JestCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
