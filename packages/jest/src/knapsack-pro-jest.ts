@@ -8,12 +8,14 @@ import {
   onQueueSuccessType,
   TestFile,
 } from '@knapsack-pro/core';
-import jest from 'jest';
 import { v4 as uuidv4 } from 'uuid';
 
 import { EnvConfig } from './env-config.js';
 import { TestFilesFinder } from './test-files-finder.js';
 import { JestCLI } from './jest-cli.js';
+
+const jestImport = await import('jest');
+const jest = jestImport.default ?? jestImport;
 
 const clientName = '@knapsack-pro/jest';
 const clientVersion = '8.1.0';
