@@ -5,7 +5,8 @@ export default defineConfig({
   test: {
     exclude: ["**/excludedTest.spec.ts"],
     coverage: {
-      enabled: true
-    }
+      enabled: true,
+    },
+    reporters: ["blob"],
   },
 });
