@@ -4,7 +4,7 @@
 
 - Switch to ESM
 - Require `jest` version `>=23.0.0`
-- Bump `@knapsack-pro/core` from `^7.1.0` to `^8.0.0`
+- Bump `@knapsack-pro/core` from `^7.1.0` to `^9.0.0-rc.1`
 - Bump `glob` from `^10.3.4` to `^11.0.3`,
 - Bump `minimatch` from `^9.0.3` to `^10.0.3`
 - Bump `minimist` from `^1.2.6` to `^1.2.8`
