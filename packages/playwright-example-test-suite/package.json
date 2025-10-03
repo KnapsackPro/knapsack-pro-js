@@ -1,0 +1,28 @@
+{
+  "name": "@knapsack-pro/playwright-example-test-suite",
+  "version": "1.0.0",
+  "description": "Playwright example test suite with @knapsack-pro/playwright",
+  "main": "index.js",
+  "devDependencies": {
+    "@knapsack-pro/playwright": "^0.1.0",
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.6.2",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "test:ks": "bin/knapsack_pro_playwright"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git"
+  },
+  "keywords": [
+    "playwright"
+  ],
+  "author": "KnapsackPro.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js/issues"
+  },
+  "homepage": "https://github.com/KnapsackPro/knapsack-pro-js"
+}
