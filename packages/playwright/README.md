@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://knapsackpro.com?utm_source=github&utm_medium=readme&utm_campaign=knapsack-pro-playwright&utm_content=hero_logo">
-    <img alt="Knapsack Pro" src="./.github/assets/logo.png" width="100%" style="max-width: 100%;" />
+    <img alt="Knapsack Pro" src="./.github/assets/knapsack.png" width="100%" style="max-width: 100%;" />
   </a>
 </p>
 
@@ -46,12 +46,6 @@ See the [docs](https://docs.knapsackpro.com/playwright/guide/) to get started:
 ## Contributing
 
 Follow the steps in the [root README.md](https://github.com/KnapsackPro/knapsack-pro-js#contributing) to set up the project.
-
-You can compile TypeScript in watch mode from the root folder with:
-
-```bash
-npm start -w packages/playwright
-```
 
 ### Testing
 
