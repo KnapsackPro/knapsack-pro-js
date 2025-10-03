@@ -1,0 +1,51 @@
+{
+  "name": "@knapsack-pro/playwright",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Knapsack Pro Playwright splits Playwright tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KnapsackPro/knapsack-pro-js.git",
+    "directory": "packages/playwright"
+  },
+  "keywords": [
+    "knapsack",
+    "knapsack pro",
+    "playwright",
+    "test suite parallelisation",
+    "parallelisation",
+    "testing",
+    "test",
+    "automation",
+    "integration",
+    "runner",
+    "CI"
+  ],
+  "author": "Knapsack Pro <support@knapsackpro.com> (https://knapsackpro.com)",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-playwright.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "bin": {
+    "knapsack-pro-playwright": "lib/knapsack-playwright.js"
+  },
+  "dependencies": {
+    "@knapsack-pro/core": "^9.0.0-rc.1",
+    "glob": "^11.0.3",
+    "minimatch": "^10.0.3",
+    "uuid": "^13.0.0"
+  },
+  "peerDependencies": {
+    "playwright": ">=1.50.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.1",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.2",
+    "playwright": "^1.55.1"
+  }
+}
