@@ -10,6 +10,7 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
+    "test": "npx playwright test",
     "test:ks": "bin/knapsack_pro_playwright"
   },
   "repository": {

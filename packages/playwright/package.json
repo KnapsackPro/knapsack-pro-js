@@ -24,7 +24,6 @@
   "author": "Knapsack Pro <support@knapsackpro.com> (https://knapsackpro.com)",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
     "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-playwright.js"
   },
   "files": [
@@ -33,19 +32,20 @@
   "bin": {
     "knapsack-pro-playwright": "lib/knapsack-playwright.js"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    "./reporters/batch": "./lib/reporters/batch.js",
+    "./reporters/list": "./lib/reporters/list.js"
+  },
   "dependencies": {
-    "@knapsack-pro/core": "^9.0.0-rc.1",
-    "glob": "^11.0.3",
-    "minimatch": "^10.0.3",
-    "uuid": "^13.0.0"
+    "@knapsack-pro/core": "^9.0.0-rc.1"
   },
   "peerDependencies": {
     "playwright": ">=1.50.0"
   },
   "devDependencies": {
     "@types/node": "^24.5.1",
-    "nodemon": "^3.1.10",
-    "typescript": "^5.9.2",
-    "playwright": "^1.55.1"
+    "playwright": "^1.55.1",
+    "typescript": "^5.9.2"
   }
 }
