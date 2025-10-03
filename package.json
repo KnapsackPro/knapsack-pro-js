@@ -8,7 +8,8 @@
     "packages/cypress",
     "packages/cypress-example-test-suite",
     "packages/vitest",
-    "packages/vitest-example-test-suite"
+    "packages/vitest-example-test-suite",
+    "packages/playwright"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
