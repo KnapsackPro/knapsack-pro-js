@@ -40,9 +40,6 @@
   "scripts": {
     "start": "nodemon --ext ts --watch src/ --exec \"npm run build\"",
     "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-vitest.js",
-    "lint": "npm run eslint:check && npm run prettier:check",
-    "eslint:check": "eslint src/**/*.ts",
-    "eslint:format": "eslint src/**/*.ts --fix",
     "prettier:check": "prettier --config .prettierrc.json --check .",
     "prettier:format": "prettier --config .prettierrc.json --write ."
   },
@@ -62,16 +59,7 @@
     "vitest": ">=2.1.6"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.35.0",
     "@types/node": "^24.5.1",
-    "@typescript-eslint/eslint-plugin": "^8.44.0",
-    "@typescript-eslint/parser": "^8.44.0",
-    "eslint": "^9.35.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.4",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
