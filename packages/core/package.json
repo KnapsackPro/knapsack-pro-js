@@ -30,8 +30,6 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "rm -rf lib && tsc",
-    "prettier:check": "prettier --config .prettierrc.json --check .",
-    "prettier:format": "prettier --config .prettierrc.json --write .",
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage"
@@ -55,7 +53,6 @@
   },
   "devDependencies": {
     "@types/node": "^24.5.1",
-    "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
