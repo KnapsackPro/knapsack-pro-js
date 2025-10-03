@@ -47,9 +47,7 @@ export class KnapsackProCore {
   }
 
   private fetchTestsFromQueue(
-    // eslint-disable-next-line default-param-last
     initializeQueue = false,
-    // eslint-disable-next-line default-param-last
     attemptConnectToQueue = false,
     onSuccess: onQueueSuccessType,
     onFailure: onQueueFailureType,
@@ -157,7 +155,7 @@ export class KnapsackProCore {
 
   // saves recorded timing for tests executed on single CI node
   private createBuildSubset(testFiles: TestFile[]) {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.knapsackProAPI.createBuildSubset(testFiles).catch((error) => {
       this.knapsackProLogger.error(
         'Could not save recorded timing of tests due to failed request to Knapsack Pro API.',

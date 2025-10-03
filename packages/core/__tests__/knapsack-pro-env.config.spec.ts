@@ -16,7 +16,6 @@ describe('KnapsackProEnvConfig', () => {
   let logs: string[] = [];
 
   beforeEach(() => {
-    // eslint-disable-next-line dot-notation
     KnapsackProEnvConfig['$knapsackProLogger'] = {
       info(message) {
         logs.push(message);
@@ -297,7 +296,6 @@ describe('KnapsackProEnvConfig', () => {
 
   describe('.fixedQueueSplit', () => {
     afterEach(() => {
-      // eslint-disable-next-line dot-notation
       KnapsackProEnvConfig['$fixedQueueSplit'] = undefined;
     });
 
