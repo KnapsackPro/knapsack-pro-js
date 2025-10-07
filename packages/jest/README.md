@@ -47,12 +47,6 @@ See the [docs](https://docs.knapsackpro.com/jest/guide/) to get started:
 
 Follow the steps in the [root README.md](https://github.com/KnapsackPro/knapsack-pro-js#contributing) to set up the project.
 
-You can compile TypeScript in watch mode from the root folder with:
-
-```bash
-npm start -w packages/jest
-```
-
 ### Testing
 
 To test `@knapsack-pro/jest` against a real test suite we use:

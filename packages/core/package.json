@@ -28,7 +28,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "start": "tsc --watch",
     "build": "rm -rf lib && tsc",
     "test": "vitest --run",
     "test:watch": "vitest",
