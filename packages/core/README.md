@@ -48,12 +48,6 @@ See the [docs](https://docs.knapsackpro.com/) to get started:
 
 Follow the steps in the [root README.md](https://github.com/KnapsackPro/knapsack-pro-js#contributing) to set up the project.
 
-You can compile TypeScript in watch mode from the root folder with:
-
-```bash
-npm start -w packages/core
-```
-
 ### Publishing
 
 See [Publishing](../../#publishing) in the root README.md.
