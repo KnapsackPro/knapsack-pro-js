@@ -26,7 +26,8 @@ export class SemaphoreCI2 extends CIProviderBase {
   }
 
   public static get branch(): string | undefined {
-    return process.env.SEMAPHORE_GIT_BRANCH;
+    return process.env.SEMAPHORE_GIT_WORKING_BRANCH || // undefined when workflow is triggered by pushing a Git tag
+process.env.SEMAPHORE_GIT_BRANCH;
   }
 
   public static get userSeat(): undefined {
