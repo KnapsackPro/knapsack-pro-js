@@ -46,6 +46,9 @@
   "bin": {
     "knapsack-pro-vitest": "lib/knapsack-vitest.js"
   },
+  "exports": {
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@knapsack-pro/core": "^9.0.0-rc.1",
     "glob": "^11.0.3",
