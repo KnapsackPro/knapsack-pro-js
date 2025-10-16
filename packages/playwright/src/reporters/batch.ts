@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import type {
   FullConfig,
   FullResult,
@@ -57,6 +57,9 @@ class BatchReporter implements ReporterV2 {
       isTestSuiteGreen: result.status === 'passed',
     };
 
+    // Ensure .knapsack-pro dir exists since this reporter may run outside of
+    // @knapsack-pro/playwright (because it's configured in Playwright config).
+    mkdirSync('.knapsack-pro', { recursive: true });
     writeFileSync('.knapsack-pro/batch.json', JSON.stringify(res));
   }
 }

@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { pathWithRootDir } from './utils.js';
 class BatchReporter {
     config;
@@ -37,6 +37,7 @@ class BatchReporter {
             recordedTestFiles,
             isTestSuiteGreen: result.status === 'passed',
         };
+        mkdirSync('.knapsack-pro', { recursive: true });
         writeFileSync('.knapsack-pro/batch.json', JSON.stringify(res));
     }
 }
