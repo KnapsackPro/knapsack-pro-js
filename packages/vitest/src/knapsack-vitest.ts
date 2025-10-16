@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import pkg from '@knapsack-pro/vitest/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
