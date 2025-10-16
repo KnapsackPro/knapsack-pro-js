@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import pkg from '@knapsack-pro/cypress/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -12,9 +13,6 @@ import cypress from 'cypress';
 import { EnvConfig } from './env-config.js';
 import { TestFilesFinder } from './test-files-finder.js';
 import { CypressCLI } from './cypress-cli.js';
-
-const clientName = '@knapsack-pro/cypress';
-const clientVersion = '9.0.0-rc.1';
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
@@ -30,8 +28,8 @@ EnvConfig.loadEnvironmentVariables();
 const testFilesToExecute: testFilesToExecuteType = () =>
   TestFilesFinder.allTestFiles();
 const knapsackPro = new KnapsackProCore(
-  clientName,
-  clientVersion,
+  pkg.name,
+  pkg.version,
   testFilesToExecute,
 );
 

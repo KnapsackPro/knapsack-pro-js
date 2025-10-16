@@ -52,6 +52,9 @@
   "bin": {
     "knapsack-pro-cypress": "lib/knapsack-pro-cypress.js"
   },
+  "exports": {
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@knapsack-pro/core": "^9.0.0-rc.1",
     "glob": "^11.0.3",
