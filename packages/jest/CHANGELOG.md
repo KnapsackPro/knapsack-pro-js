@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## Unreleased (9.0.0)
 
 - Update dependencies (including `typescript`)
+- (Internal) Import `package.json`
 
 ## 9.0.0-rc.1
 

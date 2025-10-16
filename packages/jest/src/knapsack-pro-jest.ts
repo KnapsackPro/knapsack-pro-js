@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import pkg from '@knapsack-pro/jest/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -17,9 +18,6 @@ import { JestCLI } from './jest-cli.js';
 const jestImport = await import('jest');
 const jest = jestImport.default ?? jestImport;
 
-const clientName = '@knapsack-pro/jest';
-const clientVersion = '9.0.0-rc.1';
-
 const jestCLIOptions = JestCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
 knapsackProLogger.debug(
@@ -32,8 +30,8 @@ const projectPath = process.cwd();
 const testFilesToExecute: testFilesToExecuteType = () =>
   TestFilesFinder.allTestFiles();
 const knapsackPro = new KnapsackProCore(
-  clientName,
-  clientVersion,
+  pkg.name,
+  pkg.version,
   testFilesToExecute,
 );
 
