@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## Unreleased (0.3.0)
 
 - Update dependencies (including `typescript`)
+- (Internal) Import `package.json`
 
 ## 0.2.0
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import pkg from '@knapsack-pro/vitest/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -18,9 +19,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
-import { join, dirname, relative } from 'path';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
+import { relative } from 'path';
 import * as Urls from './urls.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
@@ -31,11 +30,6 @@ if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
 const knapsackProLogger = new KnapsackProLogger();
 
 async function main() {
-  const filePath = fileURLToPath(import.meta.url);
-  const dirName = dirname(filePath);
-  const pkg = JSON.parse(
-    readFileSync(join(dirName, '..', 'package.json'), 'utf8'),
-  );
   knapsackProLogger.debug(`Running ${pkg.name}@${pkg.version}`);
 
   const cliArguments = parseCLI(`vitest ${process.argv.slice(2).join(' ')}`);
