@@ -26,10 +26,7 @@ class ListReporter implements ReporterV2 {
     suite
       .allTests()
       .forEach((test) => paths.add(pathWithRootDir(test, this.config)));
-    writeFileSync(
-      '.knapsack-pro/list.json',
-      JSON.stringify(Array.from(paths)),
-    );
+    writeFileSync('.knapsack-pro/list.json', JSON.stringify(Array.from(paths)));
   }
 }
 
