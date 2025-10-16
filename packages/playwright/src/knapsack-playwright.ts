@@ -2,9 +2,8 @@
 
 import { readFileSync, mkdirSync } from 'fs';
 import { execSync, spawnSync } from 'child_process';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
 
+import pkg from '@knapsack-pro/playwright/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -19,9 +18,10 @@ if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_PLAYWRIGHT) {
 }
 
 async function main() {
-  mkdirSync('.knapsack-pro', { recursive: true });
-
   const knapsackProLogger = new KnapsackProLogger();
+  knapsackProLogger.debug(`Running ${pkg.name}@${pkg.version}`);
+
+  mkdirSync('.knapsack-pro', { recursive: true });
 
   // 0   1                        2
   // npx @knapsack-pro/playwright ...
@@ -39,13 +39,6 @@ async function main() {
     readFileSync('.knapsack-pro/list.json', 'utf8'),
   ) as string[]; // This may throw an error
   knapsackProLogger.debug(`Tests to run: ${tests}`);
-
-  const filePath = fileURLToPath(import.meta.url);
-  const dirName = dirname(filePath);
-  const pkg = JSON.parse(
-    readFileSync(join(dirName, '..', 'package.json'), 'utf8'),
-  );
-  knapsackProLogger.debug(`Running ${pkg.name}@${pkg.version}`);
 
   const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
     tests.map((testFilePath) => ({ path: testFilePath })),

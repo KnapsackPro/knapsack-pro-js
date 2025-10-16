@@ -33,6 +33,7 @@
     "knapsack-pro-playwright": "lib/knapsack-playwright.js"
   },
   "exports": {
+    "./package.json": "./package.json",
     "./reporters/batch": "./lib/reporters/batch.js",
     "./reporters/list": "./lib/reporters/list.js"
   },
