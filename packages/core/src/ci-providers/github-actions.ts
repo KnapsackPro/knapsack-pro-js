@@ -34,10 +34,11 @@ export class GithubActions extends CIProviderBase {
   }
 
   public static get branch(): string | undefined {
-    // GITHUB_REF - The branch or tag ref that triggered the workflow.
-    // For example, refs/heads/feature-branch-1.
-    // If neither a branch or tag is available for the event type, the variable will not exist.
-    return process.env.GITHUB_REF || process.env.GITHUB_SHA;
+    // `on: push` has `GITHUB_HEAD_REF=`
+    const headRef = process.env.GITHUB_HEAD_REF || '';
+    if (headRef !== '') return headRef;
+
+    return process.env.GITHUB_REF_NAME || process.env.GITHUB_SHA;
   }
 
   public static get userSeat(): string | undefined {
