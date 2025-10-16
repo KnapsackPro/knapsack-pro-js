@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs';
 import { pathWithRootDir } from './utils.js';
 class ListReporter {
     config;
@@ -15,7 +16,7 @@ class ListReporter {
         suite
             .allTests()
             .forEach((test) => paths.add(pathWithRootDir(test, this.config)));
-        process.stdout.write(JSON.stringify(Array.from(paths)));
+        writeFileSync('.knapsack-pro/list.json', JSON.stringify(Array.from(paths)));
     }
 }
 export default ListReporter;

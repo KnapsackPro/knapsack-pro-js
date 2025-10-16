@@ -15,8 +15,8 @@ async function main() {
     knapsackProLogger.debug(`cliArguments: ${cliArguments}`);
     const command = `npx playwright test --list ${cliArguments} --reporter=@knapsack-pro/playwright/reporters/list`;
     knapsackProLogger.debug(`Executing: ${command}`);
-    const stdout = execSync(command, { stdio: ['ignore', 'pipe', 'ignore'] });
-    const tests = JSON.parse(String(stdout));
+    execSync(command, { stdio: 'ignore' });
+    const tests = JSON.parse(readFileSync('.knapsack-pro/list.json', 'utf8'));
     knapsackProLogger.debug(`Tests to run: ${tests}`);
     const filePath = fileURLToPath(import.meta.url);
     const dirName = dirname(filePath);

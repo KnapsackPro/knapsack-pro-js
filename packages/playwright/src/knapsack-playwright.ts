@@ -31,11 +31,13 @@ async function main() {
   knapsackProLogger.debug(`cliArguments: ${cliArguments}`);
 
   // --reporter must be last to overwrite a (potentially) preceeding --reporter
-  const command = `npx playwright test --list ${cliArguments} --reporter=@knapsack-pro/playwright/reporters/list`; // TODO: are there incompatible args with --list?
+  const command = `npx playwright test --list ${cliArguments} --reporter=@knapsack-pro/playwright/reporters/list`;
   knapsackProLogger.debug(`Executing: ${command}`);
 
-  const stdout = execSync(command, { stdio: ['ignore', 'pipe', 'ignore'] }); // TODO: possible that not only reporter prints to stdout?
-  const tests = JSON.parse(String(stdout)) as string[]; // This may throw an error
+  execSync(command, { stdio: 'ignore' }); // This may throw an error
+  const tests = JSON.parse(
+    readFileSync('.knapsack-pro/list.json', 'utf8'),
+  ) as string[]; // This may throw an error
   knapsackProLogger.debug(`Tests to run: ${tests}`);
 
   const filePath = fileURLToPath(import.meta.url);
