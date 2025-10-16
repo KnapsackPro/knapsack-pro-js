@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased
+## Unreleased (9.0.0)
 
 - Update dependencies (including `winston`, `typescript`, `axios`)
+- Semaphore: Detect the correct branch name in the context of a PR
+- Semaphore: Detect user seat (committer)
+- GitHub Actions: Detect either head branch in Pull Requests or short ref name (vs fully-formed ref) in the other cases
 
 ## 9.0.0-rc.1
 
