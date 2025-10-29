@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "lint": "npx eslint --ignore-pattern /node_modules/ --ignore-pattern /lib/ **/*.ts && npx prettier --check **/*.ts",
+    "lint": "npx eslint --ignore-pattern **/*.d.ts **/*.ts && npx prettier --check **/*.ts",
     "test:core": "npm run test -w packages/core",
     "test:jest": "npm run build -w packages/core && npm run build -w packages/jest && npm run test:ks -w packages/jest-example-test-suite",
     "test:vitest": "npm run build -w packages/core && npm run build -w packages/vitest && npm run test:ks -w packages/vitest-example-test-suite",
@@ -24,11 +24,12 @@
     "test:examples": "npm run test:jest && npm run test:vitest && npm run test:cypress && npm run test:playwright && npm run test:cra"
   },
   "devDependencies": {
-    "@eslint/js": "^9.36.0",
-    "eslint": "^9.36.0",
+    "@eslint/js": "^9.38.0",
+    "eslint": "^9.38.0",
     "globals": "^16.4.0",
     "jiti": "^2.6.1",
     "prettier": "3.6.2",
-    "typescript-eslint": "^8.45.0"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2"
   }
 }
