@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Update dependencies (including `winston`, `typescript`, `axios`)
+
 ## 9.0.0-rc.1
 
 - Switch to ESM
