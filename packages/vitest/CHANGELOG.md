@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Update dependencies (including `typescript`)
+
 ## 0.2.0
 
 - Bump `glob` from `^10.3.4` to `^11.0.3`,
