@@ -115,19 +115,9 @@ Replace PACKAGE with `jest`, `vitest`, `cypress`, or `playwright`. If core chang
 # update CHANGELOG(s) to move *unreleased* into the proper *version*
 # LEVEL specifies the type of version increment: major, minor, patch
 npm version LEVEL -w packages/PACKAGE
-# update `const clientVersion` in `packages/PACKAGE/src/knapsack-pro-PACKAGE.ts` if defined
 
-npm install @knapsack-pro/core -w packages/jest
-# make sure @knapsack-pro/core was updated in packages/jest/package.json (you can retry specifying the version package@x.x.x)
-
-npm install @knapsack-pro/core -w packages/vitest
-# make sure @knapsack-pro/core was updated in packages/vitest/package.json (you can retry specifying the version package@x.x.x)
-
-npm install @knapsack-pro/core -w packages/cypress
-# make sure @knapsack-pro/core was updated in packages/cypress/package.json (you can retry specifying the version package@x.x.x)
-
-npm install @knapsack-pro/core -w packages/playwright
-# make sure @knapsack-pro/core was updated in packages/playwright/package.json (you can retry specifying the version package@x.x.x)
+npm install @knapsack-pro/core -w packages/PACKAGE
+# make sure @knapsack-pro/core was updated in packages/PACKAGE/package.json (you can retry specifying the version package@x.x.x)
 
 git add --all
 git commit -m "chore: prepare release"
@@ -165,7 +155,7 @@ npm run test:playwright
 # since create-react-app-example is not a workspace (for now)
 cd packages/create-react-app-example
 npm install -D @knapsack-pro/jest
-# make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.jso (you can retry specifying the version package@x.x.x)n
+# make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.json (you can retry specifying the version package@x.x.x)
 npm run test:cra
 
 git add --all
