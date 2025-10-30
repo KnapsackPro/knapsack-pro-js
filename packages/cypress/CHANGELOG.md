@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased (9.0.0)
+## 9.0.0
 
-- Update dependencies (including `typescript`)
+- Update dependencies (including `typescript`, `@knapsack-pro/core`)
 - (Internal) Import `package.json`
 
 ## 9.0.0-rc.1
