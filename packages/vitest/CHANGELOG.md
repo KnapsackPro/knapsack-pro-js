@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased (0.3.0)
+## 0.3.0
 
-- Update dependencies (including `typescript`)
+- Update dependencies (including `typescript`, `@knapsack-pro/core`)
 - (Internal) Import `package.json`
 
 ## 0.2.0
