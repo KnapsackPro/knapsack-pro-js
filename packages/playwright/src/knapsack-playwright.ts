@@ -33,10 +33,10 @@ async function main() {
   const command = `npx playwright test --list ${cliArguments} --reporter=@knapsack-pro/playwright/reporters/list`;
   knapsackProLogger.debug(`Executing: ${command}`);
 
-  execSync(command, { stdio: 'ignore' }); // This may throw an error
+  execSync(command, { stdio: 'ignore' });
   const tests = JSON.parse(
     readFileSync('.knapsack-pro/list.json', 'utf8'),
-  ) as string[]; // This may throw an error
+  ) as string[];
   knapsackProLogger.debug(`Tests to run: ${tests}`);
 
   const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
@@ -49,8 +49,8 @@ async function main() {
     knapsackProLogger.debug(`Executing: ${command}`);
     spawnSync(command, { shell: true, stdio: 'inherit' });
     const batch = readFileSync('.knapsack-pro/batch.json', 'utf8');
-    rmSync('.knapsack-pro/batch.json')
-    return JSON.parse(batch); // This may throw an error
+    rmSync('.knapsack-pro/batch.json');
+    return JSON.parse(batch);
   };
 
   const onError: onQueueFailureType = () => {};
