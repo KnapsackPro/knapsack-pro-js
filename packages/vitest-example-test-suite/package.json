@@ -4,7 +4,7 @@
   "description": "Vitest example test suite with @knapsack-pro/vitest",
   "main": "index.js",
   "devDependencies": {
-    "@knapsack-pro/vitest": "^0.2.0",
+    "@knapsack-pro/vitest": "^0.3.0",
     "@vitest/coverage-v8": "^4.0.5",
     "typescript": "^5.9.3",
     "vitest": "^4.0.5"
