@@ -44,7 +44,7 @@ See the [docs](https://docs.knapsackpro.com/) to get started:
 ### Requirements
 
 ```
->= Node 18.13.0 LTS
+>= Node v20.19.5
 ```
 
 You can use [NVM](https://github.com/nvm-sh/nvm) to manage Node versions in development.
