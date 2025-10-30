@@ -5,9 +5,9 @@
   "main": "index.js",
   "devDependencies": {
     "@knapsack-pro/vitest": "^0.2.0",
-    "@vitest/coverage-v8": "^4.0.4",
+    "@vitest/coverage-v8": "^4.0.5",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.4"
+    "vitest": "^4.0.5"
   },
   "scripts": {
     "test": "vitest",
