@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, mkdirSync } from 'fs';
+import { readFileSync, mkdirSync, rmSync } from 'fs';
 import { execSync, spawnSync } from 'child_process';
 
 import pkg from '@knapsack-pro/playwright/package.json' with { type: 'json' };
@@ -48,7 +48,9 @@ async function main() {
     const command = `PWTEST_BLOB_DO_NOT_REMOVE=1 npx playwright test ${cliArguments} ${paths}`;
     knapsackProLogger.debug(`Executing: ${command}`);
     spawnSync(command, { shell: true, stdio: 'inherit' });
-    return JSON.parse(readFileSync('.knapsack-pro/batch.json', 'utf8')); // This may throw an error
+    const batch = readFileSync('.knapsack-pro/batch.json', 'utf8');
+    rmSync('.knapsack-pro/batch.json')
+    return JSON.parse(batch); // This may throw an error
   };
 
   const onError: onQueueFailureType = () => {};
