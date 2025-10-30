@@ -58,19 +58,14 @@ npm run build
 #   - npx @knapsack-pro/jest
 #   - npx @knapsack-pro/vitest
 #   - npx @knapsack-pro/cypress
+#   - npx @knapsack-pro/playwright
 # See https://github.com/npm/cli/issues/4591#issuecomment-1111557730
 npm install
 ```
 
 ### Testing
 
-```
-npm run test:core:coverage
-npm run test:jest
-npm run test:vitest
-npm run test:cypress
-npm run test:cra
-```
+Run `npm run` to see what test scripts are available.
 
 You can find more example scripts in the nested `packages/`.
 
@@ -110,9 +105,9 @@ npm adduser # sign in to npm
 npm publish
 ```
 
-#### Jest, Vitest and/or Cypress
+#### Jest, Vitest, Cypress, Playwright
 
-Replace PACKAGE with `jest`, `vitest` or `cypress`. If core changed you'll need to update all of them.
+Replace PACKAGE with `jest`, `vitest`, `cypress`, or `playwright`. If core changed you'll need to update all of them.
 
 ```bash
 # merge PR and pull or edit code
@@ -130,6 +125,9 @@ npm install @knapsack-pro/core -w packages/vitest
 
 npm install @knapsack-pro/core -w packages/cypress
 # make sure @knapsack-pro/core was updated in packages/cypress/package.json (you can retry specifying the version package@x.x.x)
+
+npm install @knapsack-pro/core -w packages/playwright
+# make sure @knapsack-pro/core was updated in packages/playwright/package.json (you can retry specifying the version package@x.x.x)
 
 git add --all
 git commit -m "chore: prepare release"
@@ -157,13 +155,17 @@ npm install -D @knapsack-pro/vitest -w packages/vitest-example-test-suite
 npm run test:vitest
 
 npm install -D @knapsack-pro/cypress -w packages/cypress-example-test-suite
-# make sure @knapsack-pro/cypress was updated in packages/cypress-example-test-suite/package.json
+# make sure @knapsack-pro/cypress was updated in packages/cypress-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:cypress
+
+npm install -D @knapsack-pro/playwright -w packages/playwright-example-test-suite
+# make sure @knapsack-pro/playwright was updated in packages/playwright-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
+npm run test:playwright
 
 # since create-react-app-example is not a workspace (for now)
 cd packages/create-react-app-example
 npm install -D @knapsack-pro/jest
-# make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.json
+# make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.jso (you can retry specifying the version package@x.x.x)n
 npm run test:cra
 
 git add --all
@@ -180,9 +182,11 @@ Read the READMEs inside the nested `packages/`:
 - [jest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest)
 - [vitest](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/vitest)
 - [cypress](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress)
+- [playwright](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/playwright)
 - [jest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/jest-example-test-suite)
 - [vitest-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/vitest-example-test-suite)
 - [cypress-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/cypress-example-test-suite)
+- [playwright-example-test-suite](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/playwright-example-test-suite)
 - [create-react-app-example](https://github.com/KnapsackPro/knapsack-pro-js/tree/main/packages/create-react-app-example)
 
 ## Legacy Repositories
