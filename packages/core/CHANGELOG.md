@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (9.0.0)
+## 9.0.0
 
 - Update dependencies (including `winston`, `typescript`, `axios`)
 - Semaphore: Detect the correct branch name in the context of a PR
