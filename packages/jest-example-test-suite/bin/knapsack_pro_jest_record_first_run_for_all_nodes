@@ -11,7 +11,7 @@ echo 'CI build for a commit:'
 echo $COMMIT_HASH
 
 ENDPOINT=https://api-staging.knapsackpro.com
-# ENDPOINT=http://api.knapsackpro.test:3000
+# ENDPOINT=http://api.knapsackpro.localhost:3000
 
 # LOG_LEVEL=info
 LOG_LEVEL=debug

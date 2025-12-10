@@ -8,7 +8,7 @@ COMMIT_HASH=$(openssl rand -hex 20)
 BRANCH=fake-branch/initialize-new-queue
 
 ENDPOINT=https://api-staging.knapsackpro.com
-# ENDPOINT=http://api.knapsackpro.test:3000
+# ENDPOINT=http://api.knapsackpro.localhost:3000
 
 LOG_LEVEL=info
 # LOG_LEVEL=debug

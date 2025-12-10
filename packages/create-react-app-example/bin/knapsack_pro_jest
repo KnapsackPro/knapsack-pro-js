@@ -3,7 +3,7 @@
 CI_BUILD_ID=$(openssl rand -base64 32)
 
 ENDPOINT=https://api-staging.knapsackpro.com
-# ENDPOINT=http://api.knapsackpro.test:3000
+# ENDPOINT=http://api.knapsackpro.localhost:3000
 
 LOG_LEVEL=info
 # LOG_LEVEL=debug
