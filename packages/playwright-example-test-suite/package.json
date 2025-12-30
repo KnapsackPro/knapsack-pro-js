@@ -6,7 +6,7 @@
   "devDependencies": {
     "@knapsack-pro/playwright": "^0.1.0",
     "@playwright/test": "^1.56.1",
-    "@types/node": "^24.9.2",
+    "@types/node": "^25.0.3",
     "typescript": "^5.9.3"
   },
   "scripts": {
