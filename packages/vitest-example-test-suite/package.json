@@ -7,7 +7,7 @@
     "@knapsack-pro/vitest": "^0.3.0",
     "@vitest/coverage-v8": "^4.0.5",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.5"
+    "vitest": "^4.0.16"
   },
   "scripts": {
     "test": "vitest",
