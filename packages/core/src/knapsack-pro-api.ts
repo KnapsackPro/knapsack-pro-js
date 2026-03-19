@@ -1,6 +1,6 @@
 import type { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import axiosRetry, { retryAfter } from 'axios-retry';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -34,9 +34,6 @@ export class KnapsackProAPI {
   private knapsackProLogger: KnapsackProLogger;
 
   constructor(clientName: string, clientVersion: string) {
-    this.retryCondition = this.retryCondition.bind(this);
-    this.retryDelay = this.retryDelay.bind(this);
-
     this.knapsackProLogger = new KnapsackProLogger();
     this.api = this.setUpApiClient(clientName, clientVersion);
   }
@@ -113,7 +110,7 @@ export class KnapsackProAPI {
     });
 
     axiosRetry(apiClient, {
-      retries: 2,
+      retries: 3,
       shouldResetTimeout: true,
       retryDelay: this.retryDelay,
       retryCondition: this.retryCondition,
@@ -191,7 +188,7 @@ export class KnapsackProAPI {
 
   // based on isNetworkOrIdempotentRequestError function
   // https://github.com/softonic/axios-retry/blob/master/es/index.js
-  private retryCondition(error: AxiosError): boolean {
+  private retryCondition = (error: AxiosError): boolean => {
     return (
       axiosRetry.isNetworkError(error) ||
       this.isRetriableRequestError(error) ||
@@ -210,16 +207,24 @@ export class KnapsackProAPI {
     return axiosRetry.isRetryableError(error);
   }
 
-  private retryDelay(retryCount: number): number {
-    const requestRetryTimebox = 8000; // milliseconds
-    const delay = retryCount * requestRetryTimebox;
-    const randomSum = delay * 0.2 * Math.random(); // 0-20% of the delay
-    const finalDelay = delay + randomSum;
+  // Exponential backoff with steep increments:
+  //   - Min: 765 ms, 4590 ms, 27540 ms
+  //   - Max (min + full jitter): 1020 ms, 6120 ms, 36720 ms
+  // If server specified a Retry-After, use that instead.
+  private retryDelay = (retryCount: number, error: AxiosError): number => {
+    let delay = retryAfter(error);
 
-    this.knapsackProLogger.info(
-      `(${retryCount}) Wait ${finalDelay} ms and retry request to Knapsack Pro API.`,
+    if (delay === 0) {
+      const base = 0.17 * Math.pow(6, retryCount);
+      const min = base * 0.75;
+      const jitter = base * 0.25 * Math.random();
+      delay = (min + jitter) * 1000;
+    }
+
+    this.knapsackProLogger.warn(
+      `(${retryCount}) Retrying request to Knapsack Pro in ${Number(delay.toFixed())} ms...`,
     );
 
-    return finalDelay;
+    return delay;
   }
 }
