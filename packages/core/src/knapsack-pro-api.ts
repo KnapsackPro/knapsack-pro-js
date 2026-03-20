@@ -1,4 +1,9 @@
-import type { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
+import type {
+  AxiosError,
+  AxiosInstance,
+  AxiosPromise,
+  AxiosRequestConfig,
+} from 'axios';
 import axios from 'axios';
 import axiosRetry, { retryAfter } from 'axios-retry';
 import { v4 as uuidv4 } from 'uuid';
@@ -116,6 +121,7 @@ export class KnapsackProAPI {
       retryDelay: this.retryDelay,
       retryCondition: this.retryCondition,
       onMaxRetryTimesExceeded: this.onMaxRetryTimesExceeded,
+      onRetry: this.onRetry,
     });
 
     apiClient.interceptors.request.use((config) => {
@@ -232,4 +238,13 @@ export class KnapsackProAPI {
 
   onMaxRetryTimesExceeded = (_error: Error, _retryCount: number) =>
     logDiagnostics(this.knapsackProLogger, KnapsackProEnvConfig.endpoint);
+
+  onRetry = (
+    retryCount: number,
+    _error: AxiosError,
+    requestConfig: AxiosRequestConfig,
+  ): Promise<void> | void => {
+    requestConfig.headers = requestConfig.headers ?? {};
+    requestConfig.headers['X-Retry-Count'] = retryCount;
+  };
 }
