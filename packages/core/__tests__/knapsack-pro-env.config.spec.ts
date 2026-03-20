@@ -402,7 +402,6 @@ describe('KnapsackProEnvConfig', () => {
           process.env = { ...process.env, ...env };
 
           expect(KnapsackProEnvConfig.fixedQueueSplit).toEqual(expected);
-          // eslint-disable-next-line
           const _ = KnapsackProEnvConfig.fixedQueueSplit;
           expect(logs).toEqual([
             `KNAPSACK_PRO_FIXED_QUEUE_SPLIT is not set. Using default value: ${expected}. Learn more at ${Urls.FIXED_QUEUE_SPLIT}`,
