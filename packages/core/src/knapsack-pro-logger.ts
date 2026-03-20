@@ -24,7 +24,7 @@ export class KnapsackProLogger {
         format.colorize(),
         format.printf(
           ({ timestamp, label, level, message }) =>
-            `\n${timestamp} [${label}] ${level}: ${message}`,
+            `${timestamp} [${label}] ${level}: ${message}`,
         ),
       ),
       transports: [new transports.Console()],
