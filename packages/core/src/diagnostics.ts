@@ -62,7 +62,7 @@ const logCommand = (logger: KnapsackProLogger, diagnostic: Command): void => {
   );
 
   logger.warn(`Exit status: ${result.status}`);
-  (result.stderr.toString() + result.stdout.toString())
+  ((result.stderr ?? '').toString() + (result.stdout ?? '').toString())
     .split('\n')
     .forEach((line) => logger.warn(line));
 };
