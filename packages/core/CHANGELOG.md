@@ -1,5 +1,11 @@
 # Changelog
 
+## 9.0.1
+
+- Use an exponential backoff (instead of a linear one) for API requests
+- Upon connection failure, log additional diagnostics to gather more context
+- Update dependencies (including `axios` and `winston`)
+
 ## 9.0.0
 
 - Update dependencies (including `winston`, `typescript`, `axios`)
