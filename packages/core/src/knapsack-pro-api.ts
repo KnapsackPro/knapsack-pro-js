@@ -2,6 +2,7 @@ import type { AxiosError, AxiosInstance, AxiosPromise } from 'axios';
 import axios from 'axios';
 import axiosRetry, { retryAfter } from 'axios-retry';
 import { v4 as uuidv4 } from 'uuid';
+import { spawnSync } from "child_process";
 
 import {
   KnapsackProEnvConfig,
@@ -114,6 +115,7 @@ export class KnapsackProAPI {
       shouldResetTimeout: true,
       retryDelay: this.retryDelay,
       retryCondition: this.retryCondition,
+      onMaxRetryTimesExceeded: this.onMaxRetryTimesExceeded
     });
 
     apiClient.interceptors.request.use((config) => {
@@ -226,5 +228,30 @@ export class KnapsackProAPI {
     );
 
     return delay;
+  }
+
+  onMaxRetryTimesExceeded = (_error: Error, _retryCount: number) => {
+    const url = new URL(KnapsackProEnvConfig.endpoint);
+    let port = url.port
+    if (port === '') { port = url.protocol === "https:" ? "443" : "80" }
+
+    const commands = [
+      `dig ${url.hostname}`,
+      `nslookup ${url.hostname}`,
+      `curl -v ${url.hostname}:${port}`,
+      `nc -vz ${url.hostname} ${port}`,
+      `openssl s_client -connect ${url.hostname}:${port} < /dev/null`,
+      `env | grep KNAPSACK_PRO | grep -v TOKEN`,
+    ];
+
+    commands.forEach(cmd => {
+      this.knapsackProLogger.warn(cmd);
+      this.knapsackProLogger.warn("=".repeat(cmd.length));
+
+      const result = spawnSync(cmd, { shell: true });
+      this.knapsackProLogger.warn(`Exit status: ${result.status}`);
+      result.stderr.toString().split("\n").forEach((line) => this.knapsackProLogger.warn(line))
+      result.stdout.toString().split("\n").forEach((line) => this.knapsackProLogger.warn(line))
+    })
   }
 }
