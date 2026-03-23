@@ -1,7 +1,7 @@
 {
   "name": "@knapsack-pro/playwright",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Knapsack Pro Playwright splits Playwright tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
   "repository": {
     "type": "git",
