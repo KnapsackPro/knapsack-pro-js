@@ -4,7 +4,7 @@
   "description": "Playwright example test suite with @knapsack-pro/playwright",
   "main": "index.js",
   "devDependencies": {
-    "@knapsack-pro/playwright": "^0.1.0",
+    "@knapsack-pro/playwright": "^0.1.1",
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.5.0",
     "typescript": "^5.9.3"
