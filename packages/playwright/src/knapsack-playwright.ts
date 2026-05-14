@@ -45,7 +45,13 @@ async function main() {
 
   const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
     const paths = testFiles
-      .map((testFile) => `'${testFile.path.replaceAll("'", "'\\''")}'`)
+      .map((testFile) => {
+        const regexEscaped = testFile.path.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&',
+        );
+        return `'${regexEscaped.replaceAll("'", "'\\''")}'`;
+      })
       .join(' ');
     const command = `PWTEST_BLOB_DO_NOT_REMOVE=1 npx playwright test ${cliArguments} ${paths}`;
     knapsackProLogger.debug(`Executing: ${command}`);
