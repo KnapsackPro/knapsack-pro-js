@@ -48,6 +48,9 @@ async function main() {
   );
 
   const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
+    if (testFiles.length === 0) {
+      return { recordedTestFiles: [], isTestSuiteGreen: true };
+    }
     const filters = testFiles.map((testFile) => testFile.path);
     const cliOptions = {
       ...cliArguments.options,
