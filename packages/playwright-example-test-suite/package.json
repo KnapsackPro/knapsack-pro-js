@@ -5,9 +5,9 @@
   "main": "index.js",
   "devDependencies": {
     "@knapsack-pro/playwright": "^0.1.1",
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^25.5.0",
-    "typescript": "^5.9.3"
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.0",
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "test": "npx playwright test",
