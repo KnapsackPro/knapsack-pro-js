@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true,
     "outDir": "lib",
-    "rootDir": "src"
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "types": ["node"]
   },
-  "include": ["src/**/*.ts"],
-  "extends": "../../tsconfig.base.json"
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*.ts"]
 }
