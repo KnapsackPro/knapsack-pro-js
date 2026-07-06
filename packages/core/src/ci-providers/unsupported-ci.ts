@@ -34,6 +34,10 @@ export class UnsupportedCI extends CIProviderBase {
     return true;
   }
 
+  public static get testQueueId(): string | undefined {
+    return undefined;
+  }
+
   public static get ciProvider(): string | null {
     if ('CODEBUILD_BUILD_ARN' in process.env) {
       return 'AWS CodeBuild';

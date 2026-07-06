@@ -1,6 +1,7 @@
 import { TestFile } from '../models/index.js';
 
-export type onQueueSuccessType = (queueTestFiles: TestFile[]) => Promise<{
-  recordedTestFiles: TestFile[];
+export type onQueueSuccessType = (paths: string[]) => Promise<{
+  recordedPaths: TestFile[] | Record<string, number>;
+  failedPaths: string[];
   isTestSuiteGreen: boolean;
 }>;

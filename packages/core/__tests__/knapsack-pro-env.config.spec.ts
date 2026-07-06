@@ -301,7 +301,7 @@ describe('KnapsackProEnvConfig', () => {
 
     describe('when ENV exists', () => {
       describe('when KNAPSACK_PRO_FIXED_QUEUE_SPLIT=false', () => {
-        const TESTS: [string, object, boolean][] = [
+        const TESTS: [string, NodeJS.ProcessEnv, boolean][] = [
           ['AppVeyor', { APPVEYOR: 'whatever' }, false],
           ['Buildkite', { BUILDKITE: 'whatever' }, true],
           ['CircleCI', { CIRCLECI: 'whatever' }, false],
@@ -339,7 +339,7 @@ describe('KnapsackProEnvConfig', () => {
       });
 
       describe('when KNAPSACK_PRO_FIXED_QUEUE_SPLIT=true', () => {
-        const TESTS: [string, object, boolean][] = [
+        const TESTS: [string, NodeJS.ProcessEnv, boolean][] = [
           ['AppVeyor', { APPVEYOR: 'whatever' }, false],
           ['Buildkite', { BUILDKITE: 'whatever' }, true],
           ['CircleCI', { CIRCLECI: 'whatever' }, false],
@@ -378,7 +378,7 @@ describe('KnapsackProEnvConfig', () => {
     });
 
     describe("when ENV doesn't exist", () => {
-      const TESTS: [string, object, boolean][] = [
+      const TESTS: [string, NodeJS.ProcessEnv, boolean][] = [
         ['AppVeyor', { APPVEYOR: 'whatever' }, false],
         ['Buildkite', { BUILDKITE: 'whatever' }, true],
         ['CircleCI', { CIRCLECI: 'whatever' }, false],
@@ -508,7 +508,7 @@ describe('KnapsackProEnvConfig', () => {
   });
 
   describe('ciProvider', () => {
-    const TESTS: [string | null, object][] = [
+    const TESTS: [string | null, NodeJS.ProcessEnv][] = [
       ['AppVeyor', { APPVEYOR: '123' }],
       ['Azure Pipelines', { SYSTEM_TEAMFOUNDATIONCOLLECTIONURI: '123' }],
       ['AWS CodeBuild', { CODEBUILD_BUILD_ARN: '123' }],
@@ -541,6 +541,86 @@ describe('KnapsackProEnvConfig', () => {
         const actual = ciProvider();
 
         expect(actual).toEqual(ci);
+      });
+    });
+  });
+
+  describe('KnapsackProEnvConfig.testQueueId', () => {
+    const FROM_ENV: [string, NodeJS.ProcessEnv, string][] = [
+      [
+        'Buildkite',
+        { BUILDKITE: 'true', BUILDKITE_BUILD_NUMBER: 'abc:123' },
+        'abc:123',
+      ],
+      [
+        'CircleCI',
+        { CIRCLECI: 'true', CIRCLE_PIPELINE_NUMBER: 'abc:123' },
+        'abc:123',
+      ],
+      [
+        'GitHub Actions',
+        { GITHUB_ACTIONS: 'true', GITHUB_RUN_ID: 'abc:123' },
+        'abc:123',
+      ],
+      [
+        'GitLab CI',
+        { GITLAB_CI: 'true', CI_PIPELINE_ID: 'abc:123' },
+        'abc:123',
+      ],
+    ];
+
+    FROM_ENV.forEach(([ci, env, expected]) => {
+      describe(`${ci} provides an id`, () => {
+        it('uses the CI id', () => {
+          process.env = { ...env };
+          expect(KnapsackProEnvConfig.testQueueId).toEqual(expected);
+        });
+      });
+
+      describe(`${ci} provides an id and KNAPSACK_PRO_TEST_QUEUE_ID is set`, () => {
+        it('uses KNAPSACK_PRO_TEST_QUEUE_ID', () => {
+          process.env = {
+            ...env,
+            KNAPSACK_PRO_TEST_QUEUE_ID: 'env:456',
+          };
+          expect(KnapsackProEnvConfig.testQueueId).toEqual('env:456');
+          expect(logs).toEqual([
+            `You have set the environment variable KNAPSACK_PRO_TEST_QUEUE_ID to env:456 which could be automatically determined from the CI environment as abc:123.`,
+          ]);
+        });
+      });
+    });
+
+    const FROM_TRIPLET: [string, NodeJS.ProcessEnv, string][] = [
+      [
+        'CircleCI',
+        {
+          CIRCLECI: 'true',
+          CIRCLE_NODE_TOTAL: '2',
+          CIRCLE_BRANCH: 'feature-branch',
+          CIRCLE_SHA1: 'ab153653b065dbf22d2caad1bab39d26aa48b883',
+        },
+        '2-feature-branch-ab153653b065dbf22d2caad1bab39d26aa48b883',
+      ],
+      [
+        'Semaphore CI 2.0',
+        {
+          SEMAPHORE: '1',
+          SEMAPHORE_WORKFLOW_ID: 'id',
+          SEMAPHORE_JOB_COUNT: '2',
+          SEMAPHORE_GIT_BRANCH: 'feature-branch',
+          SEMAPHORE_GIT_SHA: 'ab153653b065dbf22d2caad1bab39d26aa48b883',
+        },
+        '2-feature-branch-ab153653b065dbf22d2caad1bab39d26aa48b883',
+      ],
+    ];
+
+    FROM_TRIPLET.forEach(([ci, env, expected]) => {
+      describe(`${ci} does not provide an id`, () => {
+        it('uses the triplet', () => {
+          process.env = { ...env };
+          expect(KnapsackProEnvConfig.testQueueId).toEqual(expected);
+        });
       });
     });
   });

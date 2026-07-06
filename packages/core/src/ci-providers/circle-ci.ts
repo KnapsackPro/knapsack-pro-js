@@ -40,4 +40,10 @@ export class CircleCI extends CIProviderBase {
   public static get ciProvider(): string {
     return 'CircleCI';
   }
+
+  public static get testQueueId(): string | undefined {
+    // CIRCLE_PIPELINE_NUMBER does not exist in Circle, set it with:
+    // `CIRCLE_PIPELINE_NUMBER: << pipeline.number >>`
+    return process.env.CIRCLE_PIPELINE_NUMBER;
+  }
 }

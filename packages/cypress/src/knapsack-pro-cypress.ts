@@ -4,7 +4,6 @@ import pkg from '@knapsack-pro/cypress/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
-  testFilesToExecuteType,
   onQueueFailureType,
   onQueueSuccessType,
   TestFile,
@@ -25,19 +24,11 @@ knapsackProLogger.debug(
 
 EnvConfig.loadEnvironmentVariables();
 
-const testFilesToExecute: testFilesToExecuteType = () =>
-  TestFilesFinder.allTestFiles();
-const knapsackPro = new KnapsackProCore(
-  pkg.name,
-  pkg.version,
-  testFilesToExecute,
+const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
+  TestFilesFinder.allTestFiles().map((testFile) => testFile.path),
 );
 
-const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
-  const testFilePaths: string[] = queueTestFiles.map(
-    (testFile: TestFile) => testFile.path,
-  );
-
+const onSuccess: onQueueSuccessType = async (testFilePaths: string[]) => {
   const updatedCypressCLIOptions = CypressCLI.updateOptions(cypressCLIOptions);
   knapsackProLogger.debug(
     `Updated Cypress CLI options for the set of tests fetched from Knapsack Pro API:\n${KnapsackProLogger.objectInspect(
@@ -63,8 +54,9 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
   // when Cypress crashed
   if (typeof tests === 'undefined') {
     return {
-      recordedTestFiles: [],
+      recordedPaths: [],
       isTestSuiteGreen: false,
+      failedPaths: [],
     };
   }
 
@@ -75,8 +67,9 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
   }));
 
   return {
-    recordedTestFiles,
+    recordedPaths: recordedTestFiles,
     isTestSuiteGreen: totalFailed === 0,
+    failedPaths: [],
   };
 };
 

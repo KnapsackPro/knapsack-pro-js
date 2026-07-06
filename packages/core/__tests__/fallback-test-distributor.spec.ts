@@ -1,113 +1,94 @@
 import { describe, it, expect } from 'vitest';
 import { FallbackTestDistributor } from '../src/fallback-test-distributor';
-import { TestFile } from '../src/models';
 
 describe('FallbackTestDistributor', () => {
-  describe('#testFilesForCiNode', () => {
+  describe('#pathsForCiNode', () => {
     describe('when there are no executed test files', () => {
       it('returns tests for particular CI node index', () => {
-        const allTestFiles: TestFile[] = [
-          { path: 'a.spec.js' },
-          { path: 'b.spec.js' },
-          { path: 'c.spec.js' },
-          { path: 'd.spec.js' },
-          { path: 'e.spec.js' },
+        const allPaths = [
+          'a.spec.js',
+          'b.spec.js',
+          'c.spec.js',
+          'd.spec.js',
+          'e.spec.js',
         ];
-        const executedTestFiles: TestFile[] = [];
+        const executedPaths: string[] = [];
         const ciNodeTotal = 2;
 
         const fallbackTestDistributor = new FallbackTestDistributor(
-          allTestFiles,
-          executedTestFiles,
+          allPaths,
+          executedPaths,
           ciNodeTotal,
         );
 
-        const expectedTestFilesForCiNode0: TestFile[] = [
-          { path: 'a.spec.js' },
-          { path: 'c.spec.js' },
-          { path: 'e.spec.js' },
-        ];
-        expect(fallbackTestDistributor.testFilesForCiNode(0)).toEqual(
-          expectedTestFilesForCiNode0,
+        const expectedPathsForCiNode0 = ['a.spec.js', 'c.spec.js', 'e.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(0)).toEqual(
+          expectedPathsForCiNode0,
         );
 
-        const expectedTestFilesForCiNode1: TestFile[] = [
-          { path: 'b.spec.js' },
-          { path: 'd.spec.js' },
-        ];
-        expect(fallbackTestDistributor.testFilesForCiNode(1)).toEqual(
-          expectedTestFilesForCiNode1,
+        const expectedPathsForCiNode1 = ['b.spec.js', 'd.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(1)).toEqual(
+          expectedPathsForCiNode1,
         );
       });
     });
 
     describe('when test files in test suite are not sorted', () => {
       it('returns tests for particular CI node index', () => {
-        const allTestFiles: TestFile[] = [
-          { path: 'b.spec.js' },
-          { path: 'a.spec.js' },
-          { path: 'e.spec.js' },
-          { path: 'd.spec.js' },
-          { path: 'c.spec.js' },
+        const allPaths = [
+          'b.spec.js',
+          'a.spec.js',
+          'e.spec.js',
+          'd.spec.js',
+          'c.spec.js',
         ];
-        const executedTestFiles: TestFile[] = [];
+        const executedPaths: string[] = [];
         const ciNodeTotal = 2;
 
         const fallbackTestDistributor = new FallbackTestDistributor(
-          allTestFiles,
-          executedTestFiles,
+          allPaths,
+          executedPaths,
           ciNodeTotal,
         );
 
-        const expectedTestFilesForCiNode0: TestFile[] = [
-          { path: 'a.spec.js' },
-          { path: 'c.spec.js' },
-          { path: 'e.spec.js' },
-        ];
-        expect(fallbackTestDistributor.testFilesForCiNode(0)).toEqual(
-          expectedTestFilesForCiNode0,
+        const expectedPathsForCiNode0 = ['a.spec.js', 'c.spec.js', 'e.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(0)).toEqual(
+          expectedPathsForCiNode0,
         );
 
-        const expectedTestFilesForCiNode1: TestFile[] = [
-          { path: 'b.spec.js' },
-          { path: 'd.spec.js' },
-        ];
-        expect(fallbackTestDistributor.testFilesForCiNode(1)).toEqual(
-          expectedTestFilesForCiNode1,
+        const expectedPathsForCiNode1 = ['b.spec.js', 'd.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(1)).toEqual(
+          expectedPathsForCiNode1,
         );
       });
     });
 
     describe('when there are executed test files', () => {
       it('returns tests for particular CI node index without already executed test files', () => {
-        const allTestFiles: TestFile[] = [
-          { path: 'a.spec.js' },
-          { path: 'b.spec.js' },
-          { path: 'c.spec.js' },
-          { path: 'd.spec.js' },
-          { path: 'e.spec.js' },
+        const allPaths = [
+          'a.spec.js',
+          'b.spec.js',
+          'c.spec.js',
+          'd.spec.js',
+          'e.spec.js',
         ];
-        const executedTestFiles: TestFile[] = [
-          { path: 'a.spec.js', time_execution: 0.1 },
-          { path: 'd.spec.js', time_execution: 0.2 },
-          { path: 'e.spec.js', time_execution: 0.3 },
-        ];
+        const executedPaths = ['a.spec.js', 'd.spec.js', 'e.spec.js'];
         const ciNodeTotal = 2;
 
         const fallbackTestDistributor = new FallbackTestDistributor(
-          allTestFiles,
-          executedTestFiles,
+          allPaths,
+          executedPaths,
           ciNodeTotal,
         );
 
-        const expectedTestFilesForCiNode0: TestFile[] = [{ path: 'c.spec.js' }];
-        expect(fallbackTestDistributor.testFilesForCiNode(0)).toEqual(
-          expectedTestFilesForCiNode0,
+        const expectedPathsForCiNode0 = ['c.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(0)).toEqual(
+          expectedPathsForCiNode0,
         );
 
-        const expectedTestFilesForCiNode1: TestFile[] = [{ path: 'b.spec.js' }];
-        expect(fallbackTestDistributor.testFilesForCiNode(1)).toEqual(
-          expectedTestFilesForCiNode1,
+        const expectedPathsForCiNode1 = ['b.spec.js'];
+        expect(fallbackTestDistributor.pathsForCiNode(1)).toEqual(
+          expectedPathsForCiNode1,
         );
       });
     });

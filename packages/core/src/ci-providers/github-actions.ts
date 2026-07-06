@@ -56,4 +56,8 @@ export class GithubActions extends CIProviderBase {
   public static get ciProvider(): string {
     return 'GitHub Actions';
   }
+
+  public static get testQueueId(): string | undefined {
+    return this.ciNodeBuildId;
+  }
 }

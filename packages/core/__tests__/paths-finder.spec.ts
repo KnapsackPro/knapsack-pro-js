@@ -1,12 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { TestFilesFinder } from '../src/test-files-finder';
-import { TestFile } from '../src/models';
+import { PathsFinder } from '../src/paths-finder';
 
-describe('TestFilesFinder', () => {
-  describe('.testFilesFromSourceFile', () => {
+describe('PathsFinder', () => {
+  describe('.pathsFromSourceFile', () => {
     describe('when a file with the list of test files is not defined', () => {
       it('returns null', () => {
-        expect(TestFilesFinder.testFilesFromSourceFile()).toEqual(null);
+        expect(PathsFinder.pathsFromSourceFile()).toEqual(null);
       });
     });
 
@@ -17,7 +16,7 @@ describe('TestFilesFinder', () => {
             '__tests__/fixtures/fake_test_file_list_source_file.txt';
 
           expect(() => {
-            TestFilesFinder.testFilesFromSourceFile();
+            PathsFinder.pathsFromSourceFile();
           }).toThrow(/^ENOENT: no such file or directory/);
         });
       });
@@ -27,14 +26,11 @@ describe('TestFilesFinder', () => {
           process.env.KNAPSACK_PRO_TEST_FILE_LIST_SOURCE_FILE =
             '__tests__/fixtures/test_file_list_source_file.txt';
 
-          const expectedTestFiles: TestFile[] = [
-            { path: '__tests__/a.test.js' },
-            { path: '__tests__/directory/b.test.js' },
-            { path: '__tests__/c.test.js' },
-          ];
-          expect(TestFilesFinder.testFilesFromSourceFile()).toMatchObject(
-            expectedTestFiles,
-          );
+          expect(PathsFinder.pathsFromSourceFile()).toMatchObject([
+            '__tests__/a.test.js',
+            '__tests__/directory/b.test.js',
+            '__tests__/c.test.js',
+          ]);
         });
       });
     });
