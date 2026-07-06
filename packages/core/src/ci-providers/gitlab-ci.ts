@@ -51,4 +51,8 @@ export class GitlabCI extends CIProviderBase {
   public static get ciProvider(): string {
     return 'Gitlab CI';
   }
+
+  public static get testQueueId(): string | undefined {
+    return process.env.CI_PIPELINE_ID;
+  }
 }

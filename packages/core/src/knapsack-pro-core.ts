@@ -3,40 +3,31 @@ import { QueueApiResponseCodes } from './api-response-codes.js';
 import { KnapsackProEnvConfig } from './config/index.js';
 import { KnapsackProLogger } from './knapsack-pro-logger.js';
 import { FallbackTestDistributor } from './fallback-test-distributor.js';
-import { TestFilesFinder } from './test-files-finder.js';
+import { PathsFinder } from './paths-finder.js';
 import { TestFile } from './models/index.js';
-import {
-  onQueueFailureType,
-  onQueueSuccessType,
-  testFilesToExecuteType,
-} from './types/index.js';
+import { onQueueFailureType, onQueueSuccessType } from './types/index.js';
 import * as Urls from './urls.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export class KnapsackProCore {
   private knapsackProAPI: KnapsackProAPI;
-
   private knapsackProLogger: KnapsackProLogger;
-
-  // test files with recorded time execution
   private recordedTestFiles: TestFile[];
-
-  // list of test files in whole user's test suite
-  private allTestFiles: TestFile[];
-
+  private allPaths: string[];
   private isTestSuiteGreen: boolean;
+  private nodeUuid: string;
 
   constructor(
     clientName: string,
     clientVersion: string,
-    testFilesToExecute: testFilesToExecuteType,
+    pathsToExecute: () => string[],
   ) {
-    this.recordedTestFiles = [];
-    this.allTestFiles =
-      TestFilesFinder.testFilesFromSourceFile() ?? testFilesToExecute();
-
+    this.allPaths = PathsFinder.pathsFromSourceFile() ?? pathsToExecute();
+    this.isTestSuiteGreen = true;
     this.knapsackProAPI = new KnapsackProAPI(clientName, clientVersion);
     this.knapsackProLogger = new KnapsackProLogger();
-    this.isTestSuiteGreen = true;
+    this.nodeUuid = uuidv4();
+    this.recordedTestFiles = [];
   }
 
   public runQueueMode(
@@ -51,37 +42,53 @@ export class KnapsackProCore {
     attemptConnectToQueue = false,
     onSuccess: onQueueSuccessType,
     onFailure: onQueueFailureType,
+    failedPaths: string[] = [],
+    batchId: number | null = null,
+    batchIndex: number = 0,
   ) {
     this.knapsackProAPI
       .fetchTestsFromQueue(
-        this.allTestFiles,
+        this.allPaths,
         initializeQueue,
         attemptConnectToQueue,
+        failedPaths,
+        this.nodeUuid,
+        batchId,
+        batchIndex,
       )
       .then((response) => {
-        const apiCode: QueueApiResponseCodes = response.data.code;
-
-        if (apiCode === QueueApiResponseCodes.AttemptConnectToQueueFailed) {
+        if (
+          response.data.code ===
+          QueueApiResponseCodes.AttemptConnectToQueueFailed
+        ) {
           this.fetchTestsFromQueue(true, false, onSuccess, onFailure);
           return;
         }
 
-        const queueTestFiles = response.data.test_files as TestFile[];
-        const isQueueEmpty = queueTestFiles.length === 0;
+        const queuePaths = response.data.paths;
+        const batchId = response.data.batch_id;
 
-        if (isQueueEmpty) {
+        if (queuePaths.length === 0) {
           this.finishQueueMode();
           return;
         }
 
-        onSuccess(queueTestFiles).then(
-          ({ recordedTestFiles, isTestSuiteGreen }) => {
+        onSuccess(queuePaths).then(
+          ({ recordedPaths, failedPaths, isTestSuiteGreen }) => {
             this.updateRecordedTestFiles(
-              recordedTestFiles,
+              recordedPaths,
               isTestSuiteGreen,
-              queueTestFiles,
+              queuePaths,
             );
-            this.fetchTestsFromQueue(false, false, onSuccess, onFailure);
+            this.fetchTestsFromQueue(
+              false,
+              false,
+              onSuccess,
+              onFailure,
+              failedPaths,
+              batchId,
+              batchIndex + 1,
+            );
           },
         );
       })
@@ -108,10 +115,10 @@ export class KnapsackProCore {
         );
 
         const fallbackTestDistributor = new FallbackTestDistributor(
-          this.allTestFiles,
-          this.recordedTestFiles,
+          this.allPaths,
+          this.recordedTestFiles.map((testFile) => testFile.path),
         );
-        const testFiles = fallbackTestDistributor.testFilesForCiNode();
+        const queuePaths = fallbackTestDistributor.pathsForCiNode();
 
         const executedTestFiles = KnapsackProLogger.objectInspect(
           this.recordedTestFiles,
@@ -119,16 +126,16 @@ export class KnapsackProCore {
         this.knapsackProLogger.debug(
           `Test files already executed:\n${executedTestFiles}`,
         );
-        const inspectedTestFiles = KnapsackProLogger.objectInspect(testFiles);
+        const inspectedTestFiles = KnapsackProLogger.objectInspect(queuePaths);
         this.knapsackProLogger.debug(
           `Test files to be run in Fallback Mode:\n${inspectedTestFiles}`,
         );
 
-        onSuccess(testFiles).then(({ recordedTestFiles, isTestSuiteGreen }) => {
+        onSuccess(queuePaths).then(({ recordedPaths, isTestSuiteGreen }) => {
           this.updateRecordedTestFiles(
-            recordedTestFiles,
+            recordedPaths,
             isTestSuiteGreen,
-            testFiles,
+            queuePaths,
           );
           this.finishQueueMode();
         });
@@ -136,14 +143,14 @@ export class KnapsackProCore {
   }
 
   private updateRecordedTestFiles(
-    recordedTestFiles: TestFile[],
+    recordedPaths: TestFile[] | Record<string, number>,
     isTestSuiteGreen: boolean,
-    scheduledTestPaths: TestFile[],
+    scheduledPaths: string[],
   ) {
     this.recordedTestFiles = updateRecordedTestFiles(
       this.recordedTestFiles,
-      recordedTestFiles,
-      scheduledTestPaths,
+      recordedPaths,
+      scheduledPaths,
     );
     this.isTestSuiteGreen = this.isTestSuiteGreen && isTestSuiteGreen;
   }
@@ -166,15 +173,23 @@ export class KnapsackProCore {
 
 export function updateRecordedTestFiles(
   recordedTestFiles: TestFile[],
-  newRecordedTestFiles: TestFile[],
-  scheduledTestFiles: TestFile[],
+  newRecordedPaths: TestFile[] | Record<string, number>,
+  scheduledPaths: string[],
 ) {
-  const map = new Map();
-  scheduledTestFiles.forEach((testFile) => {
-    map.set(testFile.path, { path: testFile.path, time_execution: 0 });
-  });
-  newRecordedTestFiles.forEach((testFile) => {
-    map.set(testFile.path, testFile);
-  });
-  return recordedTestFiles.concat(Array.from(map.values()));
+  if (Array.isArray(newRecordedPaths)) {
+    const map = new Map();
+    scheduledPaths.forEach((path) => {
+      map.set(path, { path, time_execution: 0 });
+    });
+    newRecordedPaths.forEach((testFile) => {
+      map.set(testFile.path, testFile);
+    });
+    return recordedTestFiles.concat(Array.from(map.values()));
+  } else {
+    const map = new Map();
+    Object.entries(newRecordedPaths).forEach(([path, time]) => {
+      map.set(path, { path, time_execution: time });
+    });
+    return recordedTestFiles.concat(Array.from(map.values()));
+  }
 }

@@ -34,4 +34,8 @@ export abstract class CIProviderBase {
   public static get ciProvider(): string | null {
     throw new Error('ciProvider getter is not implemented!');
   }
+
+  public static get testQueueId(): string | undefined {
+    return undefined; // Falls back to triplet
+  }
 }

@@ -9,12 +9,22 @@ import type {
 import type { ReporterV2 } from './reporterV2.js';
 import { pathWithRootDir } from './utils.js';
 
+export type Batch = {
+  recordedPaths: Record<string, number>;
+  failedPaths: string[];
+  isTestSuiteGreen: boolean;
+};
+
 class BatchReporter implements ReporterV2 {
   config!: FullConfig;
-  tally: Map<string, number>;
+  recordedPaths: Map<string, number>;
+  failedPathsRoot: Set<string>;
+  failedPathsByProject: Map<string, Set<string>>;
 
   constructor() {
-    this.tally = new Map();
+    this.recordedPaths = new Map();
+    this.failedPathsRoot = new Set();
+    this.failedPathsByProject = new Map();
   }
 
   version(): 'v2' {
@@ -29,38 +39,51 @@ class BatchReporter implements ReporterV2 {
 
   onConfigure(config: FullConfig) {
     this.config = config;
+    config.projects.forEach((project) =>
+      this.failedPathsByProject.set(project.name, new Set()),
+    );
   }
 
+  // Executed per project per retry
   onTestEnd(test: TestCase, result: TestResult) {
-    if (result.status !== 'passed') return;
+    const project = test.parent.project();
+    const failedPaths =
+      (project && this.failedPathsByProject.get(project.name)) ??
+      this.failedPathsRoot;
+    const filePath = pathWithRootDir(test, this.config);
+    const linePath = `${filePath}:${test.location.line}`;
 
-    const duration = result.duration / 1000;
-    const path = pathWithRootDir(test, this.config);
-    const current = this.tally.get(path);
-    if (current) {
-      this.tally.set(path, current + duration);
-    } else {
-      this.tally.set(path, duration);
+    const duration =
+      (this.recordedPaths.get(linePath) ?? 0) + result.duration / 1000;
+    this.recordedPaths.set(linePath, duration);
+
+    if (result.status === 'failed' || result.status === 'timedOut') {
+      failedPaths.add(linePath);
+    }
+
+    if (result.status === 'passed') {
+      failedPaths.delete(linePath); // If it was marked failed on a previous retry, remove it.
     }
   }
 
   onEnd(result: FullResult) {
-    const recordedTestFiles = Array.from(this.tally).map(
-      ([path, duration]) => ({
-        path,
-        time_execution: duration,
-      }),
-    );
+    const failedPaths = new Set(this.failedPathsRoot);
+    this.failedPathsByProject.forEach((paths) => {
+      paths.forEach((path) => {
+        failedPaths.add(path);
+      });
+    });
 
-    const res = {
-      recordedTestFiles,
+    const batch: Batch = {
+      recordedPaths: Object.fromEntries(this.recordedPaths),
+      failedPaths: Array.from(failedPaths),
       isTestSuiteGreen: result.status === 'passed',
     };
 
     // Ensure .knapsack-pro dir exists since this reporter may run outside of
     // @knapsack-pro/playwright (because it's configured in Playwright config).
     mkdirSync('.knapsack-pro', { recursive: true });
-    writeFileSync('.knapsack-pro/batch.json', JSON.stringify(res));
+    writeFileSync('.knapsack-pro/batch.json', JSON.stringify(batch));
   }
 }
 

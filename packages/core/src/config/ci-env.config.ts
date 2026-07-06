@@ -48,7 +48,8 @@ export type CIProviderMethod =
   | 'commitHash'
   | 'branch'
   | 'userSeat'
-  | 'fixedQueueSplit';
+  | 'fixedQueueSplit'
+  | 'testQueueId';
 
 export class CIEnvConfig {
   public static get ciNodeTotal(): string | undefined {
@@ -81,6 +82,10 @@ export class CIEnvConfig {
 
   public static get fixedQueueSplit(): boolean {
     return this.ciEnvFor('fixedQueueSplit');
+  }
+
+  public static get testQueueId(): string | undefined {
+    return this.ciEnvFor('testQueueId');
   }
 
   private static ciEnvFor<T extends CIProviderMethod>(

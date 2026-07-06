@@ -24,7 +24,9 @@
   "author": "Knapsack Pro <support@knapsackpro.com> (https://knapsackpro.com)",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-playwright.js"
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-playwright.js",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "files": [
     "lib"
@@ -46,6 +48,7 @@
   "devDependencies": {
     "@types/node": "^26.1.0",
     "playwright": "^1.61.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }

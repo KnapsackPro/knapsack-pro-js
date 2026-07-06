@@ -6,7 +6,6 @@ import type {
 } from 'axios';
 import axios from 'axios';
 import axiosRetry, { retryAfter } from 'axios-retry';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   KnapsackProEnvConfig,
@@ -17,6 +16,7 @@ import {
 import { logDiagnostics } from './diagnostics.js';
 import { KnapsackProLogger } from './knapsack-pro-logger.js';
 import { TestFile } from './models/index.js';
+import { QueueApiResponseCodes } from './api-response-codes.js';
 
 export const getHeaders = ({
   clientName,
@@ -36,7 +36,6 @@ export const getHeaders = ({
 
 export class KnapsackProAPI {
   private readonly api: AxiosInstance;
-
   private knapsackProLogger: KnapsackProLogger;
 
   constructor(clientName: string, clientVersion: string) {
@@ -44,31 +43,42 @@ export class KnapsackProAPI {
     this.api = this.setUpApiClient(clientName, clientVersion);
   }
 
-  // allTestFiles in whole user's test suite
   public fetchTestsFromQueue(
-    allTestFiles: TestFile[],
+    allPaths: string[],
     initializeQueue: boolean,
     attemptConnectToQueue: boolean,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): AxiosPromise<any> {
-    const url = '/v1/queues/queue';
+    failedPaths: string[],
+    nodeUuid: string,
+    batchId: number | null,
+    batchIndex: number,
+  ): AxiosPromise<{
+    code: QueueApiResponseCodes;
+    paths: string[];
+    batch_id: number | null;
+  }> {
+    const url = '/v2/queues/queue';
     const data = {
-      test_suite_token: KnapsackProEnvConfig.testSuiteToken,
-      can_initialize_queue: initializeQueue,
       attempt_connect_to_queue: attemptConnectToQueue,
-      fixed_queue_split: KnapsackProEnvConfig.fixedQueueSplit,
-      commit_hash: KnapsackProEnvConfig.commitHash,
+      batch_index: batchIndex,
       branch: KnapsackProEnvConfig.branch,
-      node_total: KnapsackProEnvConfig.ciNodeTotal,
+      can_initialize_queue: initializeQueue,
+      commit_hash: KnapsackProEnvConfig.commitHash,
       node_index: KnapsackProEnvConfig.ciNodeIndex,
-      node_build_id: KnapsackProEnvConfig.ciNodeBuildId,
+      node_total: KnapsackProEnvConfig.ciNodeTotal,
+      node_uuid: nodeUuid,
+      test_queue_id: KnapsackProEnvConfig.testQueueId,
+      test_suite_token: KnapsackProEnvConfig.testSuiteToken,
       user_seat: KnapsackProEnvConfig.maskedUserSeat,
-      batch_uuid: uuidv4(),
       ...(initializeQueue &&
         !attemptConnectToQueue && {
-          test_files: allTestFiles,
           build_author: buildAuthor(),
           commit_authors: commitAuthors(),
+          paths: allPaths,
+        }),
+      ...(!initializeQueue &&
+        !attemptConnectToQueue && {
+          failed_paths: failedPaths,
+          batch_id: batchId,
         }),
     };
 

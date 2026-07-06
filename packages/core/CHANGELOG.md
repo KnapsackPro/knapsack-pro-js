@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased (major)
+
+- Retry only Failures: When you retry one (or all the) nodes, Knapsack Pro only executes the tests that failed last time on that node. See individual package's CHANGELOG for details.
+- Update dependencies (including `axios`, `uuid`, `typescript`)
+
 ## 9.0.1
 
 - Use an exponential backoff (instead of a linear one) for API requests

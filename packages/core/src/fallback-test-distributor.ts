@@ -1,55 +1,43 @@
 import { KnapsackProEnvConfig } from './config/index.js';
-import { TestFile } from './models/index.js';
 
 export class FallbackTestDistributor {
-  private executedTestFilePaths: string[];
+  private executedPaths: string[];
 
-  private testFilesPerCiNode: TestFile[][];
+  private pathsPerCiNode: string[][];
 
   constructor(
-    allTestFiles: TestFile[],
-    executedTestFiles: TestFile[],
+    allPaths: string[],
+    executedPaths: string[],
     ciNodeTotal: number = KnapsackProEnvConfig.ciNodeTotal,
   ) {
-    this.executedTestFilePaths = executedTestFiles.map(
-      (testFile) => testFile.path,
-    );
-
-    this.testFilesPerCiNode = this.assignTestFilesPerCiNode(
-      this.orderByTestPath(allTestFiles),
+    this.executedPaths = executedPaths;
+    this.pathsPerCiNode = this.assignPathsPerCiNode(
+      [...allPaths].sort(),
       ciNodeTotal,
     );
   }
 
-  public testFilesForCiNode(
+  public pathsForCiNode(
     ciNodeIndex: number = KnapsackProEnvConfig.ciNodeIndex,
-  ): TestFile[] {
-    return this.testFilesPerCiNode[ciNodeIndex].filter(
-      (testFile) => !this.executedTestFilePaths.includes(testFile.path),
+  ): string[] {
+    return this.pathsPerCiNode[ciNodeIndex].filter(
+      (path) => !this.executedPaths.includes(path),
     );
   }
 
-  private orderByTestPath(testFiles: TestFile[]): TestFile[] {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sortBy = (key: string) => (a: any, b: any) =>
-      a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
-
-    return testFiles.sort(sortBy('path'));
-  }
-
-  private assignTestFilesPerCiNode(
-    allTestFiles: TestFile[],
+  private assignPathsPerCiNode(
+    allPaths: string[],
     ciNodeTotal: number,
-  ): TestFile[][] {
-    const testFilesPerCiNode: TestFile[][] = Array.from(
+  ): string[][] {
+    const pathsPerCiNode: string[][] = Array.from(
       { length: ciNodeTotal },
-      (): TestFile[] => [],
+      (): string[] => [],
     );
 
-    allTestFiles.forEach((testFile: TestFile, index: number) =>
-      testFilesPerCiNode[index % ciNodeTotal].push(testFile),
+    allPaths.forEach((path: string, index: number) =>
+      pathsPerCiNode[index % ciNodeTotal].push(path),
     );
 
-    return testFilesPerCiNode;
+    return pathsPerCiNode;
   }
 }

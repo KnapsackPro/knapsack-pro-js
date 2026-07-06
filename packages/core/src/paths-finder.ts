@@ -1,10 +1,9 @@
 import { readFileSync } from 'fs';
 import { KnapsackProEnvConfig } from './config/index.js';
 import { KnapsackProLogger } from './knapsack-pro-logger.js';
-import { TestFile } from './models/index.js';
 
-export class TestFilesFinder {
-  public static testFilesFromSourceFile(): TestFile[] | null {
+export class PathsFinder {
+  public static pathsFromSourceFile(): string[] | null {
     if (!KnapsackProEnvConfig.testFileListSourceFile) {
       return null;
     }
@@ -19,20 +18,9 @@ export class TestFilesFinder {
       'utf-8',
     );
 
-    const testFiles: TestFile[] = [];
-
-    allFileContents.split(/\r?\n/).forEach((line: string) => {
-      const testFilePath: string = line.trim();
-
-      if (testFilePath.length === 0) {
-        return;
-      }
-
-      testFiles.push({
-        path: testFilePath,
-      });
-    });
-
-    return testFiles;
+    return allFileContents
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((path) => path.length > 0);
   }
 }

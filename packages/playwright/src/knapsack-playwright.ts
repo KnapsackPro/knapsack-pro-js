@@ -9,8 +9,9 @@ import {
   KnapsackProLogger,
   onQueueFailureType,
   onQueueSuccessType,
-  TestFile,
 } from '@knapsack-pro/core';
+import { normalizePaths } from './utils.js';
+import { type Batch } from './reporters/batch.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_PLAYWRIGHT) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -34,23 +35,34 @@ async function main() {
   knapsackProLogger.debug(`Executing: ${command}`);
 
   execSync(command, { stdio: 'ignore' });
-  const tests = JSON.parse(
+  const paths = JSON.parse(
     readFileSync('.knapsack-pro/list.json', 'utf8'),
   ) as string[];
-  knapsackProLogger.debug(`Tests to run: ${tests}`);
+  knapsackProLogger.debug(`Tests to run: ${paths}`);
 
-  const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
-    tests.map((testFilePath) => ({ path: testFilePath })),
-  );
+  const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () => paths);
 
-  const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
-    const paths = testFiles.map((testFile) => testFile.path).join(' ');
-    const command = `PWTEST_BLOB_DO_NOT_REMOVE=1 npx playwright test ${cliArguments} ${paths}`;
+  const onSuccess: onQueueSuccessType = async (paths: string[]) => {
+    const filters = paths
+      .map((path) => {
+        const regexEscaped = path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return `'${regexEscaped.replaceAll("'", "'\\''")}'`;
+      })
+      .join(' ');
+
+    const command = `PWTEST_BLOB_DO_NOT_REMOVE=1 npx playwright test ${cliArguments} ${filters}`;
     knapsackProLogger.debug(`Executing: ${command}`);
     spawnSync(command, { shell: true, stdio: 'inherit' });
     const batch = readFileSync('.knapsack-pro/batch.json', 'utf8');
     rmSync('.knapsack-pro/batch.json');
-    return JSON.parse(batch);
+    const { recordedPaths, failedPaths, isTestSuiteGreen } = JSON.parse(
+      batch,
+    ) as Batch;
+    return {
+      failedPaths,
+      isTestSuiteGreen,
+      recordedPaths: normalizePaths(paths, recordedPaths),
+    };
   };
 
   const onError: onQueueFailureType = () => {};

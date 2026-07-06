@@ -42,4 +42,8 @@ export class Buildkite extends CIProviderBase {
   public static get ciProvider(): string {
     return 'Buildkite';
   }
+
+  public static get testQueueId(): string | undefined {
+    return this.ciNodeBuildId;
+  }
 }

@@ -4,7 +4,6 @@ import pkg from '@knapsack-pro/jest/package.json' with { type: 'json' };
 import {
   KnapsackProCore,
   KnapsackProLogger,
-  testFilesToExecuteType,
   onQueueFailureType,
   onQueueSuccessType,
   TestFile,
@@ -27,19 +26,11 @@ knapsackProLogger.debug(
 EnvConfig.loadEnvironmentVariables();
 
 const projectPath = process.cwd();
-const testFilesToExecute: testFilesToExecuteType = () =>
-  TestFilesFinder.allTestFiles();
-const knapsackPro = new KnapsackProCore(
-  pkg.name,
-  pkg.version,
-  testFilesToExecute,
+const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
+  TestFilesFinder.allTestFiles().map((testFile) => testFile.path),
 );
 
-const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
-  const testFilePaths: string[] = queueTestFiles.map(
-    (testFile: TestFile) => testFile.path,
-  );
-
+const onSuccess: onQueueSuccessType = async (testFilePaths: string[]) => {
   const jestCLICoverage = EnvConfig.coverageDirectory
     ? { coverageDirectory: `${EnvConfig.coverageDirectory}/${uuidv4()}` }
     : {};
@@ -81,8 +72,9 @@ const onSuccess: onQueueSuccessType = async (queueTestFiles: TestFile[]) => {
   );
 
   return {
-    recordedTestFiles,
+    recordedPaths: recordedTestFiles,
     isTestSuiteGreen,
+    failedPaths: [],
   };
 };
 

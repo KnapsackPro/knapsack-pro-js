@@ -47,8 +47,7 @@ async function main() {
     makeGetAllTestFiles(resolvedConfig.vitestConfig),
   );
 
-  const onSuccess: onQueueSuccessType = async (testFiles: TestFile[]) => {
-    const filters = testFiles.map((testFile) => testFile.path);
+  const onSuccess: onQueueSuccessType = async (filters: string[]) => {
     const cliOptions = {
       ...cliArguments.options,
       outputFile: withBatchedBlobOutputFile(
@@ -97,8 +96,9 @@ function getTestResults(vitest: Vitest) {
   const isTestSuiteGreen = process.exitCode !== 1;
 
   return {
-    recordedTestFiles,
+    recordedPaths: recordedTestFiles,
     isTestSuiteGreen,
+    failedPaths: [],
   };
 }
 
@@ -128,7 +128,7 @@ function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
         ),
       )
       .filter((testFilePath) => !testFilePath.match(/node_modules/))
-      .map((testFilePath) => ({ path: testFilePath }));
+      .map((testFilePath) => testFilePath);
 
     if (testFiles.length === 0) {
       const errorMessage = `[@knapsack-pro/vitest] Test files cannot be found.\nPlease set KNAPSACK_PRO_TEST_FILE_PATTERN matching your test directory structure.\nLearn more: ${Urls.NO_TESTS_FOUND}`;

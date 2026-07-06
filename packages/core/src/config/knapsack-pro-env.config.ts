@@ -248,6 +248,20 @@ export class KnapsackProEnvConfig {
 
     return undefined;
   }
+
+  public static get testQueueId(): string {
+    const envValue = this.envFor('KNAPSACK_PRO_TEST_QUEUE_ID', 'testQueueId');
+    if (envValue) return envValue;
+
+    const triplet = [this.ciNodeTotal, this.branch, this.commitHash];
+    if (triplet.every(Boolean)) {
+      return triplet.join('-');
+    }
+
+    throw new Error(
+      `Missing test_queue_id. See: ${Urls.KNAPSACK_PRO_TEST_QUEUE_ID}`,
+    );
+  }
 }
 
 const $buildAuthor = (command: () => Buffer): string => {
