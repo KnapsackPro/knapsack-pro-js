@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { normalizePaths } from '../src/utils';
 
-describe('#normalizePath', () => {
+describe('#normalizePaths', () => {
   it('concatenates the recorded paths assigning 0 seconds to the non-recorded ones', () => {
     const paths = [
       'x.spec.js',
