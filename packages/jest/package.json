@@ -50,19 +50,19 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^9.0.0",
-    "glob": "^11.0.3",
-    "minimatch": "^10.1.1",
+    "@knapsack-pro/core": "^10.0.0",
+    "glob": "^13.0.6",
+    "minimatch": "^10.2.5",
     "minimist": "^1.2.8",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.1"
   },
   "peerDependencies": {
     "jest": ">=23.0.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.5.0",
-    "jest": "^30.3.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^26.1.1",
+    "jest": "^30.4.2",
+    "typescript": "^7.0.2"
   }
 }
