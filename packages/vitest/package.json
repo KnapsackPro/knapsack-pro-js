@@ -50,17 +50,17 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^9.0.0",
-    "glob": "^11.0.3",
-    "minimatch": "^10.1.1",
-    "uuid": "^13.0.0"
+    "@knapsack-pro/core": "^10.0.0",
+    "glob": "^13.0.6",
+    "minimatch": "^10.2.5",
+    "uuid": "^14.0.1"
   },
   "peerDependencies": {
     "vitest": ">=2.1.6"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "@types/node": "^26.1.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   }
 }
