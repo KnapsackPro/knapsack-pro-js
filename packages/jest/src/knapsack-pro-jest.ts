@@ -50,7 +50,7 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
   );
 
   const recordedPaths: Record<string, number> = {};
-  const failedPaths: string[] = [];
+  const failedPaths: Set<string> = new Set();
 
   results.testResults.forEach(({ testFilePath, perfStats, testResults }) => {
     const path = relative(projectPath, testFilePath);
@@ -60,14 +60,14 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
     if (
       testResults.some((assertionResult) => assertionResult.status === 'failed')
     ) {
-      failedPaths.push(path);
+      failedPaths.add(path);
     }
   });
 
   return {
     recordedPaths: normalizePaths(paths, recordedPaths),
     isTestSuiteGreen: results.success,
-    failedPaths,
+    failedPaths: Array.from(failedPaths),
   };
 };
 

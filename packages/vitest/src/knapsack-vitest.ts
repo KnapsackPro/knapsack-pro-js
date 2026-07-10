@@ -6,21 +6,21 @@ import {
   KnapsackProLogger,
   onQueueFailureType,
   onQueueSuccessType,
-  TestFile,
 } from '@knapsack-pro/core';
 
 import {
   startVitest,
   parseCLI,
   ResolvedConfig,
-  Vitest,
   resolveConfig,
 } from 'vitest/node';
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
 import { relative } from 'path';
+
 import * as Urls from './urls.js';
+import { normalizePaths } from './utils.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -44,10 +44,11 @@ async function main() {
   const knapsackPro = new KnapsackProCore(
     pkg.name,
     pkg.version,
-    makeGetAllTestFiles(resolvedConfig.vitestConfig),
+    allPaths(resolvedConfig.vitestConfig),
   );
 
-  const onSuccess: onQueueSuccessType = async (filters: string[]) => {
+  // When running test:line the test cases in the same file that are not run are reported as skipped
+  const onSuccess: onQueueSuccessType = async (paths: string[]) => {
     const cliOptions = {
       ...cliArguments.options,
       outputFile: withBatchedBlobOutputFile(
@@ -56,15 +57,43 @@ async function main() {
       ),
       watch: false,
     };
-    knapsackProLogger.debug(`Filters: ${JSON.stringify(filters)}`);
+    knapsackProLogger.debug(`Filters: ${JSON.stringify(paths)}`);
     knapsackProLogger.debug(`CLIOptions: ${JSON.stringify(cliOptions)}`);
-    const vitest = await startVitest('test', filters, cliOptions);
+    const vitest = await startVitest('test', paths, cliOptions);
 
     if (!vitest) {
       throw new Error('[@knapsack-pro/vitest] Vitest failed to start');
     }
 
-    return getTestResults(vitest);
+    await vitest.close();
+
+    const recordedPaths: Record<string, number> = {};
+    const failedPaths: Set<string> = new Set();
+    const testModules = vitest.state.getTestModules();
+    for (const testModule of testModules) {
+      for (const testCase of testModule.children.allTests()) {
+        const filePath = relative(
+          testCase.project.vitest.config.root,
+          testCase.module.moduleId,
+        );
+        const path =
+          testCase.location === undefined
+            ? filePath
+            : `${filePath}:${testCase.location.line}`;
+        recordedPaths[path] =
+          (recordedPaths[path] ?? 0) +
+          (testCase.diagnostic()?.duration ?? 0) / 1000;
+        if (testCase.result().state === 'failed') {
+          failedPaths.add(path);
+        }
+      }
+    }
+
+    return {
+      recordedPaths: normalizePaths(paths, recordedPaths),
+      isTestSuiteGreen: testModules.every((testModule) => testModule.ok()),
+      failedPaths: Array.from(failedPaths),
+    };
   };
 
   const onError: onQueueFailureType = () => {};
@@ -74,38 +103,7 @@ async function main() {
 
 main();
 
-/**
- * Processes the test results and converts them to a format vitest
- * understands
- * @param vitest
- */
-function getTestResults(vitest: Vitest) {
-  const recordedTestFiles = vitest.state.getFiles().map<TestFile>((file) => {
-    const testFile = vitest.state.getReportedEntity(file);
-
-    if (testFile?.type !== 'module') {
-      throw new Error('[@knapsack-pro/vitest] Vitest reported non-module file');
-    }
-
-    return {
-      path: relative(vitest.config.root, file.filepath),
-      time_execution: testFile.diagnostic().duration / 1000,
-    };
-  });
-
-  const isTestSuiteGreen = process.exitCode !== 1;
-
-  return {
-    recordedPaths: recordedTestFiles,
-    isTestSuiteGreen,
-    failedPaths: [],
-  };
-}
-
-/**
- * Returns a function that returns all test files in the test suite
- */
-function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
+const allPaths = (resolvedConfig: ResolvedConfig) => {
   return () => {
     const testFileIncludePattern =
       process.env.KNAPSACK_PRO_TEST_FILE_PATTERN ||
@@ -117,29 +115,28 @@ function makeGetAllTestFiles(resolvedConfig: ResolvedConfig) {
       ? [process.env.KNAPSACK_PRO_TEST_FILE_EXCLUDE_PATTERN]
       : resolvedConfig.exclude || [];
 
-    const testFiles = glob
+    const paths = glob
       .sync(testFileIncludePattern)
-      .filter((testFilePath) =>
+      .filter((path) =>
         testFileExcludePattern.every(
           (excludePattern) =>
-            !minimatch(testFilePath, excludePattern, {
+            !minimatch(path, excludePattern, {
               matchBase: true,
             }),
         ),
       )
-      .filter((testFilePath) => !testFilePath.match(/node_modules/))
-      .map((testFilePath) => testFilePath);
+      .filter((path) => !path.match(/node_modules/));
 
-    if (testFiles.length === 0) {
+    if (paths.length === 0) {
       const errorMessage = `[@knapsack-pro/vitest] Test files cannot be found.\nPlease set KNAPSACK_PRO_TEST_FILE_PATTERN matching your test directory structure.\nLearn more: ${Urls.NO_TESTS_FOUND}`;
 
       knapsackProLogger.error(errorMessage);
       throw new Error(errorMessage);
     }
 
-    return testFiles;
+    return paths;
   };
-}
+};
 
 // Vitest uses the following priority when parsing the outputFile:
 // - From CLI if string (e.g., vitest --outputFile=file.txt)

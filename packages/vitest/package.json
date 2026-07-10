@@ -38,7 +38,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-vitest.js"
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-vitest.js",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "files": [
     "lib"

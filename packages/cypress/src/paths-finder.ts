@@ -16,7 +16,7 @@ export class PathsFinder {
           });
         }
         return true;
-      })
+      });
 
     if (paths.length === 0) {
       const knapsackProLogger = new KnapsackProLogger();

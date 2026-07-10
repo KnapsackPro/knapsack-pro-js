@@ -18,6 +18,7 @@
     "test:core": "npm run test -w packages/core",
     "test:jest:unit": "npm run test -w packages/jest",
     "test:jest": "npm run build -w packages/core && npm run build -w packages/jest && npm run test:ks -w packages/jest-example-test-suite",
+    "test:vitest:unit": "npm run test -w packages/vitest",
     "test:vitest": "npm run build -w packages/core && npm run build -w packages/vitest && npm run test:ks -w packages/vitest-example-test-suite",
     "test:cypress:unit": "npm run test -w packages/cypress",
     "test:cypress": "npm run build -w packages/core && npm run build -w packages/cypress && npm run test:ks -w packages/cypress-example-test-suite",
@@ -33,6 +34,7 @@
     "jiti": "^2.7.0",
     "prettier": "3.9.4",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.62.1"
+    "typescript-eslint": "^8.62.1",
+    "@vitest/coverage-v8": "^4.1.10"
   }
 }

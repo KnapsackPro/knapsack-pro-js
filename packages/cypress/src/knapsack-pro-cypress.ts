@@ -25,7 +25,11 @@ knapsackProLogger.debug(
 
 EnvConfig.loadEnvironmentVariables();
 
-const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, PathsFinder.allPaths);
+const knapsackPro = new KnapsackProCore(
+  pkg.name,
+  pkg.version,
+  PathsFinder.allPaths,
+);
 
 const onSuccess: onQueueSuccessType = async (paths: string[]) => {
   const updatedCypressCLIOptions = CypressCLI.updateOptions(cypressCLIOptions);
@@ -49,33 +53,33 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
   }
 
   const recordedPaths: Record<string, number> = {};
-  const failedPaths: string[] = [];
+  const failedPaths: Set<string> = new Set();
 
   result.runs.forEach((run) => {
-    const path = run.spec.relative
+    const path = run.spec.relative;
     recordedPaths[path] = (run.stats.duration ?? 0) / 1000;
 
     // States:
     // https://github.com/cypress-io/cypress/blob/8addb93e04dd372ab736d76c60735711d570312e/packages/server/lib/reporter.ts#L281
     if (run.tests.some((test) => test.state === 'failed')) {
-      failedPaths.push(path);
+      failedPaths.add(path);
     }
   });
 
   return {
     recordedPaths: normalizePaths(paths, recordedPaths),
     isTestSuiteGreen: result.totalFailed === 0,
-    failedPaths,
+    failedPaths: Array.from(failedPaths),
   };
 };
 
 const isCypressFailedRunResult = (
- result:
- | CypressCommandLine.CypressRunResult
- | CypressCommandLine.CypressFailedRunResult,
+  result:
+    | CypressCommandLine.CypressRunResult
+    | CypressCommandLine.CypressFailedRunResult,
 ): result is CypressCommandLine.CypressFailedRunResult => {
- return 'status' in result && result.status === 'failed';
-}
+  return 'status' in result && result.status === 'failed';
+};
 
 const onError: onQueueFailureType = () => {};
 
