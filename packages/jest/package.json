@@ -30,7 +30,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-pro-jest.js"
+    "build": "rm -rf lib && tsc && chmod u+x lib/knapsack-pro-jest.js",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "files": [
     "/lib"
@@ -63,6 +65,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
     "jest": "^30.4.2",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   }
 }

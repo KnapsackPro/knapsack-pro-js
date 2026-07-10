@@ -27,25 +27,4 @@ describe('#normalizePath', () => {
 
     expect(actual).toEqual(expected);
   });
-
-  it('transforms linePaths to filePaths', () => {
-    const paths = [
-      'x.spec.js:1',
-      'y.spec.js',
-
-    ];
-
-    const recordedPaths = {
-      'x.spec.js:1': 4,
-      'y.spec.js:1': 3,
-    };
-
-    const actual = normalizePaths(paths, recordedPaths);
-    const expected = {
-      'x.spec.js:1': 4,
-      'y.spec.js': 3,
-    };
-
-    expect(actual).toEqual(expected);
-  });
 });

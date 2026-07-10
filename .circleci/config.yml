@@ -36,6 +36,7 @@ jobs:
           key: v2-deps-{{ checksum "package-lock.json" }}
       - run: npm run lint
       - run: npm run test:core
+      - run: npm run test:jest:unit
       - run: npm run test:playwright:unit
       - run:
           working_directory: ./packages/jest-example-test-suite
