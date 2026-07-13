@@ -53,7 +53,10 @@ const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   const failedPaths: Set<string> = new Set();
 
   results.testResults.forEach(({ testFilePath, perfStats, testResults }) => {
-    const path = relative(projectPath, testFilePath);
+    const path =
+      process.platform === 'win32'
+        ? relative(projectPath, testFilePath).replace(/\\/g, '/')
+        : relative(projectPath, testFilePath);
     const time = perfStats.end - perfStats.start;
     recordedPaths[path] = time > 0 ? time / 1000 : 0.0;
 
