@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased (minor)
+
+- Update dependencies (including `typescript`)
+
 ## 0.2.0
 
 - Handle file names with spaces, quotes, and escape regexes (as a side-effect NextJS route groups are also supported now)
