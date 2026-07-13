@@ -76,6 +76,7 @@ async function main() {
           testCase.project.vitest.config.root,
           testCase.module.moduleId,
         );
+        // Vitest fills `location` when invoked with `--includeTaskLocation`
         const path =
           testCase.location === undefined
             ? filePath

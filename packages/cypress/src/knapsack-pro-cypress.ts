@@ -69,7 +69,7 @@ const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   return {
     recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
     isTestSuiteGreen: result.totalFailed === 0,
-    failedPaths
+    failedPaths,
   };
 };
 
