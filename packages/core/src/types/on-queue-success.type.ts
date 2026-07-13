@@ -1,5 +1,5 @@
 export type onQueueSuccessType = (paths: string[]) => Promise<{
   recordedPaths: Record<string, number>;
-  failedPaths: string[];
+  failedPaths: Set<string>;
   isTestSuiteGreen: boolean;
 }>;

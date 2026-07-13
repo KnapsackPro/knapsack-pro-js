@@ -42,7 +42,7 @@ export class KnapsackProCore {
     attemptConnectToQueue = false,
     onSuccess: onQueueSuccessType,
     onFailure: onQueueFailureType,
-    failedPaths: string[] = [],
+    failedPaths: Set<string> = new Set(),
     batchId: number | null = null,
     batchIndex: number = 0,
   ) {
@@ -165,9 +165,9 @@ export function updateRecordedTestFiles(
   recordedTestFiles: TestFile[],
   newRecordedPaths: Record<string, number>,
 ) {
-  const map = new Map();
-  Object.entries(newRecordedPaths).forEach(([path, time]) => {
-    map.set(path, { path, time_execution: time });
-  });
-  return recordedTestFiles.concat(Array.from(map.values()));
+  const newTestFiles = Object.entries(newRecordedPaths).map(([path, time]) => ({
+    path,
+    time_execution: time,
+  }));
+  return recordedTestFiles.concat(newTestFiles);
 }

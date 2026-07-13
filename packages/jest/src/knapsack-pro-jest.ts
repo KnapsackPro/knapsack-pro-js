@@ -33,7 +33,7 @@ const knapsackPro = new KnapsackProCore(
   PathsFinder.allPaths,
 );
 
-const onSuccess: onQueueSuccessType = async (paths: string[]) => {
+const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   const jestCLICoverage = EnvConfig.coverageDirectory
     ? { coverageDirectory: `${EnvConfig.coverageDirectory}/${uuidv4()}` }
     : {};
@@ -43,7 +43,7 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
       ...jestCLIOptions,
       ...jestCLICoverage,
       runTestsByPath: true,
-      _: paths,
+      _: scheduledPaths,
       $0: 'jest',
     },
     [projectPath],
@@ -65,9 +65,9 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
   });
 
   return {
-    recordedPaths: normalizePaths(paths, recordedPaths),
+    recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
     isTestSuiteGreen: results.success,
-    failedPaths: Array.from(failedPaths),
+    failedPaths,
   };
 };
 

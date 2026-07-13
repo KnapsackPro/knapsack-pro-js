@@ -42,8 +42,8 @@ async function main() {
 
   const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () => paths);
 
-  const onSuccess: onQueueSuccessType = async (paths: string[]) => {
-    const filters = paths
+  const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
+    const filters = scheduledPaths
       .map((path) => {
         const regexEscaped = path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         return `'${regexEscaped.replaceAll("'", "'\\''")}'`;
@@ -59,9 +59,9 @@ async function main() {
       batch,
     ) as Batch;
     return {
-      failedPaths,
+      failedPaths: new Set(failedPaths),
       isTestSuiteGreen,
-      recordedPaths: normalizePaths(paths, recordedPaths),
+      recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
     };
   };
 

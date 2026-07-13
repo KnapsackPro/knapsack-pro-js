@@ -92,7 +92,7 @@ async function main() {
     return {
       recordedPaths: normalizePaths(paths, recordedPaths),
       isTestSuiteGreen: testModules.every((testModule) => testModule.ok()),
-      failedPaths: Array.from(failedPaths),
+      failedPaths,
     };
   };
 

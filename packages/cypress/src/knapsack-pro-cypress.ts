@@ -31,7 +31,7 @@ const knapsackPro = new KnapsackProCore(
   PathsFinder.allPaths,
 );
 
-const onSuccess: onQueueSuccessType = async (paths: string[]) => {
+const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   const updatedCypressCLIOptions = CypressCLI.updateOptions(cypressCLIOptions);
   knapsackProLogger.debug(
     `Updated Cypress CLI options for the set of tests fetched from Knapsack Pro API:\n${KnapsackProLogger.objectInspect(
@@ -41,7 +41,7 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
 
   const result = await cypress.run({
     ...updatedCypressCLIOptions,
-    spec: paths.join(','),
+    spec: scheduledPaths.join(','),
   });
 
   if (isCypressFailedRunResult(result)) {
@@ -67,9 +67,9 @@ const onSuccess: onQueueSuccessType = async (paths: string[]) => {
   });
 
   return {
-    recordedPaths: normalizePaths(paths, recordedPaths),
+    recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
     isTestSuiteGreen: result.totalFailed === 0,
-    failedPaths: Array.from(failedPaths),
+    failedPaths
   };
 };
 
