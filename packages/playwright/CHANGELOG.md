@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased (minor)
+## Unreleased
+
+## 0.3.0
 
 - Update dependencies (including `typescript`)
 - Support [Serial Mode](https://playwright.dev/docs/test-parallel#serial-mode) by marking as failed the whole file for Retry-only-Failures
