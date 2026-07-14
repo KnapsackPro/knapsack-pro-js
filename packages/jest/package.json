@@ -1,6 +1,6 @@
 {
   "name": "@knapsack-pro/jest",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Knapsack Pro Jest splits Jest tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
   "type": "module",
   "keywords": [
@@ -52,7 +52,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^10.0.0",
+    "@knapsack-pro/core": "^11.0.0",
     "glob": "^13.0.6",
     "minimatch": "^10.2.5",
     "minimist": "^1.2.8",
