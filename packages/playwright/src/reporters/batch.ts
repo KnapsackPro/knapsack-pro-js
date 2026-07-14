@@ -4,6 +4,7 @@ import type {
   FullResult,
   TestCase,
   TestResult,
+  Suite,
 } from '@playwright/test/reporter';
 
 import type { ReporterV2 } from './reporterV2.js';
@@ -20,11 +21,13 @@ class BatchReporter implements ReporterV2 {
   recordedPaths: Map<string, number>;
   failedPathsRoot: Set<string>;
   failedPathsByProject: Map<string, Set<string>>;
+  serialPaths: Set<string>;
 
   constructor() {
     this.recordedPaths = new Map();
     this.failedPathsRoot = new Set();
     this.failedPathsByProject = new Map();
+    this.serialPaths = new Set();
   }
 
   version(): 'v2' {
@@ -64,13 +67,29 @@ class BatchReporter implements ReporterV2 {
     if (result.status === 'passed') {
       failedPaths.delete(linePath); // If it was marked failed on a previous retry, remove it.
     }
+
+    if (this._isSerial(test.parent)) {
+      this.serialPaths.add(linePath);
+    }
+  }
+
+  _isSerial(suite: (Suite & { _parallelMode?: string }) | undefined): boolean {
+    if (suite === undefined) return false;
+    if (suite._parallelMode === 'serial') {
+      return true;
+    }
+    return this._isSerial(suite.parent);
   }
 
   onEnd(result: FullResult) {
     const failedPaths = new Set(this.failedPathsRoot);
     this.failedPathsByProject.forEach((paths) => {
       paths.forEach((path) => {
-        failedPaths.add(path);
+        if (this.serialPaths.has(path)) {
+          failedPaths.add(path.replace(/:\d+$/, ''));
+        } else {
+          failedPaths.add(path);
+        }
       });
     });
 
