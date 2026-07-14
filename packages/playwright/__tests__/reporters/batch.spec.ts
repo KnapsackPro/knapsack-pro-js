@@ -111,7 +111,7 @@ test('passes on the retry', async ({}, testInfo) => {
     });
   });
 
-  it('records the Knapsack Pro batch', { timeout: 10000 }, () => {
+  it('with multiple tests in one file', { timeout: 10000 }, () => {
     const result = runInlinePlaywrightTest({
       'fail.spec.ts': `import { test, expect } from '@playwright/test';
 test('fails', async () => { expect(1).toBe(2); });
@@ -130,4 +130,56 @@ test('passes', async () => { expect(1).toBe(1); });
       isTestSuiteGreen: false,
     });
   });
+
+  it(
+    'with a serial file it marks the file path as failed',
+    { timeout: 10000 },
+    () => {
+      const result = runInlinePlaywrightTest({
+        'serial.spec.ts': `import { test } from '@playwright/test';
+test.describe.configure({ mode: 'serial' });
+test('fails', async () => { expect(1).toBe(2); });
+test('passes', async () => { expect(1).toBe(1); });
+`,
+      });
+      expect(existsSync(join(result.testDir, '.knapsack-pro/batch.json'))).toBe(
+        true,
+      );
+      expect(result.batch).toMatchObject({
+        recordedPaths: {
+          [`${basename(result.testDir)}/serial.spec.ts:3`]: expect.any(Number),
+          [`${basename(result.testDir)}/serial.spec.ts:4`]: expect.any(Number),
+        },
+        failedPaths: [`${basename(result.testDir)}/serial.spec.ts`],
+        isTestSuiteGreen: false,
+      });
+    },
+  );
+
+  it(
+    'with a nested serial file it marks the file path as failed',
+    { timeout: 10000 },
+    () => {
+      const result = runInlinePlaywrightTest({
+        'serial.spec.ts': `import { test } from '@playwright/test';
+test.describe.configure({ mode: 'serial' });
+test.describe(() => {
+  test('fails', async () => { expect(1).toBe(2); });
+  test('passes', async () => { expect(1).toBe(1); });
+});
+`,
+      });
+      expect(existsSync(join(result.testDir, '.knapsack-pro/batch.json'))).toBe(
+        true,
+      );
+      expect(result.batch).toMatchObject({
+        recordedPaths: {
+          [`${basename(result.testDir)}/serial.spec.ts:4`]: expect.any(Number),
+          [`${basename(result.testDir)}/serial.spec.ts:5`]: expect.any(Number),
+        },
+        failedPaths: [`${basename(result.testDir)}/serial.spec.ts`],
+        isTestSuiteGreen: false,
+      });
+    },
+  );
 });

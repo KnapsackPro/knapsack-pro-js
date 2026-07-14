@@ -47,7 +47,7 @@ export class KnapsackProAPI {
     allPaths: string[],
     initializeQueue: boolean,
     attemptConnectToQueue: boolean,
-    failedPaths: string[],
+    failedPaths: Set<string>,
     nodeUuid: string,
     batchId: number | null,
     batchIndex: number,
@@ -77,7 +77,7 @@ export class KnapsackProAPI {
         }),
       ...(!initializeQueue &&
         !attemptConnectToQueue && {
-          failed_paths: failedPaths,
+          failed_paths: Array.from(failedPaths),
           batch_id: batchId,
         }),
     };

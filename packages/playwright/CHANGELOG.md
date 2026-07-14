@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased (minor)
+
+- Update dependencies (including `typescript`)
+- Support [Serial Mode](https://playwright.dev/docs/test-parallel#serial-mode) by marking as failed the whole file for Retry-only-Failures
+
 ## 0.2.0
 
 - Handle file names with spaces, quotes, and escape regexes (as a side-effect NextJS route groups are also supported now)

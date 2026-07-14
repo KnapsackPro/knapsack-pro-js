@@ -6,12 +6,13 @@ import {
   KnapsackProLogger,
   onQueueFailureType,
   onQueueSuccessType,
-  TestFile,
 } from '@knapsack-pro/core';
 import cypress from 'cypress';
+
 import { EnvConfig } from './env-config.js';
-import { TestFilesFinder } from './test-files-finder.js';
+import { PathsFinder } from './paths-finder.js';
 import { CypressCLI } from './cypress-cli.js';
+import { normalizePaths } from './utils.js';
 
 const cypressCLIOptions = CypressCLI.argvToOptions();
 const knapsackProLogger = new KnapsackProLogger();
@@ -24,11 +25,13 @@ knapsackProLogger.debug(
 
 EnvConfig.loadEnvironmentVariables();
 
-const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
-  TestFilesFinder.allTestFiles().map((testFile) => testFile.path),
+const knapsackPro = new KnapsackProCore(
+  pkg.name,
+  pkg.version,
+  PathsFinder.allPaths,
 );
 
-const onSuccess: onQueueSuccessType = async (testFilePaths: string[]) => {
+const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   const updatedCypressCLIOptions = CypressCLI.updateOptions(cypressCLIOptions);
   knapsackProLogger.debug(
     `Updated Cypress CLI options for the set of tests fetched from Knapsack Pro API:\n${KnapsackProLogger.objectInspect(
@@ -36,44 +39,48 @@ const onSuccess: onQueueSuccessType = async (testFilePaths: string[]) => {
     )}`,
   );
 
-  const { runs: tests, totalFailed } = (await cypress
-    .run({
-      ...updatedCypressCLIOptions,
-      spec: testFilePaths.join(','),
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .catch((e: any) => {
-      knapsackProLogger.error(
-        `Error from cypress.run:\n${KnapsackProLogger.objectInspect(e)}`,
-      );
-      process.exitCode = 1;
-      throw new Error('cypress.run process failed. See the above logs.');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    })) as { runs: any; totalFailed: number };
+  const result = await cypress.run({
+    ...updatedCypressCLIOptions,
+    spec: scheduledPaths.join(','),
+  });
 
-  // when Cypress crashed
-  if (typeof tests === 'undefined') {
-    return {
-      recordedPaths: [],
-      isTestSuiteGreen: false,
-      failedPaths: [],
-    };
+  if (isCypressFailedRunResult(result)) {
+    knapsackProLogger.error(
+      `Error from cypress.run:\n${KnapsackProLogger.objectInspect(result)}`,
+    );
+    process.exitCode = 1;
+    throw new Error('cypress.run process failed. See the above logs.');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recordedTestFiles: TestFile[] = tests.map((test: any) => ({
-    path: test.spec.relative,
-    time_execution: test.stats.duration / 1000,
-  }));
+  const recordedPaths: Record<string, number> = {};
+  const failedPaths: Set<string> = new Set();
+
+  result.runs.forEach((run) => {
+    const path = run.spec.relative;
+    recordedPaths[path] = (run.stats.duration ?? 0) / 1000;
+
+    // States:
+    // https://github.com/cypress-io/cypress/blob/8addb93e04dd372ab736d76c60735711d570312e/packages/server/lib/reporter.ts#L281
+    if (run.tests.some((test) => test.state === 'failed')) {
+      failedPaths.add(path);
+    }
+  });
 
   return {
-    recordedPaths: recordedTestFiles,
-    isTestSuiteGreen: totalFailed === 0,
-    failedPaths: [],
+    recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
+    isTestSuiteGreen: result.totalFailed === 0,
+    failedPaths,
   };
 };
 
-// we do nothing when error so pass noop
+const isCypressFailedRunResult = (
+  result:
+    | CypressCommandLine.CypressRunResult
+    | CypressCommandLine.CypressFailedRunResult,
+): result is CypressCommandLine.CypressFailedRunResult => {
+  return 'status' in result && result.status === 'failed';
+};
+
 const onError: onQueueFailureType = () => {};
 
 knapsackPro.runQueueMode(onSuccess, onError);

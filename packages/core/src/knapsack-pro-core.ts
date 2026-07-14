@@ -42,7 +42,7 @@ export class KnapsackProCore {
     attemptConnectToQueue = false,
     onSuccess: onQueueSuccessType,
     onFailure: onQueueFailureType,
-    failedPaths: string[] = [],
+    failedPaths: Set<string> = new Set(),
     batchId: number | null = null,
     batchIndex: number = 0,
   ) {
@@ -75,11 +75,7 @@ export class KnapsackProCore {
 
         onSuccess(queuePaths).then(
           ({ recordedPaths, failedPaths, isTestSuiteGreen }) => {
-            this.updateRecordedTestFiles(
-              recordedPaths,
-              isTestSuiteGreen,
-              queuePaths,
-            );
+            this.updateRecordedTestFiles(recordedPaths, isTestSuiteGreen);
             this.fetchTestsFromQueue(
               false,
               false,
@@ -132,25 +128,19 @@ export class KnapsackProCore {
         );
 
         onSuccess(queuePaths).then(({ recordedPaths, isTestSuiteGreen }) => {
-          this.updateRecordedTestFiles(
-            recordedPaths,
-            isTestSuiteGreen,
-            queuePaths,
-          );
+          this.updateRecordedTestFiles(recordedPaths, isTestSuiteGreen);
           this.finishQueueMode();
         });
       });
   }
 
   private updateRecordedTestFiles(
-    recordedPaths: TestFile[] | Record<string, number>,
+    recordedPaths: Record<string, number>,
     isTestSuiteGreen: boolean,
-    scheduledPaths: string[],
   ) {
     this.recordedTestFiles = updateRecordedTestFiles(
       this.recordedTestFiles,
       recordedPaths,
-      scheduledPaths,
     );
     this.isTestSuiteGreen = this.isTestSuiteGreen && isTestSuiteGreen;
   }
@@ -173,23 +163,11 @@ export class KnapsackProCore {
 
 export function updateRecordedTestFiles(
   recordedTestFiles: TestFile[],
-  newRecordedPaths: TestFile[] | Record<string, number>,
-  scheduledPaths: string[],
+  newRecordedPaths: Record<string, number>,
 ) {
-  if (Array.isArray(newRecordedPaths)) {
-    const map = new Map();
-    scheduledPaths.forEach((path) => {
-      map.set(path, { path, time_execution: 0 });
-    });
-    newRecordedPaths.forEach((testFile) => {
-      map.set(testFile.path, testFile);
-    });
-    return recordedTestFiles.concat(Array.from(map.values()));
-  } else {
-    const map = new Map();
-    Object.entries(newRecordedPaths).forEach(([path, time]) => {
-      map.set(path, { path, time_execution: time });
-    });
-    return recordedTestFiles.concat(Array.from(map.values()));
-  }
+  const newTestFiles = Object.entries(newRecordedPaths).map(([path, time]) => ({
+    path,
+    time_execution: time,
+  }));
+  return recordedTestFiles.concat(newTestFiles);
 }

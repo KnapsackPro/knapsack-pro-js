@@ -6,13 +6,14 @@ import {
   KnapsackProLogger,
   onQueueFailureType,
   onQueueSuccessType,
-  TestFile,
 } from '@knapsack-pro/core';
 import { v4 as uuidv4 } from 'uuid';
+import { relative } from 'path';
 
 import { EnvConfig } from './env-config.js';
-import { TestFilesFinder } from './test-files-finder.js';
+import { PathsFinder } from './paths-finder.js';
 import { JestCLI } from './jest-cli.js';
+import { normalizePaths } from './utils.js';
 
 const jestImport = await import('jest');
 const jest = jestImport.default ?? jestImport;
@@ -26,59 +27,53 @@ knapsackProLogger.debug(
 EnvConfig.loadEnvironmentVariables();
 
 const projectPath = process.cwd();
-const knapsackPro = new KnapsackProCore(pkg.name, pkg.version, () =>
-  TestFilesFinder.allTestFiles().map((testFile) => testFile.path),
+const knapsackPro = new KnapsackProCore(
+  pkg.name,
+  pkg.version,
+  PathsFinder.allPaths,
 );
 
-const onSuccess: onQueueSuccessType = async (testFilePaths: string[]) => {
+const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
   const jestCLICoverage = EnvConfig.coverageDirectory
     ? { coverageDirectory: `${EnvConfig.coverageDirectory}/${uuidv4()}` }
     : {};
 
-  const {
-    results: { success: isTestSuiteGreen, testResults },
-  } = await jest.runCLI(
+  const { results } = await jest.runCLI(
     {
       ...jestCLIOptions,
       ...jestCLICoverage,
       runTestsByPath: true,
-      _: testFilePaths,
+      _: scheduledPaths,
       $0: 'jest',
     },
     [projectPath],
   );
 
-  const recordedTestFiles: TestFile[] = testResults.map(
-    ({
-      testFilePath,
-      perfStats: { start, end },
-    }: {
-      testFilePath: string;
-      perfStats: { start: number; end: number };
-    }) => {
-      const path =
-        process.platform === 'win32'
-          ? testFilePath.replace(`${projectPath}\\`, '').replace(/\\/g, '/')
-          : testFilePath.replace(`${projectPath}/`, '');
-      const timeExecutionMiliseconds = end - start;
-      const timeExecution =
-        timeExecutionMiliseconds > 0 ? timeExecutionMiliseconds / 1000 : 0.0;
+  const recordedPaths: Record<string, number> = {};
+  const failedPaths: Set<string> = new Set();
 
-      return {
-        path,
-        time_execution: timeExecution,
-      };
-    },
-  );
+  results.testResults.forEach(({ testFilePath, perfStats, testResults }) => {
+    const path =
+      process.platform === 'win32'
+        ? relative(projectPath, testFilePath).replace(/\\/g, '/')
+        : relative(projectPath, testFilePath);
+    const time = perfStats.end - perfStats.start;
+    recordedPaths[path] = time > 0 ? time / 1000 : 0.0;
+
+    if (
+      testResults.some((assertionResult) => assertionResult.status === 'failed')
+    ) {
+      failedPaths.add(path);
+    }
+  });
 
   return {
-    recordedPaths: recordedTestFiles,
-    isTestSuiteGreen,
-    failedPaths: [],
+    recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
+    isTestSuiteGreen: results.success,
+    failedPaths,
   };
 };
 
-// we do nothing when error so pass noop
 const onError: onQueueFailureType = () => {};
 
 knapsackPro.runQueueMode(onSuccess, onError);
