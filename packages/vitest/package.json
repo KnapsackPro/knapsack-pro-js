@@ -1,7 +1,7 @@
 {
   "name": "@knapsack-pro/vitest",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Knapsack Pro Vitest splits Vitest tests across CI nodes and makes sure that tests will run in optimal time on each CI node.",
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@knapsack-pro/core": "^10.0.0",
+    "@knapsack-pro/core": "^11.0.0",
     "glob": "^13.0.6",
     "minimatch": "^10.2.5",
     "uuid": "^14.0.1"

@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased (minor)
+## Unreleased
+
+## 0.4.0
 
 - [Retry only Failures](https://docs.knapsackpro.com/vitest/retry-only-failures/): When you retry one (or all the) nodes, Knapsack Pro only executes the tests that failed last time on that node.
    - Introduces `KNAPSACK_PRO_TEST_QUEUE_ID`, a unique ID that identifies a test queue (Knapsack Pro sets it for you)
