@@ -116,7 +116,7 @@ Replace PACKAGE with `jest`, `vitest`, `cypress`, or `playwright`. If core chang
 # LEVEL specifies the type of version increment: major, minor, patch
 npm version LEVEL -w packages/PACKAGE
 
-npm install @knapsack-pro/core -w packages/PACKAGE
+npm install @knapsack-pro/core@latest -w packages/PACKAGE
 # make sure @knapsack-pro/core was updated in packages/PACKAGE/package.json (you can retry specifying the version package@x.x.x)
 
 git add --all
@@ -136,25 +136,25 @@ npm publish
 ```
 
 ```bash
-npm install -D @knapsack-pro/jest -w packages/jest-example-test-suite
+npm install -D @knapsack-pro/jest@latest -w packages/jest-example-test-suite
 # make sure @knapsack-pro/jest was updated in packages/jest-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:jest
 
-npm install -D @knapsack-pro/vitest -w packages/vitest-example-test-suite
+npm install -D @knapsack-pro/vitest@latest -w packages/vitest-example-test-suite
 # make sure @knapsack-pro/vitest was updated in packages/vitest-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:vitest
 
-npm install -D @knapsack-pro/cypress -w packages/cypress-example-test-suite
+npm install -D @knapsack-pro/cypress@latest -w packages/cypress-example-test-suite
 # make sure @knapsack-pro/cypress was updated in packages/cypress-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:cypress
 
-npm install -D @knapsack-pro/playwright -w packages/playwright-example-test-suite
+npm install -D @knapsack-pro/playwright@latest -w packages/playwright-example-test-suite
 # make sure @knapsack-pro/playwright was updated in packages/playwright-example-test-suite/package.json (you can retry specifying the version package@x.x.x)
 npm run test:playwright
 
 # since create-react-app-example is not a workspace (for now)
 cd packages/create-react-app-example
-npm install -D @knapsack-pro/jest
+npm install -D @knapsack-pro/jest@latest
 # make sure @knapsack-pro/jest was updated in packages/create-react-app-example/package.json (you can retry specifying the version package@x.x.x)
 npm run test:cra
 
