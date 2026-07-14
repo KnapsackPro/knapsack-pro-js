@@ -2,8 +2,10 @@
 
 ## Unreleased
 
-- (minor) Update dependencies (including `typescript`)
-- (major) Tighten types on `onQueueSuccessType`
+## 11.0.0
+
+- Update dependencies (including `typescript`)
+- Tighten types on `onQueueSuccessType`
 
 ## 10.0.0
 
