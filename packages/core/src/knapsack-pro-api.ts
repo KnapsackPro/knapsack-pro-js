@@ -21,15 +21,18 @@ import { QueueApiResponseCodes } from './api-response-codes.js';
 export const getHeaders = ({
   clientName,
   clientVersion,
+  apiToken,
 }: {
   clientName: string;
   clientVersion: string;
+  apiToken: string;
 }) => {
   const ci = ciProvider();
 
   return {
     'KNAPSACK-PRO-CLIENT-NAME': clientName,
     'KNAPSACK-PRO-CLIENT-VERSION': clientVersion,
+    'KNAPSACK-PRO-TEST-SUITE-TOKEN': apiToken,
     ...(ci !== null ? { 'KNAPSACK-PRO-CI-PROVIDER': ci } : {}),
   };
 };
@@ -67,7 +70,6 @@ export class KnapsackProAPI {
       node_total: KnapsackProEnvConfig.ciNodeTotal,
       node_uuid: nodeUuid,
       test_queue_id: KnapsackProEnvConfig.testQueueId,
-      test_suite_token: KnapsackProEnvConfig.testSuiteToken,
       user_seat: KnapsackProEnvConfig.maskedUserSeat,
       ...(initializeQueue &&
         !attemptConnectToQueue && {
@@ -89,7 +91,6 @@ export class KnapsackProAPI {
   public createBuildSubset(recordedTestFiles: TestFile[]): AxiosPromise<any> {
     const url = '/v1/build_subsets';
     const data = {
-      test_suite_token: KnapsackProEnvConfig.testSuiteToken,
       commit_hash: KnapsackProEnvConfig.commitHash,
       branch: KnapsackProEnvConfig.branch,
       node_total: KnapsackProEnvConfig.ciNodeTotal,
@@ -122,7 +123,11 @@ export class KnapsackProAPI {
     const apiClient = axios.create({
       baseURL: KnapsackProEnvConfig.endpoint,
       timeout: 15000,
-      headers: getHeaders({ clientName, clientVersion }),
+      headers: getHeaders({
+        clientName,
+        clientVersion,
+        apiToken: KnapsackProEnvConfig.testSuiteToken,
+      }),
     });
 
     axiosRetry(apiClient, {

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- (minor) Send the test suite token in the `KNAPSACK-PRO-TEST-SUITE-TOKEN` header instead of the request body
+
 ## 11.0.0
 
 - Update dependencies (including `typescript`)
