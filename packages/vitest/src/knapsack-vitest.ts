@@ -103,7 +103,7 @@ async function main() {
       const diagnostic = testModule.diagnostic();
       recordedPaths[filePath] =
         (recordedPaths[filePath] ?? 0) +
-        (diagnostic.collectDuration + diagnostic.setupDuration) / 1000;
+        ((diagnostic.collectDuration ?? 0) + (diagnostic.setupDuration ?? 0)) / 1000;
     }
 
     return {
