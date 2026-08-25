@@ -90,6 +90,22 @@ async function main() {
       }
     }
 
+    // `testCase.diagnostic().duration` above is test/hook run time only. It excludes
+    // importing and transforming the test file and its dependencies, which can dwarf
+    // the run time itself and is invisible to queue-mode's balancer otherwise. Fold in
+    // each file's collect (import + transform + suite-collection) and setup-file-import
+    // time once per file so shard balancing reflects real wall-clock cost.
+    for (const testModule of testModules) {
+      const filePath = relative(
+        testModule.project.vitest.config.root,
+        testModule.moduleId,
+      );
+      const diagnostic = testModule.diagnostic();
+      recordedPaths[filePath] =
+        (recordedPaths[filePath] ?? 0) +
+        (diagnostic.collectDuration + diagnostic.setupDuration) / 1000;
+    }
+
     return {
       recordedPaths: normalizePaths(paths, recordedPaths),
       isTestSuiteGreen: testModules.every((testModule) => testModule.ok()),
