@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Include each file's `collectDuration` and `setupDuration` in the recorded time reported to Knapsack Pro, in addition to test/hook run time. Previously only `testCase.diagnostic().duration` was reported, which excludes import/transform cost that can dwarf the actual test run time.
+- (minor) Include each file's `collectDuration` and `setupDuration` in the recorded time reported to Knapsack Pro, in addition to test/hook run time. Previously only `testCase.diagnostic().duration` was reported, which excludes import/transform cost that can dwarf the actual test run time.
 
 ## 0.4.0
 
