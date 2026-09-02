@@ -1,21 +1,26 @@
 import { relative } from 'path';
-import type { TestModule } from 'vitest/node';
+import type { Vitest, TestModule } from 'vitest/node';
 
-export const normalizePaths = (
-  scheduledPaths: string[],
-  recordedPaths: Record<string, number>,
-) => {
-  return Object.entries(recordedPaths).reduce<Record<string, number>>(
-    (acc, [path, time]) => {
-      if (scheduledPaths.includes(path)) {
-        return { ...acc, [path]: (acc[path] ?? 0) + time };
-      } else {
-        const filePath = path.replace(/:\d+$/, '');
-        return { ...acc, [filePath]: (acc[filePath] ?? 0) + time };
-      }
-    },
-    scheduledPaths.reduce((acc, path) => ({ ...acc, [path]: 0 }), {}),
-  );
+// This is similar to `exit()` but does not `process.exit()` to allow Knapsack Pro to execute the next batch:
+// https://github.com/vitest-dev/vitest/blob/f441c6fab25e579c5b7dd3dd50538416f415fbae/packages/vitest/src/node/core.ts#L1645
+export const closeWithTimeout = async (
+  vitest: Vitest,
+  delay: number,
+): Promise<{ timedOut: boolean }> => {
+  let timer: NodeJS.Timeout | undefined = undefined;
+  let timedOut = false;
+  const timeoutPromise = new Promise<void>((resolve) => {
+    timer = setTimeout(() => {
+      timedOut = true;
+      resolve();
+    }, delay);
+  });
+
+  await Promise.race([vitest.close(), timeoutPromise]);
+
+  clearTimeout(timer);
+
+  return { timedOut };
 };
 
 // Extracts test states and folds the following durations:
@@ -59,4 +64,21 @@ export const extractState = (testModules: TestModule[]) => {
   }
 
   return { recordedPaths, failedPaths };
+};
+
+export const normalizePaths = (
+  scheduledPaths: string[],
+  recordedPaths: Record<string, number>,
+) => {
+  return Object.entries(recordedPaths).reduce<Record<string, number>>(
+    (acc, [path, time]) => {
+      if (scheduledPaths.includes(path)) {
+        return { ...acc, [path]: (acc[path] ?? 0) + time };
+      } else {
+        const filePath = path.replace(/:\d+$/, '');
+        return { ...acc, [filePath]: (acc[filePath] ?? 0) + time };
+      }
+    },
+    scheduledPaths.reduce((acc, path) => ({ ...acc, [path]: 0 }), {}),
+  );
 };
