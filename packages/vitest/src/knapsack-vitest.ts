@@ -20,7 +20,7 @@ import { glob } from 'glob';
 import { relative } from 'path';
 
 import * as Urls from './urls.js';
-import { normalizePaths } from './utils.js';
+import { closeWithTimeout, normalizePaths } from './utils.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -65,7 +65,18 @@ async function main() {
       throw new Error('[@knapsack-pro/vitest] Vitest failed to start');
     }
 
-    await vitest.close();
+    const { timedOut } = await closeWithTimeout(
+      vitest,
+      resolvedConfig.vitestConfig.teardownTimeout,
+    );
+    if (timedOut) {
+      // A hung pool teardown would otherwise block the whole process forever
+      // with no diagnostic. Fail this batch fast and loudly instead.
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] vitest.close() did not resolve within ${resolvedConfig.vitestConfig.teardownTimeout}ms; exiting so this batch fails fast instead of hanging until the CI job timeout.`,
+      );
+      process.exit(1);
+    }
 
     const recordedPaths: Record<string, number> = {};
     const failedPaths: Set<string> = new Set();
