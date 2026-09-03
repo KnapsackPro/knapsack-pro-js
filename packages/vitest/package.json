@@ -54,15 +54,15 @@
   "dependencies": {
     "@knapsack-pro/core": "^11.0.0",
     "glob": "^13.0.6",
-    "minimatch": "^10.2.5",
-    "uuid": "^14.0.1"
+    "minimatch": "^10.2.6",
+    "uuid": "^14.0.2"
   },
   "peerDependencies": {
     "vitest": ">=2.1.6"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.4.1",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   }
 }
