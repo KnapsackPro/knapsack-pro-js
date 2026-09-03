@@ -3,6 +3,7 @@
 ## Unreleased
 
 - (minor) Send the test suite token in the `KNAPSACK-PRO-TEST-SUITE-TOKEN` header instead of the request body
+- (minor) Update dependencies (including `axios`, `uuid`)
 
 ## 11.0.0
 
