@@ -7,6 +7,6 @@ KNAPSACK_PRO_ENDPOINT=$ENDPOINT \
   KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST=d264b4b40f900d79178ca63e7ffc971f \
   KNAPSACK_PRO_LOG_LEVEL=debug \
   KNAPSACK_PRO_TEST_QUEUE_ID=${3:-$(openssl rand -base64 32)} \
-  KNAPSACK_PRO_CI_NODE_TOTAL=${2:-2} \
+  KNAPSACK_PRO_CI_NODE_TOTAL=${2:-1} \
   KNAPSACK_PRO_CI_NODE_INDEX=${1:-0} \
   npx @knapsack-pro/vitest --verbose #--includeTaskLocation
