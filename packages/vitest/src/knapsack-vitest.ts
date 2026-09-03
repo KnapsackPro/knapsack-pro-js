@@ -19,7 +19,7 @@ import { minimatch } from 'minimatch';
 import { glob } from 'glob';
 
 import * as Urls from './urls.js';
-import { extractState, normalizePaths } from './utils.js';
+import { closeWithTimeout, extractState, normalizePaths } from './utils.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -64,7 +64,16 @@ async function main() {
       throw new Error('[@knapsack-pro/vitest] Vitest failed to start');
     }
 
-    await vitest.close();
+    const { timedOut } = await closeWithTimeout(
+      vitest,
+      resolvedConfig.vitestConfig.teardownTimeout,
+    );
+    if (timedOut) {
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] vitest.close() timed out after ${resolvedConfig.vitestConfig.teardownTimeout}ms.`,
+      );
+      process.exit(1);
+    }
 
     const testModules = vitest.state.getTestModules();
     const { recordedPaths, failedPaths } = extractState(testModules);
