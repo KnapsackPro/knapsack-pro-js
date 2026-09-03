@@ -29,13 +29,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.7.0",
-    "globals": "^17.7.0",
+    "eslint": "^10.9.1",
+    "globals": "^17.12.0",
     "jiti": "^2.7.0",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "typescript": "npm:@typescript/typescript6@^6.0.3",
     "typescript-7": "npm:typescript@^7.0.2",
-    "typescript-eslint": "^8.63.0",
+    "typescript-eslint": "^8.69.0",
     "@vitest/coverage-v8": "^4.1.10"
   }
 }
