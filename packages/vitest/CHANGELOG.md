@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.1
+
 - When an error occurs outside of a test case, mark the file as failed. In the past, the file would not be marked as failed and, on a retry, it would have been skipped.
 
 ## 0.6.0
