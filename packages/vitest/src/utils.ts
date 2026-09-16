@@ -43,7 +43,8 @@ export const extractState = (testModules: TestModule[]) => {
         testModule.moduleId, // This may be a virtual path (not existing on disk).
       );
       const duration = testModule.diagnostic().duration / 1000;
-      recordedPaths[filePath] = (recordedPaths[filePath] ?? 0) + startupDuration + duration;
+      recordedPaths[filePath] =
+        (recordedPaths[filePath] ?? 0) + startupDuration + duration;
       failedPaths.add(filePath);
       continue;
     }
