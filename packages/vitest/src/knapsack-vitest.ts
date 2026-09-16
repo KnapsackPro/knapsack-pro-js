@@ -14,6 +14,7 @@ import {
   ResolvedConfig,
   resolveConfig,
 } from 'vitest/node';
+import 'vitest/config'; // Needed for the ResolvedConfig.test type
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
@@ -38,22 +39,23 @@ async function main() {
     );
   }
 
-  const resolvedConfig = await resolveConfig();
+  const viteConfig = await resolveConfig();
+  const resolvedConfig =
+    viteConfig.test ?? // vitest 5.0.0 or later
+    (viteConfig as unknown as Record<'vitestConfig', ResolvedConfig>)
+      .vitestConfig;
 
   const knapsackPro = new KnapsackProCore(
     pkg.name,
     pkg.version,
-    allPaths(resolvedConfig.vitestConfig),
+    allPaths(resolvedConfig),
   );
 
   // When running test:line the test cases in the same file that are not run are reported as skipped
   const onSuccess: onQueueSuccessType = async (paths: string[]) => {
     const cliOptions = {
       ...cliArguments.options,
-      outputFile: withBatchedBlobOutputFile(
-        cliArguments,
-        resolvedConfig.vitestConfig,
-      ),
+      outputFile: withBatchedBlobOutputFile(cliArguments, resolvedConfig),
       watch: false,
     };
     knapsackProLogger.debug(`Filters: ${JSON.stringify(paths)}`);
@@ -66,11 +68,11 @@ async function main() {
 
     const { timedOut } = await closeWithTimeout(
       vitest,
-      resolvedConfig.vitestConfig.teardownTimeout,
+      resolvedConfig.teardownTimeout,
     );
     if (timedOut) {
       knapsackProLogger.error(
-        `[@knapsack-pro/vitest] vitest.close() timed out after ${resolvedConfig.vitestConfig.teardownTimeout}ms.`,
+        `[@knapsack-pro/vitest] vitest.close() timed out after ${resolvedConfig.teardownTimeout}ms.`,
       );
       process.exit(1);
     }

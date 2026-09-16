@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Support vitest 5.0.0
+
 ## 0.5.0
 
 - Include each file's `collectDuration` and `setupDuration` in the recorded time reported to Knapsack Pro, in addition to test/hook run time. Previously only `testCase.diagnostic().duration` was reported, which excludes import/transform cost that can dwarf the actual test run time.
