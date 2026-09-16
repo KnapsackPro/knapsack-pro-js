@@ -37,6 +37,17 @@ export const extractState = (testModules: TestModule[]) => {
         testModule.diagnostic().setupDuration) /
       1000;
 
+    if (testModule.errors().length > 0) {
+      const filePath = relative(
+        testModule.project.vitest.config.root,
+        testModule.moduleId, // This may be a virtual path (not existing on disk).
+      );
+      const duration = testModule.diagnostic().duration / 1000;
+      recordedPaths[filePath] = (recordedPaths[filePath] ?? 0) + startupDuration + duration;
+      failedPaths.add(filePath);
+      continue;
+    }
+
     for (const testCase of testModule.children.allTests()) {
       const filePath = relative(
         testCase.project.vitest.config.root,

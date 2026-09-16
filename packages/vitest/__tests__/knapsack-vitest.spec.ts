@@ -137,6 +137,28 @@ describe('#extractState', () => {
     expect(failedPaths).toEqual(new Set(['example.test.js']));
   }, 5_000);
 
+  it('with an error outside of a test case, it marks the file-path as failed', async () => {
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(
+      testFile,
+      `error(); test('passes', () => {
+          expect(true).toBe(true);
+        });`,
+    );
+
+    vitest = await startVitest(root, testFile, { includeTaskLocation: true });
+
+    const { recordedPaths, failedPaths } = extractState(
+      vitest.state.getTestModules(),
+    );
+
+    expect(recordedPaths).toEqual({
+      'example.test.js': 0,
+    });
+    expect(failedPaths).toEqual(new Set(['example.test.js']));
+  }, 5_000);
+
   it('sums execution times for tests in the same file', async () => {
     const testFile = join(root, 'example.test.js');
 
