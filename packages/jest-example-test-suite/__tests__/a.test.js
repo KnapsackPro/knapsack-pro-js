@@ -14,3 +14,7 @@ it("add test", () => {
 it("sleep", async () => {
   await sleep(2000);
 });
+
+test("matches the snapshot", () => {
+  expect({ key: "value" }).toMatchSnapshot();
+});

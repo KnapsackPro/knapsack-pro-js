@@ -13,7 +13,7 @@ import { relative } from 'path';
 import { EnvConfig } from './env-config.js';
 import { PathsFinder } from './paths-finder.js';
 import { JestCLI } from './jest-cli.js';
-import { normalizePaths } from './utils.js';
+import { extractFailedSnapshotPaths, normalizePaths } from './utils.js';
 
 const jestImport = await import('jest');
 const jest = jestImport.default ?? jestImport;
@@ -66,6 +66,10 @@ const onSuccess: onQueueSuccessType = async (scheduledPaths: string[]) => {
       failedPaths.add(path);
     }
   });
+
+  extractFailedSnapshotPaths(results.snapshot, projectPath).forEach((path) =>
+    failedPaths.add(path),
+  );
 
   return {
     recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
