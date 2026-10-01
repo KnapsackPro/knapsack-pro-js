@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 10.1.0
+
+- Mark test path as failed when an obsolete snapshot causes Jest to fail. Otherwise, [Retry only Failures](https://docs.knapsackpro.com/jest/retry-only-failures/) does not rerun that path on a retry.
+
 ## 10.0.0
 
 - [Retry only Failures](https://docs.knapsackpro.com/jest/retry-only-failures/): When you retry one (or all the) nodes, Knapsack Pro only executes the tests that failed last time on that node.
