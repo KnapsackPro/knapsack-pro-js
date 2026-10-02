@@ -10,3 +10,7 @@ test('adds 10 + 20 to equal 30', async () => {
   await new Promise((resolve) => setTimeout(resolve, 1500));
   expect(add(10, 20)).toBe(30);
 }, 2000);
+
+test('matches the snapshot', () => {
+  expect({ key: 'value' }).toMatchSnapshot();
+});
