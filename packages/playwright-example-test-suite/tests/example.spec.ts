@@ -20,3 +20,7 @@ test('get started link', async ({ page }) => {
     page.getByRole('heading', { name: 'Installation' }),
   ).toBeVisible();
 });
+
+test('matches the snapshot', () => {
+  expect(JSON.stringify({ key: 'value' })).toMatchSnapshot('snapshot.txt');
+});
