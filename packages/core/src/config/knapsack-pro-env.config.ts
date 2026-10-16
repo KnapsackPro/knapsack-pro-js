@@ -250,7 +250,10 @@ export class KnapsackProEnvConfig {
   }
 
   public static get singleBatch(): boolean {
-    return this.parseBoolean(process.env.KNAPSACK_PRO_SINGLE_BATCH ?? 'false', 'KNAPSACK_PRO_SINGLE_BATCH');
+    return this.parseBoolean(
+      process.env.KNAPSACK_PRO_SINGLE_BATCH ?? 'false',
+      'KNAPSACK_PRO_SINGLE_BATCH',
+    );
   }
 }
 
