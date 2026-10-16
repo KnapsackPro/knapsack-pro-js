@@ -10,10 +10,6 @@ export class CodefreshCI extends CIProviderBase {
     return undefined;
   }
 
-  public static get ciNodeBuildId(): string | undefined {
-    return process.env.CF_BUILD_ID;
-  }
-
   public static get ciNodeRetryCount(): undefined {
     return undefined;
   }

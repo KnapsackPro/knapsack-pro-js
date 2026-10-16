@@ -69,6 +69,7 @@ export class KnapsackProAPI {
       node_index: KnapsackProEnvConfig.ciNodeIndex,
       node_total: KnapsackProEnvConfig.ciNodeTotal,
       node_uuid: nodeUuid,
+      single_batch: KnapsackProEnvConfig.singleBatch,
       test_queue_id: KnapsackProEnvConfig.testQueueId,
       user_seat: KnapsackProEnvConfig.maskedUserSeat,
       ...(initializeQueue &&

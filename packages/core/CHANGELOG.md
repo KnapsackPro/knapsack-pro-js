@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node (read more on https://docs.knapsackpro.com/)
+
 ## 11.1.0
 
 - Send the test suite token in the `KNAPSACK-PRO-TEST-SUITE-TOKEN` header instead of the request body

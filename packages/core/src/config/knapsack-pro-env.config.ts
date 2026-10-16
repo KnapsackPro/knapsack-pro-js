@@ -138,20 +138,6 @@ export class KnapsackProEnvConfig {
     );
   }
 
-  public static get ciNodeBuildId(): string | never {
-    const envValue = this.envFor(
-      'KNAPSACK_PRO_CI_NODE_BUILD_ID',
-      'ciNodeBuildId',
-    );
-    if (envValue) {
-      return envValue;
-    }
-
-    throw new Error(
-      `Missing environment variable KNAPSACK_PRO_CI_NODE_BUILD_ID. Read more at ${Urls.KNAPSACK_PRO_CI_NODE_BUILD_ID}`,
-    );
-  }
-
   public static get ciNodeRetryCount(): number {
     const envValue = this.envFor(
       'KNAPSACK_PRO_CI_NODE_RETRY_COUNT',
@@ -261,6 +247,10 @@ export class KnapsackProEnvConfig {
     throw new Error(
       `Missing test_queue_id. See: ${Urls.KNAPSACK_PRO_TEST_QUEUE_ID}`,
     );
+  }
+
+  public static get singleBatch(): boolean {
+    return this.parseBoolean(process.env.KNAPSACK_PRO_SINGLE_BATCH ?? 'false', 'KNAPSACK_PRO_SINGLE_BATCH');
   }
 }
 

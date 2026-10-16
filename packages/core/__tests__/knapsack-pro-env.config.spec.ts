@@ -28,51 +28,6 @@ describe('KnapsackProEnvConfig', () => {
     logs = [];
   });
 
-  describe('.ciNodeBuildId', () => {
-    describe('when KNAPSACK_PRO_CI_NODE_BUILD_ID is not defined on the environment and the CI is not supported', () => {
-      it('throws', () => {
-        expect(() => KnapsackProEnvConfig.ciNodeBuildId).toThrow(
-          /Missing environment variable KNAPSACK_PRO_CI_NODE_BUILD_ID/,
-        );
-      });
-    });
-
-    describe('when the build id is defined on a supported CI environment', () => {
-      it('returns the CI build ID for the supported CI provider', () => {
-        const ciBuildId = 'some-build-id';
-        process.env.BUILDKITE = 'true';
-        process.env.BUILDKITE_BUILD_NUMBER = ciBuildId;
-
-        expect(KnapsackProEnvConfig.ciNodeBuildId).toEqual(ciBuildId);
-        expect(logs).toEqual([]);
-      });
-    });
-
-    describe('when KNAPSACK_PRO_CI_NODE_BUILD_ID is defined on the environment AND the build id is defined on a supported CI environment', () => {
-      it('returns KNAPSACK_PRO_CI_NODE_BUILD_ID and logs info', () => {
-        const ciBuildId = 'some-build-id';
-        process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID = ciBuildId;
-        process.env.BUILDKITE = 'true';
-        process.env.BUILDKITE_BUILD_NUMBER = 'some-other-build-id';
-
-        expect(KnapsackProEnvConfig.ciNodeBuildId).toEqual(ciBuildId);
-        expect(logs).toEqual([
-          `You have set the environment variable KNAPSACK_PRO_CI_NODE_BUILD_ID to ${ciBuildId} which could be automatically determined from the CI environment as ${process.env.BUILDKITE_BUILD_NUMBER}.`,
-        ]);
-      });
-    });
-
-    describe('when KNAPSACK_PRO_CI_NODE_BUILD_ID is defined on the environment AND the build id is defined on a supported CI environment AND they are the same value', () => {
-      it('does not log info', () => {
-        process.env.KNAPSACK_PRO_CI_NODE_BUILD_ID = 'some-build-id';
-        process.env.BUILDKITE = 'true';
-        process.env.BUILDKITE_BUILD_NUMBER = 'some-build-id';
-
-        expect(logs).toEqual([]);
-      });
-    });
-  });
-
   describe('.ciNodeRetryCount', () => {
     it('returns a default retry count', () => {
       expect(KnapsackProEnvConfig.ciNodeRetryCount).toEqual(0);

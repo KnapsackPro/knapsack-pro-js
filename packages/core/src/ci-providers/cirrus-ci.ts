@@ -9,10 +9,6 @@ export class CirrusCI extends CIProviderBase {
     return process.env.CI_NODE_INDEX;
   }
 
-  public static get ciNodeBuildId(): string | undefined {
-    return process.env.CIRRUS_BUILD_ID;
-  }
-
   public static get ciNodeRetryCount(): undefined {
     return undefined;
   }
