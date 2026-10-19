@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node (read more on https://docs.knapsackpro.com/)
+## 11.2.0
+
+- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node
 
 ## 11.1.0
 
