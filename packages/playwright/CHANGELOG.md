@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.0
+
+- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node
+
 ## 0.3.0
 
 - Update dependencies (including `typescript`)

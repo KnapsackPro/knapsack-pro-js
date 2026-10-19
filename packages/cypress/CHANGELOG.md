@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 10.1.0
+
+- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node
+
 ## 10.0.0
 
 - [Retry only Failures](https://docs.knapsackpro.com/cypress/retry-only-failures/): When you retry one (or all the) nodes, Knapsack Pro only executes the tests that failed last time on that node.

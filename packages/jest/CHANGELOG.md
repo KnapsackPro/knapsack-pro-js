@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 10.2.0
+
+- Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node
+
 ## 10.1.0
 
 - Mark test path as failed when an obsolete snapshot causes Jest to fail. Otherwise, [Retry only Failures](https://docs.knapsackpro.com/jest/retry-only-failures/) does not rerun that path on a retry.
