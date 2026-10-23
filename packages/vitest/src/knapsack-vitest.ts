@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import pkg from '@knapsack-pro/vitest/package.json' with { type: 'json' };
-import { resolve } from 'node:path';
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -19,6 +18,7 @@ import 'vitest/config'; // Needed for the ResolvedConfig.test type
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
+import { resolve } from 'path';
 
 import * as Urls from './urls.js';
 import { closeWithTimeout, extractState, normalizePaths } from './utils.js';

@@ -1,4 +1,3 @@
-import { afterEach, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import {
   mkdirSync,
@@ -11,6 +10,7 @@ import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { afterEach, describe, expect, it } from 'vitest';
 
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const require = createRequire(import.meta.url);
@@ -30,7 +30,10 @@ afterEach(() => {
   }
 });
 
-function runBatches(batches: string[][], startupFailure = false) {
+const runInlineVitestBatches = (
+  batches: string[][],
+  startupFailure = false,
+) => {
   const root = mkdtempSync(join(tmpdir(), 'knapsack-vitest-'));
   roots.push(root);
   symlinkSync(
@@ -120,23 +123,23 @@ await import(${JSON.stringify(pathToFileURL(adapter).href)});
     },
     timeout: 30000,
   });
-}
+};
 
-function queueRequest(
+const queueRequest = (
   failedPaths: string[],
   batchId: number,
   batchIndex: number,
-) {
+) => {
   return `QUEUE_REQUEST ${JSON.stringify({ batchId, batchIndex, failedPaths: failedPaths.toSorted() })}`;
-}
+};
 
-function buildSubset(paths: string[]) {
+const buildSubset = (paths: string[]) => {
   return `BUILD_SUBSET ${JSON.stringify(paths.toSorted())}`;
-}
+};
 
 describe('Knapsack Vitest queue results', () => {
   it('reports startup errors for retry instead of treating empty results as green', () => {
-    const result = runBatches([['passing.test.js']], true);
+    const result = runInlineVitestBatches([['passing.test.js']], true);
     expect(result.error).toBeUndefined();
     expect(result.stderr).toContain('intentional startup failure');
     expect(result.stdout).toContain(queueRequest(['passing.test.js'], 1, 1));
@@ -145,7 +148,7 @@ describe('Knapsack Vitest queue results', () => {
   }, 40000);
 
   it('reports incomplete paths for retry and stays failed after a passing batch', () => {
-    const result = runBatches([
+    const result = runInlineVitestBatches([
       ['(routes)/passing.test.js', 'missing.test.js'],
       ['later.test.js'],
     ]);
@@ -164,7 +167,7 @@ describe('Knapsack Vitest queue results', () => {
   }, 40000);
 
   it('accepts passing and explicitly skipped files, including route-group paths', () => {
-    const result = runBatches([
+    const result = runInlineVitestBatches([
       ['passing.test.js', 'skipped.test.js', '(routes)/passing.test.js'],
     ]);
     expect(result.error).toBeUndefined();
@@ -173,7 +176,7 @@ describe('Knapsack Vitest queue results', () => {
   }, 40000);
 
   it('reports the whole batch for retry on unhandled errors and stays failed after a passing batch', () => {
-    const result = runBatches([
+    const result = runInlineVitestBatches([
       ['unhandled.test.js', 'skipped.test.js'],
       ['later.test.js'],
     ]);
@@ -190,7 +193,10 @@ describe('Knapsack Vitest queue results', () => {
   }, 40000);
 
   it('preserves ordinary failures for retry and stays failed after a passing batch', () => {
-    const result = runBatches([['failing.test.js'], ['later.test.js']]);
+    const result = runInlineVitestBatches([
+      ['failing.test.js'],
+      ['later.test.js'],
+    ]);
     expect(result.error).toBeUndefined();
     expect(result.stdout).toContain(queueRequest(['failing.test.js:1'], 1, 1));
     expect(result.stdout).toContain(queueRequest([], 2, 2));
