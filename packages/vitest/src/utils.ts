@@ -1,4 +1,4 @@
-import { relative } from 'path';
+import { relative, resolve } from 'path';
 import type { Vitest, TestModule } from 'vitest/node';
 
 // This is similar to `exit()` but does not `process.exit()` to allow Knapsack Pro to execute the next batch:
@@ -93,4 +93,46 @@ export const normalizePaths = (
     },
     scheduledPaths.reduce((acc, path) => ({ ...acc, [path]: 0 }), {}),
   );
+};
+
+export const extractBatchState = (
+  scheduledPaths: string[],
+  testModules: TestModule[],
+  unhandledErrors: unknown[],
+  cwd: string,
+) => {
+  const incompletePaths = scheduledPaths.filter((path) => {
+    const moduleId = resolve(cwd, path.replace(/:\d+$/, '')).replaceAll(
+      '\\',
+      '/',
+    );
+    const modules = testModules.filter(
+      (testModule) => testModule.moduleId === moduleId,
+    );
+    return (
+      modules.length === 0 ||
+      modules.some(
+        (testModule) =>
+          !['passed', 'failed', 'skipped'].includes(testModule.state()),
+      )
+    );
+  });
+  const { recordedPaths, failedPaths } = extractState(testModules);
+
+  const retryPaths =
+    unhandledErrors.length > 0 ? scheduledPaths : incompletePaths;
+  for (const path of retryPaths) {
+    failedPaths.add(path);
+  }
+
+  return {
+    recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
+    isTestSuiteGreen:
+      unhandledErrors.length === 0 &&
+      incompletePaths.length === 0 &&
+      testModules.every((testModule) => testModule.ok()),
+    failedPaths,
+    incompletePaths,
+    unhandledErrorCount: unhandledErrors.length,
+  };
 };

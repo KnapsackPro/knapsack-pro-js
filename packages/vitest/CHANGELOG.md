@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- (Patch) Fail batches with unhandled Vitest errors or incomplete assigned files, and include affected paths when retrying failures.
+- (patch) Fail batches with unhandled Vitest errors or incomplete assigned files, and include affected paths when retrying failures.
 
 ## 0.7.0
 

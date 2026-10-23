@@ -18,10 +18,9 @@ import 'vitest/config'; // Needed for the ResolvedConfig.test type
 import { v4 as uuidv4 } from 'uuid';
 import { minimatch } from 'minimatch';
 import { glob } from 'glob';
-import { resolve } from 'path';
 
 import * as Urls from './urls.js';
-import { closeWithTimeout, extractState, normalizePaths } from './utils.js';
+import { closeWithTimeout, extractBatchState } from './utils.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -78,26 +77,17 @@ async function main() {
       process.exit(1);
     }
 
-    const testModules = vitest.state.getTestModules();
-    const unhandledErrors = vitest.state.getUnhandledErrors();
-    const incompletePaths = paths.filter((path) => {
-      const moduleId = resolve(vitest.config.root, path.replace(/:\d+$/, ''));
-      const modules = testModules.filter(
-        (testModule) => testModule.moduleId === moduleId,
+    const { incompletePaths, unhandledErrorCount, ...batchState } =
+      extractBatchState(
+        paths,
+        vitest.state.getTestModules(),
+        vitest.state.getUnhandledErrors(),
+        process.cwd(),
       );
-      return (
-        modules.length === 0 ||
-        modules.some(
-          (testModule) =>
-            !['passed', 'failed', 'skipped'].includes(testModule.state()),
-        )
-      );
-    });
-    const { recordedPaths, failedPaths } = extractState(testModules);
 
-    if (unhandledErrors.length > 0) {
+    if (unhandledErrorCount > 0) {
       knapsackProLogger.error(
-        `[@knapsack-pro/vitest] Vitest reported ${unhandledErrors.length} unhandled error(s).`,
+        `[@knapsack-pro/vitest] Vitest reported ${unhandledErrorCount} unhandled error(s).`,
       );
     }
     if (incompletePaths.length > 0) {
@@ -105,18 +95,8 @@ async function main() {
         `[@knapsack-pro/vitest] Assigned test files did not finish:\n${incompletePaths.join('\n')}`,
       );
     }
-    for (const path of unhandledErrors.length > 0 ? paths : incompletePaths) {
-      failedPaths.add(path);
-    }
 
-    return {
-      recordedPaths: normalizePaths(paths, recordedPaths),
-      isTestSuiteGreen:
-        unhandledErrors.length === 0 &&
-        incompletePaths.length === 0 &&
-        testModules.every((testModule) => testModule.ok()),
-      failedPaths,
-    };
+    return batchState;
   };
 
   const onError: onQueueFailureType = () => {};
