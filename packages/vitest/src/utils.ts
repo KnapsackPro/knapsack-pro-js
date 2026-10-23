@@ -1,5 +1,5 @@
 import { relative, resolve } from 'path';
-import type { Vitest, TestModule } from 'vitest/node';
+import type { Vitest, TestModule, TestModuleState } from 'vitest/node';
 
 // This is similar to `exit()` but does not `process.exit()` to allow Knapsack Pro to execute the next batch:
 // https://github.com/vitest-dev/vitest/blob/f441c6fab25e579c5b7dd3dd50538416f415fbae/packages/vitest/src/node/core.ts#L1645
@@ -95,12 +95,18 @@ export const normalizePaths = (
   );
 };
 
+const finishedStates: TestModuleState[] = ['passed', 'failed', 'skipped'];
+
 export const extractBatchState = (
   scheduledPaths: string[],
   testModules: TestModule[],
   unhandledErrors: unknown[],
   cwd: string,
+  dangerouslyIgnoreUnhandledErrors = false,
 ) => {
+  const unhandledErrorCount = dangerouslyIgnoreUnhandledErrors
+    ? 0
+    : unhandledErrors.length;
   const incompletePaths = scheduledPaths.filter((path) => {
     const moduleId = resolve(cwd, path.replace(/:\d+$/, '')).replaceAll(
       '\\',
@@ -111,16 +117,12 @@ export const extractBatchState = (
     );
     return (
       modules.length === 0 ||
-      modules.some(
-        (testModule) =>
-          !['passed', 'failed', 'skipped'].includes(testModule.state()),
-      )
+      modules.some((testModule) => !finishedStates.includes(testModule.state()))
     );
   });
   const { recordedPaths, failedPaths } = extractState(testModules);
 
-  const retryPaths =
-    unhandledErrors.length > 0 ? scheduledPaths : incompletePaths;
+  const retryPaths = unhandledErrorCount > 0 ? scheduledPaths : incompletePaths;
   for (const path of retryPaths) {
     failedPaths.add(path);
   }
@@ -128,11 +130,11 @@ export const extractBatchState = (
   return {
     recordedPaths: normalizePaths(scheduledPaths, recordedPaths),
     isTestSuiteGreen:
-      unhandledErrors.length === 0 &&
+      unhandledErrorCount === 0 &&
       incompletePaths.length === 0 &&
       testModules.every((testModule) => testModule.ok()),
     failedPaths,
     incompletePaths,
-    unhandledErrorCount: unhandledErrors.length,
+    unhandledErrorCount,
   };
 };

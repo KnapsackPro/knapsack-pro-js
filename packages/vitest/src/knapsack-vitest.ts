@@ -83,6 +83,7 @@ async function main() {
         vitest.state.getTestModules(),
         vitest.state.getUnhandledErrors(),
         process.cwd(),
+        vitest.config.dangerouslyIgnoreUnhandledErrors,
       );
 
     if (unhandledErrorCount > 0) {

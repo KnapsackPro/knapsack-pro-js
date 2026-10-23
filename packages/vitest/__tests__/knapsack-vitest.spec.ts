@@ -16,6 +16,7 @@ const startVitest = (
   root: string,
   testFile: string | string[],
   options: {
+    dangerouslyIgnoreUnhandledErrors?: boolean;
     globalSetup?: string[];
     includeTaskLocation?: boolean;
     setupFiles?: string[];
@@ -460,6 +461,36 @@ describe('#extractBatchState', () => {
       failedPaths: new Set(['unhandled.test.js', 'example.test.js']),
       incompletePaths: [],
       unhandledErrorCount: 1,
+    });
+  }, 5_000);
+
+  it('with an ignored unhandled error, it reports a green batch', async () => {
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(
+      testFile,
+      `test('passes', async () => {
+          process.emit('unhandledRejection', new Error('unhandled'), Promise.resolve());
+          await new Promise(resolve => setTimeout(resolve, 10));
+        });`,
+    );
+
+    vitest = await startVitest(root, testFile, {
+      dangerouslyIgnoreUnhandledErrors: true,
+    });
+
+    const batchState = extractBatchState(
+      ['example.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+      vitest.config.dangerouslyIgnoreUnhandledErrors,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: true,
+      failedPaths: new Set(),
+      unhandledErrorCount: 0,
     });
   }, 5_000);
 
