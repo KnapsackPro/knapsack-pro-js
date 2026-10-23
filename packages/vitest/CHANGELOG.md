@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- (Patch) Fail batches with unhandled Vitest errors or incomplete assigned files, and include affected paths when retrying failures.
+
 ## 0.7.0
 
 - Set `KNAPSACK_PRO_SINGLE_BATCH=true` to get only one batch of tests per node

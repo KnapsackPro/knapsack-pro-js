@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import pkg from '@knapsack-pro/vitest/package.json' with { type: 'json' };
+import { resolve } from 'node:path';
 import {
   KnapsackProCore,
   KnapsackProLogger,
@@ -78,11 +79,42 @@ async function main() {
     }
 
     const testModules = vitest.state.getTestModules();
+    const unhandledErrors = vitest.state.getUnhandledErrors();
+    const incompletePaths = paths.filter((path) => {
+      const moduleId = resolve(vitest.config.root, path.replace(/:\d+$/, ''));
+      const modules = testModules.filter(
+        (testModule) => testModule.moduleId === moduleId,
+      );
+      return (
+        modules.length === 0 ||
+        modules.some(
+          (testModule) =>
+            !['passed', 'failed', 'skipped'].includes(testModule.state()),
+        )
+      );
+    });
     const { recordedPaths, failedPaths } = extractState(testModules);
+
+    if (unhandledErrors.length > 0) {
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] Vitest reported ${unhandledErrors.length} unhandled error(s).`,
+      );
+    }
+    if (incompletePaths.length > 0) {
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] Assigned test files did not finish:\n${incompletePaths.join('\n')}`,
+      );
+    }
+    for (const path of unhandledErrors.length > 0 ? paths : incompletePaths) {
+      failedPaths.add(path);
+    }
 
     return {
       recordedPaths: normalizePaths(paths, recordedPaths),
-      isTestSuiteGreen: testModules.every((testModule) => testModule.ok()),
+      isTestSuiteGreen:
+        unhandledErrors.length === 0 &&
+        incompletePaths.length === 0 &&
+        testModules.every((testModule) => testModule.ok()),
       failedPaths,
     };
   };
