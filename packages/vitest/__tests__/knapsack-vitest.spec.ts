@@ -1,16 +1,23 @@
-import { mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Writable } from 'node:stream';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { startVitest as runVitest, type Vitest } from 'vitest/node';
 
-import { closeWithTimeout, extractState, normalizePaths } from '../src/utils';
+import {
+  closeWithTimeout,
+  extractBatchState,
+  extractState,
+  normalizePaths,
+} from '../src/utils';
 
 const startVitest = (
   root: string,
   testFile: string | string[],
   options: {
+    dangerouslyIgnoreUnhandledErrors?: boolean;
+    globalSetup?: string[];
     includeTaskLocation?: boolean;
     setupFiles?: string[];
   } = {},
@@ -361,6 +368,208 @@ describe('#extractState', () => {
       failedPaths: new Set(),
     });
   });
+});
+
+describe('#extractBatchState', () => {
+  let root: string;
+  let vitest: Vitest | undefined;
+  let originalExitCode: typeof process.exitCode;
+
+  beforeEach(async () => {
+    root = await realpath(await mkdtemp(join(tmpdir(), 'knapsack-vitest-')));
+    vitest = undefined;
+    originalExitCode = process.exitCode;
+  });
+
+  afterEach(async () => {
+    await vitest?.close();
+    await rm(root, { recursive: true, force: true });
+    process.exitCode = originalExitCode;
+  });
+
+  it('with a startup error, it marks the scheduled paths as failed', async () => {
+    const setupFile = join(root, 'global-setup.js');
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(
+      setupFile,
+      `export default () => { throw new Error('startup'); };`,
+    );
+    await writeFile(testFile, `test('passes', () => {});`);
+
+    vitest = await startVitest(root, testFile, { globalSetup: [setupFile] });
+
+    const batchState = extractBatchState(
+      ['example.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: false,
+      failedPaths: new Set(['example.test.js']),
+      incompletePaths: ['example.test.js'],
+    });
+  }, 5_000);
+
+  it('with a missing file, it marks the missing path as failed', async () => {
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(testFile, `test('passes', () => {});`);
+
+    vitest = await startVitest(root, [testFile, join(root, 'missing.test.js')]);
+
+    const batchState = extractBatchState(
+      ['example.test.js', 'missing.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: false,
+      failedPaths: new Set(['missing.test.js']),
+      incompletePaths: ['missing.test.js'],
+    });
+  }, 5_000);
+
+  it('with an unhandled error, it marks every scheduled path as failed', async () => {
+    const unhandledTestFile = join(root, 'unhandled.test.js');
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(
+      unhandledTestFile,
+      `test('passes', async () => {
+          process.emit('unhandledRejection', new Error('unhandled'), Promise.resolve());
+          await new Promise(resolve => setTimeout(resolve, 10));
+        });`,
+    );
+    await writeFile(testFile, `test('passes', () => {});`);
+
+    vitest = await startVitest(root, [unhandledTestFile, testFile]);
+
+    const batchState = extractBatchState(
+      ['unhandled.test.js', 'example.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: false,
+      failedPaths: new Set(['unhandled.test.js', 'example.test.js']),
+      incompletePaths: [],
+      unhandledErrorCount: 1,
+    });
+  }, 5_000);
+
+  it('with an ignored unhandled error, it reports a green batch', async () => {
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(
+      testFile,
+      `test('passes', async () => {
+          process.emit('unhandledRejection', new Error('unhandled'), Promise.resolve());
+          await new Promise(resolve => setTimeout(resolve, 10));
+        });`,
+    );
+
+    vitest = await startVitest(root, testFile, {
+      dangerouslyIgnoreUnhandledErrors: true,
+    });
+
+    const batchState = extractBatchState(
+      ['example.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+      vitest.config.dangerouslyIgnoreUnhandledErrors,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: true,
+      failedPaths: new Set(),
+      unhandledErrorCount: 0,
+    });
+  }, 5_000);
+
+  it('with a failing test, it marks the file-path as failed', async () => {
+    const testFile = join(root, 'example.test.js');
+
+    await writeFile(testFile, `test('fails', () => { expect(1).toBe(2); });`);
+
+    vitest = await startVitest(root, testFile);
+
+    const batchState = extractBatchState(
+      ['example.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: false,
+      failedPaths: new Set(['example.test.js']),
+      incompletePaths: [],
+      unhandledErrorCount: 0,
+    });
+  }, 5_000);
+
+  it('with passing and skipped files, it reports a green batch', async () => {
+    const routeGroupTestFile = join(root, '(routes)/passing.test.js');
+    const skippedTestFile = join(root, 'skipped.test.js');
+
+    await mkdir(join(root, '(routes)'));
+    await writeFile(routeGroupTestFile, `test('passes', () => {});`);
+    await writeFile(skippedTestFile, `test.skip('skips', () => {});`);
+
+    vitest = await startVitest(root, [routeGroupTestFile, skippedTestFile]);
+
+    const batchState = extractBatchState(
+      ['(routes)/passing.test.js', 'skipped.test.js'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: true,
+      failedPaths: new Set(),
+      incompletePaths: [],
+      unhandledErrorCount: 0,
+    });
+  }, 5_000);
+
+  it('with a custom root and a line path, it resolves the path from the working directory', async () => {
+    const appRoot = join(root, 'app');
+    const testFile = join(appRoot, 'example.test.js');
+
+    await mkdir(appRoot);
+    await writeFile(
+      testFile,
+      `test('passes', () => {});
+        test('fails', () => { expect(1).toBe(2); });`,
+    );
+
+    vitest = await startVitest(appRoot, `${testFile}:1`, {
+      includeTaskLocation: true,
+    });
+
+    const batchState = extractBatchState(
+      ['app/example.test.js:1'],
+      vitest.state.getTestModules(),
+      vitest.state.getUnhandledErrors(),
+      root,
+    );
+
+    expect(batchState).toMatchObject({
+      isTestSuiteGreen: true,
+      failedPaths: new Set(),
+      incompletePaths: [],
+      unhandledErrorCount: 0,
+    });
+  }, 5_000);
 });
 
 describe('#normalizePaths', () => {

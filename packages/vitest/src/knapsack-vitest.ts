@@ -20,7 +20,7 @@ import { minimatch } from 'minimatch';
 import { glob } from 'glob';
 
 import * as Urls from './urls.js';
-import { closeWithTimeout, extractState, normalizePaths } from './utils.js';
+import { closeWithTimeout, extractBatchState } from './utils.js';
 
 if (process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN_VITEST) {
   process.env.KNAPSACK_PRO_TEST_SUITE_TOKEN =
@@ -77,14 +77,27 @@ async function main() {
       process.exit(1);
     }
 
-    const testModules = vitest.state.getTestModules();
-    const { recordedPaths, failedPaths } = extractState(testModules);
+    const { incompletePaths, unhandledErrorCount, ...batchState } =
+      extractBatchState(
+        paths,
+        vitest.state.getTestModules(),
+        vitest.state.getUnhandledErrors(),
+        process.cwd(),
+        vitest.config.dangerouslyIgnoreUnhandledErrors,
+      );
 
-    return {
-      recordedPaths: normalizePaths(paths, recordedPaths),
-      isTestSuiteGreen: testModules.every((testModule) => testModule.ok()),
-      failedPaths,
-    };
+    if (unhandledErrorCount > 0) {
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] Vitest reported ${unhandledErrorCount} unhandled error(s).`,
+      );
+    }
+    if (incompletePaths.length > 0) {
+      knapsackProLogger.error(
+        `[@knapsack-pro/vitest] Assigned test files did not finish:\n${incompletePaths.join('\n')}`,
+      );
+    }
+
+    return batchState;
   };
 
   const onError: onQueueFailureType = () => {};
