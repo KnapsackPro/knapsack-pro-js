@@ -77,11 +77,12 @@ async function main() {
       process.exit(1);
     }
 
+    const unhandledErrors = vitest.state.getUnhandledErrors();
     const { incompletePaths, unhandledErrorCount, ...batchState } =
       extractBatchState(
         paths,
         vitest.state.getTestModules(),
-        vitest.state.getUnhandledErrors(),
+        unhandledErrors,
         process.cwd(),
         vitest.config.dangerouslyIgnoreUnhandledErrors,
       );
@@ -90,6 +91,7 @@ async function main() {
       knapsackProLogger.error(
         `[@knapsack-pro/vitest] Vitest reported ${unhandledErrorCount} unhandled error(s).`,
       );
+      vitest.logger.printUnhandledErrors(unhandledErrors);
     }
     if (incompletePaths.length > 0) {
       knapsackProLogger.error(
